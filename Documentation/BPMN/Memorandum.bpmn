@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" id="Definitions_1nq0t9u" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="2.0.3">
+  <bpmn:collaboration id="Collaboration_02z8gtp">
+    <bpmn:participant id="Participant_0y5m4sn" name="Member of the office" processRef="Process_1" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_1" isExecutable="true">
+    <bpmn:sequenceFlow id="SequenceFlow_04sm9m4" sourceRef="IntermediateThrowEvent_1dtt3bq" targetRef="UserTask_16jraac" />
+    <bpmn:intermediateThrowEvent id="IntermediateThrowEvent_1dtt3bq">
+      <bpmn:outgoing>SequenceFlow_04sm9m4</bpmn:outgoing>
+    </bpmn:intermediateThrowEvent>
+    <bpmn:userTask id="UserTask_16jraac" name="Create new document">
+      <bpmn:incoming>SequenceFlow_04sm9m4</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_12fqv85</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="SequenceFlow_12fqv85" sourceRef="UserTask_16jraac" targetRef="UserTask_0szqzhz" />
+    <bpmn:sequenceFlow id="SequenceFlow_1ul9q6d" sourceRef="UserTask_0nr8psv" targetRef="ServiceTask_08mxmwx" />
+    <bpmn:sequenceFlow id="SequenceFlow_1a6ec89" sourceRef="ServiceTask_08mxmwx" targetRef="Task_151pkp2" />
+    <bpmn:userTask id="UserTask_0szqzhz" name="Write observations">
+      <bpmn:incoming>SequenceFlow_12fqv85</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1c99tib</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="UserTask_0nr8psv" name="Add digital signature">
+      <bpmn:incoming>SequenceFlow_1c99tib</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1ul9q6d</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="SequenceFlow_1c99tib" sourceRef="UserTask_0szqzhz" targetRef="UserTask_0nr8psv" />
+    <bpmn:serviceTask id="ServiceTask_08mxmwx" name="Save to the server">
+      <bpmn:incoming>SequenceFlow_1ul9q6d</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1a6ec89</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="SequenceFlow_1t71gdm" sourceRef="Task_151pkp2" targetRef="ServiceTask_1bylrsz" />
+    <bpmn:serviceTask id="ServiceTask_1bylrsz" name="Publish document on the office&#39;s main site">
+      <bpmn:incoming>SequenceFlow_1t71gdm</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1o87285</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="EndEvent_0wj11i7">
+      <bpmn:incoming>SequenceFlow_1o87285</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_1o87285" sourceRef="ServiceTask_1bylrsz" targetRef="EndEvent_0wj11i7" />
+    <bpmn:serviceTask id="Task_151pkp2" name="Generate a XML">
+      <bpmn:incoming>SequenceFlow_1a6ec89</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1t71gdm</bpmn:outgoing>
+    </bpmn:serviceTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_02z8gtp">
+      <bpmndi:BPMNShape id="Participant_0y5m4sn_di" bpmnElement="Participant_0y5m4sn">
+        <dc:Bounds x="55" y="60" width="928" height="412" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_1bylrsz_di" bpmnElement="ServiceTask_1bylrsz">
+        <dc:Bounds x="859" y="218" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_0wj11i7_di" bpmnElement="EndEvent_0wj11i7" bioc:stroke="#E53935" bioc:fill="#FFCDD2">
+        <dc:Bounds x="891" y="345" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_08mxmwx_di" bpmnElement="ServiceTask_08mxmwx">
+        <dc:Bounds x="563" y="218" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1a6ec89_di" bpmnElement="SequenceFlow_1a6ec89">
+        <di:waypoint x="663" y="258" />
+        <di:waypoint x="710" y="258" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="UserTask_0nr8psv_di" bpmnElement="UserTask_0nr8psv">
+        <dc:Bounds x="409" y="218" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1ul9q6d_di" bpmnElement="SequenceFlow_1ul9q6d">
+        <di:waypoint x="509" y="258" />
+        <di:waypoint x="563" y="258" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="UserTask_0szqzhz_di" bpmnElement="UserTask_0szqzhz">
+        <dc:Bounds x="262" y="218" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="IntermediateThrowEvent_1dtt3bq_di" bpmnElement="IntermediateThrowEvent_1dtt3bq" bioc:stroke="#43A047" bioc:fill="#C8E6C9">
+        <dc:Bounds x="146" y="345" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_04sm9m4_di" bpmnElement="SequenceFlow_04sm9m4">
+        <di:waypoint x="164" y="345" />
+        <di:waypoint x="164" y="298" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="UserTask_16jraac_di" bpmnElement="UserTask_16jraac">
+        <dc:Bounds x="114" y="218" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_12fqv85_di" bpmnElement="SequenceFlow_12fqv85">
+        <di:waypoint x="214" y="258" />
+        <di:waypoint x="262" y="258" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1c99tib_di" bpmnElement="SequenceFlow_1c99tib">
+        <di:waypoint x="362" y="258" />
+        <di:waypoint x="409" y="258" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1t71gdm_di" bpmnElement="SequenceFlow_1t71gdm">
+        <di:waypoint x="810" y="258" />
+        <di:waypoint x="859" y="258" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1o87285_di" bpmnElement="SequenceFlow_1o87285">
+        <di:waypoint x="909" y="298" />
+        <di:waypoint x="909" y="345" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ServiceTask_1scru0k_di" bpmnElement="Task_151pkp2">
+        <dc:Bounds x="710" y="218" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
