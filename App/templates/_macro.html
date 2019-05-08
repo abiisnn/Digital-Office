@@ -1,0 +1,18 @@
+{% macro render_field (field) %}
+
+<dd> {{field(**kwargs)|safe}}
+<td> {{field.label}}
+
+{% if field.errors %}
+
+  {% for error in field.errors %}
+
+  <script>
+      M.toast({html: '{{error}}', classes: 'rounded'});
+  </script>
+
+  {% endfor %}
+
+{% endif %}
+
+{% endmacro %}
