@@ -25,7 +25,9 @@ def index():
     if 'userName' in session:
         userName = session['userName']
         print(userName)
-    return render_template('index.html')
+        return redirect(url_for('showDashBoard'))
+    else:
+        return render_template('index.html')
 
 @app.route('/cookie')
 def cookie():
@@ -39,22 +41,29 @@ def logout():
         session.pop('userName')
     return redirect(url_for('/'))
 
+
+@app.route('/AdminDashBoard')
+def AdminDashBoard():
+    return render_template('AdminDashBoard.ht')
+
 @app.route('/dashboard')
 def showDashBoard():
     return render_template('dashboard.html')
 
 @app.route('/login', methods = ['GET', 'POST'])
 def showLoginForm():
-    loginForm = forms.loginForm(request.form)
-
-    if request.method == 'POST' and loginForm.validate():
-        session['userName'] = request.form['userName']
-        session['password'] = request.form['password']
-        username = loginForm.userName.data
-        sucess_message = 'Bienvenido {}'.format(username)
-        flash(sucess_message)
-
-        return redirect(url_for('showDashBoard'))
+    if 'userName' in session:
+            return redirect(url_for('showDashBoard'))
+    else:
+        loginForm = forms.loginForm(request.form)
+        if request.method == 'POST' and loginForm.validate():
+            session['userName'] = request.form['userName']
+            session['password'] = request.form['password']
+            username = loginForm.userName.data
+            sucess_message = 'Bienvenido {}'.format(username)
+            print(sucess_message)
+            flash(sucess_message)
+            return redirect(url_for('showDashBoard'))
 
     return render_template('login.html', form = loginForm)
 
