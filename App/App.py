@@ -15,6 +15,11 @@ app = Flask(__name__)
 app.secret_key = 'any random string'
 
 
+@app.errorhandler(404)
+def pageNotFound(error):
+    return render_template('index.html')
+
+
 @app.route('/')
 def index():
     if 'userName' in session:
@@ -31,8 +36,8 @@ def cookie():
 @app.route('/logout')
 def logout():
     if 'userName' in session:
-        pass
-    return redirect(url_for('login'))
+        session.pop('userName')
+    return redirect(url_for('/'))
 
 @app.route('/dashboard')
 def showDashBoard():
