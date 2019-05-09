@@ -1,0 +1,7 @@
+Windows:
+py -m venv env
+env\Scripts\activate
+
+pip install python-dotenv
+set FLASK_APP=App.py
+flask run

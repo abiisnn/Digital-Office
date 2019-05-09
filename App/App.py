@@ -53,5 +53,9 @@ def showLoginForm():
 
     return render_template('login.html', form = loginForm)
 
+@app.route('/newMeet')
+def showMeetings():
+    return render_template('createMeeting.html')
+
 if __name__ == '__main__':
     app.run(debug = True, port = 8000)
