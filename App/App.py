@@ -90,8 +90,10 @@ def showLoginForm():
 
 @app.route('/register', methods = ['GET','POST'])
 def showRegisterForm():
-    pass
-
+    if 'userName' in session:
+            return redirect(url_for('showDashBoard'))
+    else:
+            return render_template('registerpage.html')
 
 
 @app.route('/newMeet')
