@@ -1,32 +1,33 @@
 import flask
 from flask import Flask
 from flask import request
+from flask import session
+from flask import escape
+from flask import flash
+from flask import redirect
 from flask import render_template
 from flask import make_response
+from flask import url_for
+from flask import g
 from flask_material import Material
 from flask_wtf import CSRFProtect
-from flask import g
 from flask_login import LoginManager
-from flask import Flask, session, redirect, url_for, escape, request
-from flask_sqlalchemy import sqlalchemy
-from flask import redirect
-from flask import flash
-
+from models import db
+from models import User
+from config import DevelopmentConfig
 
 import forms
 
 app = Flask(__name__)
-app.secret_key = 'any random string'
+app.config.from_object(DevelopmentConfig)
 
 @app.before_request
 def before_request():
-    #Levntar conexión a la base de datos
     if 'userName' not in session:
         print('Anonymous User')
 
 @app.after_request
 def after_request(response):
-    #Cerrar la conexión a la base de datos
     return response
 
 @app.errorhandler(404)
@@ -92,4 +93,9 @@ def showMeetings():
     return render_template('createMeeting.html')
 
 if __name__ == '__main__':
-    app.run(debug = True, port = 8000)
+
+    db.init_app(app)
+    with app.app_context():
+        db.create_all()
+
+    app.run(port = 8000)
