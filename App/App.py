@@ -88,6 +88,12 @@ def showLoginForm():
 
     return render_template('login.html', form = loginForm)
 
+@app.route('/register', methods = ['GET','POST'])
+def showRegisterForm():
+    pass
+
+
+
 @app.route('/newMeet')
 def showMeetings():
     return render_template('createMeeting.html')
