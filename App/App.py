@@ -87,11 +87,17 @@ def showLoginForm():
 
 @app.route('/register', methods = ['GET','POST'])
 def showRegisterForm():
-    if 'userName' in session:
-            return redirect(url_for('showDashBoard'))
-    else:
-            registerForm = forms.registerForm(request.form)
-            return render_template('registerpage.html', form = registerForm)
+
+    registerForm = forms.registerForm(request.form)
+
+    if request.method == 'POST' and registerForm.validate():
+
+
+        sucess_message = 'Usuario registrado en la base de datos'
+        flash(sucess_message)
+
+
+    return render_template('registerpage.html', form = registerForm)
 
 
 @app.route('/newMeet')
