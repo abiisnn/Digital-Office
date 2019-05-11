@@ -40,11 +40,8 @@
       <ul id="nav-mobile" class="right hide-on-med-and-down">
         {% with messages = get_flashed_messages() %}
             {% if messages %}
-                  {% for message in messages %}
-                  <li><a>{{message}}<i class="material-icons left">person</i></a></li>
-                  {% endfor %}
+                <li><a>{{messages[0]}}<i class="material-icons left">person</i></a></li>
             {% endif %}
-
         {% endwith %}
         <li><a class="dropdown-trigger" href="#!" data-target="dropdown1"><i class="material-icons right">arrow_drop_down</i></a></li>
 

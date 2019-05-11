@@ -22,8 +22,11 @@ app.config.from_object(DevelopmentConfig)
 
 @app.before_request
 def before_request():
-    if 'userName' not in session:
-        print('Anonymous User')
+    if 'userName' not in session and request.endpoint in ['logout','showDashBoard']:
+        return redirect(url_for('index'))
+    elif 'userName' in session and request.endpoint in['index','showLoginForm']:
+        return redirect(url_for('showDashBoard'))
+
 
 @app.after_request
 def after_request(response):
@@ -38,58 +41,37 @@ def pageNotFound(error):
 
 @app.route('/')
 def index():
-    if 'userName' in session:
-        return redirect(url_for('showDashBoard'))
-    else:
-        return render_template('index.html')
-
-@app.route('/cookie')
-def cookie():
-    response = make_response(render_template('cookie.html'))
-    response.set_cookie('custome_cookie', 'prueba')
-    return response
+    return render_template('index.html')
 
 @app.route('/logout')
 def logout():
-    if 'userName' in session:
-        session.pop('userName')
+    session.pop('userName')
     return redirect(url_for('index'))
-
-
-@app.route('/AdminDashBoard')
-def AdminDashBoard():
-    return render_template('AdminDashBoard.ht')
 
 @app.route('/dashboard')
 def showDashBoard():
-    if 'userName' in session:
-        obtainUserName()
-
-        return render_template('dashboard.html')
-    else:
-        return redirect(url_for('index'))
+    obtainUserName()
+    return render_template('dashboard.html')
 
 
 @app.route('/login', methods = ['GET', 'POST'])
 def showLoginForm():
-    if 'userName' in session:
-            return redirect(url_for('showDashBoard'))
-    else:
-        loginForm = forms.loginForm(request.form)
-        if request.method == 'POST' and loginForm.validate():
-            session['userName'] = request.form['userName']
-            session['password'] = request.form['password']
-            username = loginForm.userName.data
+    loginForm = forms.loginForm(request.form)
+    if request.method == 'POST' and loginForm.validate():
+        username = request.form['userName']
+        password = request.form['password']
+        user = User.query.filter_by(username = username).first()
 
+        if user is not None and user.verifyPassword(password):
+            session['userName'] = username
             return redirect(url_for('showDashBoard'))
+
 
     return render_template('login.html', form = loginForm)
 
 @app.route('/register', methods = ['GET','POST'])
 def showRegisterForm():
-
     registerForm = forms.registerForm(request.form)
-
     if request.method == 'POST' and registerForm.validate():
 
         user      = User(registerForm.UserName.data,
@@ -116,7 +98,6 @@ def showMeetings():
 
 @app.route('/MeetingMenu')
 def showMeetingMenu():
-    obtainUserName()
     return render_template('meetingspage.html')
 
 
@@ -126,9 +107,7 @@ def obtainUserName():
     flash(sucess_message)
 
 if __name__ == '__main__':
-
     db.init_app(app)
     with app.app_context():
         db.create_all()
-
     app.run(port = 8000)
