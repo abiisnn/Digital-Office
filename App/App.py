@@ -11,7 +11,6 @@ from flask import url_for
 from flask import g
 from flask_material import Material
 from flask_wtf import CSRFProtect
-from flask_login import LoginManager
 from models import db
 from models import User
 from config import DevelopmentConfig
@@ -64,9 +63,7 @@ def AdminDashBoard():
 @app.route('/dashboard')
 def showDashBoard():
     if 'userName' in session:
-        userName = session['userName']
-        sucess_message = '{}'.format(userName)
-        flash(sucess_message)
+        obtainUserName()
 
         return render_template('dashboard.html')
     else:
@@ -93,7 +90,8 @@ def showRegisterForm():
     if 'userName' in session:
             return redirect(url_for('showDashBoard'))
     else:
-            return render_template('registerpage.html')
+            registerForm = forms.registerForm(request.form)
+            return render_template('registerpage.html', form = registerForm)
 
 
 @app.route('/newMeet')
@@ -102,8 +100,14 @@ def showMeetings():
 
 @app.route('/MeetingMenu')
 def showMeetingMenu():
+    obtainUserName()
     return render_template('meetingspage.html')
 
+
+def obtainUserName():
+    userName = session['userName']
+    sucess_message = '{}'.format(userName)
+    flash(sucess_message)
 
 if __name__ == '__main__':
 

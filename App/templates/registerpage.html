@@ -1,5 +1,62 @@
-{% extends 'base/anonymousUserBase.html'%}
+{% extends 'base/dashBoardBase.html'%}
 {% block content %}
 {% from 'macro/_errorsAlertMacro.html' import render_field%}
+    <div class="row white">
+       <form class="col s12">
+         <div class="row">
 
+           <div class="input-field col s6">
+             <i class="material-icons prefix">account_circle</i>
+             <center>{{render_field (form.UserName)}}</center>
+           </div>
+
+           <div class="input-field col s6">
+             <i class="material-icons prefix">email</i>
+             <center>{{render_field (form.Email)}}</center>
+           </div>
+
+         </div>
+         <div class="row">
+
+           <div class="input-field col s6">
+             <i class="material-icons prefix">person</i>
+             <center>{{render_field (form.Name)}}</center>
+           </div>
+
+           <div class="input-field col s6">
+             <i class="material-icons prefix">person</i>
+             <center>{{render_field (form.LastName)}}</center>
+           </div>
+
+         </div>
+         <div class="row">
+
+           <div class="input-field col s6">
+             <i class="material-icons prefix">work</i>
+             <center>{{render_field (form.Employment)}}</center>
+           </div>
+
+           <div class="input-field col s6">
+             <i class="material-icons prefix">location_city</i>
+             <center>{{render_field (form.Office)}}</center>
+           </div>
+
+         </div>
+         <div class="row">
+
+           <div class="input-field col s6">
+             <i class="material-icons prefix">lock</i>
+             <center>{{render_field (form.Password)}}</center>
+          </div>
+
+           <div class="input-field col s6">
+             <i class="material-icons prefix">lock</i>
+             <center>{{render_field (form.Repeat_Password)}}</center>
+           </div>
+         </div>
+         <center>
+         <button class="btn waves-effect waves-light light-blue accent-4 btn-small" type="submit" name="action">Register now<i class="material-icons right">person_add</i></button>
+         </center>
+       </form>
+     </div>
 {% endblock %}
