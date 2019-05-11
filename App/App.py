@@ -100,6 +100,11 @@ def showRegisterForm():
 def showMeetings():
     return render_template('createMeeting.html')
 
+@app.route('/MeetingMenu')
+def showMeetingMenu():
+    return render_template('meetingspage.html')
+
+
 if __name__ == '__main__':
 
     db.init_app(app)

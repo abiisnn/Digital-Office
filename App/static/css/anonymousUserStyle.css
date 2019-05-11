@@ -6,6 +6,7 @@ body {
 	background-attachment:fixed;
 }
 
+
 .loginform{
     position: relative;
     top: 50%;
@@ -101,13 +102,14 @@ header nav ul li a:hover {
 }
 
 .principal {
-	position:relative;
+	opacity: 0.75;
 }
 
 .principal article {
 	padding:20px;
 	background:#fff;
 	margin-bottom: 20px;
+	position: relative;
 }
 
 .principal article p {
