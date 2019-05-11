@@ -92,6 +92,16 @@ def showRegisterForm():
 
     if request.method == 'POST' and registerForm.validate():
 
+        user      = User(registerForm.UserName.data,
+                         registerForm.Email.data   ,
+                         registerForm.Name.data    ,
+                         registerForm.LastName.data,
+                         registerForm.Employment.data,
+                         registerForm.Office.data  ,
+                         registerForm.Password.data)
+
+        db.session.add(user)
+        db.session.commit()
 
         sucess_message = 'Usuario registrado en la base de datos'
         flash(sucess_message)

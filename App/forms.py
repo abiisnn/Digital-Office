@@ -21,12 +21,12 @@ class registerForm(Form):
 
     Name = StringField('Name',
         [validators.required(message = "The username is required"),
-         validators.length(min = 1, max = 25, message = 'The lenght of the username is invalid')
+         validators.length(min = 1, max = 25, message = 'The lenght of the name is invalid')
         ])
 
     LastName = StringField('Last Name',
         [validators.required(message = "The username is required"),
-         validators.length(min = 1, max = 25, message = 'The lenght of the username is invalid')
+         validators.length(min = 1, max = 25, message = 'The lenght of the lastname is invalid')
         ])
 
     UserName = StringField('Username',
@@ -42,12 +42,10 @@ class registerForm(Form):
 
     Employment = StringField('Employment',
         [validators.required(message = "The username is required"),
-         validators.length(min = 4, max = 25, message = 'The lenght of the username is invalid')
         ])
 
     Office = StringField('Office',
         [validators.required(message = "The username is required"),
-         validators.length(min = 4, max = 25, message = 'The lenght of the username is invalid')
         ])
 
     Password = StringField('Password',
