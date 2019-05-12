@@ -1,0 +1,67 @@
+{% extends 'base/adminDashBoardBase.html'%}
+{% block content %}
+
+
+
+
+
+<table class = "striped highlight centered responsive-table">
+  <thead>
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Last Name</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Date</th>
+        <th>Employment</th>
+        <th>Department</th>
+        <th>Approve</th>
+        <th>Reject</th>
+
+    </tr>
+  </thead>
+
+  <tbody>
+      {% if usersRequests %}
+        {% for userRequest in usersRequests%}
+            <tr>
+            <td>{{userRequest.idPerson}}</td>
+            <td>{{userRequest.name}}    </td>
+            <td>{{userRequest.lastName}}</td>
+            <td>{{userRequest.username}}</td>
+            <td>{{userRequest.email}}   </td>
+            <td>{{userRequest.created_date}}</td>
+            <td>
+
+            <select class="browser-default">
+              <option value="" disabled selected>Choose your option</option>
+              <option value="1">Chief human resources</option>
+              <option value="2">Option 2</option>
+              <option value="3">Option 3</option>
+             </select>
+
+           </td>
+
+            <td>
+            <select class="browser-default">
+               <option value="" disabled selected>Choose your option</option>
+               <option value="1">Option 1</option>
+               <option value="2">Option 2</option>
+               <option value="3">Option 3</option>
+             </select>
+
+           </td>
+
+            <td>  <a href="{{url_for('UsersRequests', id = userRequest.idPerson, option = Approve)}}" class="btn-floating btn-small waves-effect waves-light green"><i class="material-icons">done</i></a></td>
+            <td>  <a href="{{url_for('UsersRequests', id = userRequest.idPerson, option = Reject)}}" class="btn-floating btn-small waves-effect waves-light red"><i    class="material-icons">do_not_disturb</i></a></td>
+          </tr>
+        {% endfor %}
+      {% endif %}
+
+
+  </tbody>
+</table>
+
+
+{% endblock %}

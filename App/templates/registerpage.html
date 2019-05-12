@@ -1,8 +1,18 @@
-{% extends 'base/dashBoardBase.html'%}
+{% extends 'base/anonymousUserBase.html'%}
 {% block content %}
 {% from 'macro/_errorsAlertMacro.html' import render_field%}
-    <div class="row white">
-      <form  class="col s12", id="registerForm", method="POST">
+<style>
+  body{
+    background: white;
+  }
+</style>
+<br>
+<br>
+<br>
+<br>
+
+      <div class="row white">
+      <form  class="col s12  m6 offset-m3", id="registerForm", method="POST">
 
          <div class="row">
 
@@ -30,19 +40,7 @@
            </div>
 
          </div>
-         <div class="row">
 
-           <div class="input-field col s6">
-             <i class="material-icons prefix">work</i>
-             <center>{{render_field (form.Employment)}}</center>
-           </div>
-
-           <div class="input-field col s6">
-             <i class="material-icons prefix">location_city</i>
-             <center>{{render_field (form.Office)}}</center>
-           </div>
-
-         </div>
          <div class="row">
 
            <div class="input-field col s6">
@@ -56,7 +54,7 @@
            </div>
          </div>
          <center>
-         <button class="btn waves-effect waves-light light-blue accent-4 btn-small" type="submit" name="action">Register now<i class="material-icons right">person_add</i></button>
+         <button class="btn waves-effect waves-light light-blue accent-4 btn-small" type="submit" name="action">Submit<i class="material-icons right">person_add</i></button>
          </center>
        </form>
      </div>

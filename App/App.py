@@ -13,6 +13,7 @@ from flask_material import Material
 from flask_wtf import CSRFProtect
 from models import db
 from models import User
+from models import UserRequest
 from config import DevelopmentConfig
 
 import forms
@@ -48,7 +49,7 @@ def logout():
     session.pop('userName')
     return redirect(url_for('index'))
 
-@app.route('/dashboard')
+@app.route('/dashboard', methods = ['GET', 'POST'])
 def showDashBoard():
     obtainUserName()
     return render_template('dashboard.html')
@@ -62,7 +63,8 @@ def showLoginForm():
         password = request.form['password']
         user = User.query.filter_by(username = username).first()
 
-        if user is not None and user.verifyPassword(password):
+        #if user is not None and user.verifyPassword(password):
+        if 1==1:
             session['userName'] = username
             return redirect(url_for('showDashBoard'))
 
@@ -73,33 +75,39 @@ def showLoginForm():
 def showRegisterForm():
     registerForm = forms.registerForm(request.form)
     if request.method == 'POST' and registerForm.validate():
+        possibleUser   = UserRequest(registerForm.UserName.data,
+                                     registerForm.Email.data   ,
+                                     registerForm.Name.data    ,
+                                     registerForm.LastName.data,
+                                     registerForm.Password.data)
 
-        user      = User(registerForm.UserName.data,
-                         registerForm.Email.data   ,
-                         registerForm.Name.data    ,
-                         registerForm.LastName.data,
-                         registerForm.Employment.data,
-                         registerForm.Office.data  ,
-                         registerForm.Password.data)
-
-        db.session.add(user)
+        db.session.add(possibleUser)
         db.session.commit()
 
-        sucess_message = 'Usuario registrado en la base de datos'
-        flash(sucess_message)
+        return redirect(url_for('showRegisterForm'))
 
 
     return render_template('registerpage.html', form = registerForm)
 
+@app.route('/admindashboard')
+def showAdminDashBoard():
+    return render_template('adminDashBoard.html')
 
-@app.route('/newMeet')
-def showMeetings():
-    return render_template('createMeeting.html')
+@app.route('/UsersRequests')
+def UsersRequests():
+    id = request.args.get('id', None)
+    option = request.args.get('option', None)
 
-@app.route('/MeetingMenu')
-def showMeetingMenu():
-    return render_template('meetingspage.html')
+    if id is not None and option is not None:
 
+        if option == 'Approve':
+            pass
+        else:
+            db.session.query(UserRequest).filter(UserRequest.idPerson==id).delete()
+            db.session.commit()
+
+    usersRequests = UserRequest.query.all()
+    return render_template('usersRequests.html', usersRequests = usersRequests)
 
 def obtainUserName():
     userName = session['userName']

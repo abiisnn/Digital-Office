@@ -15,12 +15,13 @@
   <title>Index</title>
 </head>
 
-<ul id="dropdown1" class="dropdown-content">
-  <li><a href="#!">Profile</a></li>
-  <li><a href="#!">Seetings</a></li>
-  <li class="divider"></li>
-  <li><a href="/">Log Out</a></li>
+<ul id="dropdown1" class="dropdown-content" method="POST">
+      <li><a href="{{url_for('logout')}}">Profile</a></li>
+      <li><a href="{{url_for('logout')}}">Settings</a></li>
+      <li><a href="{{url_for('logout')}}">Log out</a></li>
 </ul>
+
+
 <body>
 
 <nav>
@@ -30,14 +31,13 @@
       <ul class="left hide-on-med-and-down">
         <li class="active"><a href="/dashboard"><i class="material-icons left">home</i>Dashboard</a></li>
         <li><a href="/MeetingMenu">Meetings<i class="material-icons left">business_center</i><span class="new badge">4</span></a></li>
-        <li><a href="">Key shared<i class="material-icons left">business_center</i><span class="new badge">4</span></a></li>
-        <li><a href="">Help<i class="material-icons left">help</i></a></li>
 
 
       </ul>
 
 
       <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a href="">Help<i class="material-icons left">help</i></a></li>
         {% with messages = get_flashed_messages() %}
             {% if messages %}
                 <li><a>{{messages[0]}}<i class="material-icons left">person</i></a></li>
