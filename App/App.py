@@ -1,4 +1,7 @@
 import flask
+import threading
+from flask_mail import Mail
+from flask_mail import Message
 from flask import Flask
 from flask import request
 from flask import session
@@ -8,6 +11,7 @@ from flask import redirect
 from flask import render_template
 from flask import make_response
 from flask import url_for
+from flask import copy_current_request_context
 from flask import g
 from flask_material import Material
 from flask_wtf import CSRFProtect
@@ -15,11 +19,15 @@ from models import db
 from models import User
 from models import UserRequest
 from config import DevelopmentConfig
+from Crypto.Signature import PKCS1_v1_5
+from Crypto.Hash import SHA256
+from Crypto.PublicKey import RSA
 
 import forms
 
 app = Flask(__name__)
 app.config.from_object(DevelopmentConfig)
+mail = Mail()
 
 @app.before_request
 def before_request():
@@ -63,8 +71,8 @@ def showLoginForm():
         password = request.form['password']
         user = User.query.filter_by(username = username).first()
 
-        #if user is not None and user.verifyPassword(password):
-        if 1==1:
+        if user is not None and user.verifyPassword(password):
+        #if 1==1:
             session['userName'] = username
             return redirect(url_for('showDashBoard'))
 
@@ -92,21 +100,52 @@ def showRegisterForm():
 @app.route('/admindashboard')
 def showAdminDashBoard():
     return render_template('adminDashBoard.html')
+@app.route('/newMeet')
+def showMeet():
+    return render_template('createMeeting.html')
 
 @app.route('/UsersRequests')
 def UsersRequests():
     id = request.args.get('id', None)
     option = request.args.get('option', None)
 
-    if id is not None and option is not None:
 
+    if id is not None and option is not None:
         if option == 'Approve':
-            pass
-        else:
-            db.session.query(UserRequest).filter(UserRequest.idPerson==id).delete()
-            db.session.commit()
+
+            userToAdd = db.session.query(UserRequest).filter(UserRequest.idPerson==id)
+
+            row = userToAdd[0]
+
+            user      =  User(row.username,
+                              row.email,
+                              row.name,
+                              row.lastName,
+                              "asasasasa",
+                              row.password)
+
+            key = RSA.generate(1024)
+
+            privateKey = key.exportKey()
+            publicKey  = key.publickey().exportKey()
+
+
+
+            @copy_current_request_context
+            def sendMessage(userEmail, userName,name):
+                sendEmail(userEmail,userName,name)
+
+            sender = threading.Thread(name='mail_sender',target=sendMessage, args=(row.email,row.username,row.name))
+            sender.start()
+
+            db.session.add(user)
+
+        db.session.query(UserRequest).filter(UserRequest.idPerson==id).delete()
+
+        db.session.commit()
 
     usersRequests = UserRequest.query.all()
+
     return render_template('usersRequests.html', usersRequests = usersRequests)
 
 def obtainUserName():
@@ -114,8 +153,22 @@ def obtainUserName():
     sucess_message = '{}'.format(userName)
     flash(sucess_message)
 
+def sendEmail(userEmail, userName,name):
+    msg = Message('Status of your request',
+                   sender = app.config['MAIL_USERNAME'],
+                   recipients = [userEmail]
+                  )
+
+    msg.html = render_template('email.html', name = name, userName = userName)
+
+    with app.open_resource("static/img/logo2.png") as fp:
+        msg.attach("logo2.png", "logo2/png", fp.read())
+
+    mail.send(msg)
+
 if __name__ == '__main__':
     db.init_app(app)
+    mail.init_app(app)
     with app.app_context():
         db.create_all()
     app.run(port = 8000)
