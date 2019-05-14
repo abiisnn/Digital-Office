@@ -36,7 +36,6 @@ def before_request():
     elif 'userName' in session and request.endpoint in['index','showLoginForm']:
         return redirect(url_for('showDashBoard'))
 
-
 @app.after_request
 def after_request(response):
     return response
@@ -50,7 +49,7 @@ def pageNotFound(error):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('General/index.html')
 
 @app.route('/logout')
 def logout():
@@ -60,7 +59,7 @@ def logout():
 @app.route('/dashboard', methods = ['GET', 'POST'])
 def showDashBoard():
     obtainUserName()
-    return render_template('dashboard.html')
+    return render_template('Employee/dashboard.html')
 
 
 @app.route('/login', methods = ['GET', 'POST'])
@@ -77,7 +76,7 @@ def showLoginForm():
             return redirect(url_for('showDashBoard'))
 
 
-    return render_template('login.html', form = loginForm)
+    return render_template('General/login.html', form = loginForm)
 
 @app.route('/register', methods = ['GET','POST'])
 def showRegisterForm():
@@ -95,14 +94,14 @@ def showRegisterForm():
         return redirect(url_for('showRegisterForm'))
 
 
-    return render_template('registerpage.html', form = registerForm)
+    return render_template('RH/registerpage.html', form = registerForm)
 
 @app.route('/admindashboard')
 def showAdminDashBoard():
-    return render_template('adminDashBoard.html')
+    return render_template('CEO/adminDashBoard.html')
 @app.route('/newMeet')
 def showMeet():
-    return render_template('createMeeting.html')
+    return render_template('CEO/createMeeting.html')
 
 @app.route('/UsersRequests')
 def UsersRequests():
@@ -152,7 +151,7 @@ def UsersRequests():
 
     usersRequests = UserRequest.query.all()
 
-    return render_template('usersRequests.html', usersRequests = usersRequests)
+    return render_template('CEO/usersRequests.html', usersRequests = usersRequests)
 
 def obtainUserName():
     userName = session['userName']
@@ -165,7 +164,7 @@ def sendEmail(userEmail, userName,name):
                    recipients = [userEmail]
                   )
 
-    msg.html = render_template('email.html', name = name, userName = userName)
+    msg.html = render_template('General/email.html', name = name, userName = userName)
 
     with app.open_resource("static/img/logo2.png") as fp:
         msg.attach("logo2.png", "logo2/png", fp.read())
