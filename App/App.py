@@ -109,8 +109,8 @@ def UsersRequests():
     id = request.args.get('id', None)
     option = request.args.get('option', None)
 
-
     if id is not None and option is not None:
+
         if option == 'Approve':
 
             userToAdd = db.session.query(UserRequest).filter(UserRequest.idPerson==id)
@@ -124,10 +124,16 @@ def UsersRequests():
                               "asasasasa",
                               row.password)
 
-            key = RSA.generate(1024)
+            #key = RSA.generate(1024)
 
-            privateKey = key.exportKey()
-            publicKey  = key.publickey().exportKey()
+            #privateKey = key.exportKey()
+            #publicKey  = key.publickey().exportKey()
+            #f1 = open('privateKey.txt','w')
+            #f2 = open('publicKey.txt' ,'w')
+            #f1.write(str(privateKey))
+            #f2.write(str(publicKey))
+            #f1.close()
+            #f2.close()
 
 
 
