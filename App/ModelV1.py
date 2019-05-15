@@ -51,22 +51,34 @@ class Memo(db.Model):
 class Bill(db.Model):
     __tablename__ = 'Bill'
     idBill        = db.Column(db.Integer, primary_key = True)
+    idMeeting     = db.Column(db.Integer, ForeignKey("Meeting.idMeeting"),nullable = False)
     title         = db.Column(db.String(50))
     content       = db.Column(db.String(50))
     
-    def __init__(self, title,content):
+    def __init__(self, title,content,idMeeting):
+        self.idMeeting = idMeeting
         self.title = title
         self.content = content
 
-class Rel_Bill_User(db.Model):
-    __tablename__ = 'Rel_Bill_User'
-    idRelBillUser = db.Column(db.Integer, primary_key = True)
-    idPerson      = db.Column(db.Integer, ForeignKey("Users.idPerson"),nullable = False)
+class Meeting(db.Model):
+    __tablename__ = 'Meeting'
+    idMeeting     = db.Column(db.Integer, primary_key = True)
     idBill        = db.Column(db.Integer, ForeignKey("Bill.idBill"),nullable = False)
     
-    def __init__(self, idPerson,idBill):
-        self.idPerson = idPerson
+    def __init__(self, title,content,idBill):
         self.idBill = idBill
+        self.title = title
+        self.content = content
+
+class Rel_Meeting_User(db.Model):
+    __tablename__ = 'Rel_Meeting_User'
+    idRelMeetingUser = db.Column(db.Integer, primary_key = True)
+    idPerson         = db.Column(db.Integer, ForeignKey("Users.idPerson"),nullable = False)
+    idMeeting        = db.Column(db.Integer, ForeignKey("Meeting.idMeeting"),nullable = False)
+    
+    def __init__(self, idPerson,idMeeting):
+        self.idPerson = idPerson
+        self.idMeeting = idMeeting
 
 class Rel_Memo_User(db.Model):
     __tablename__ = 'Rel_Memo_User'
