@@ -1,5 +1,6 @@
 import flask
 import threading
+from flask import send_file
 from flask_mail import Mail
 from flask_mail import Message
 from flask import Flask
@@ -129,7 +130,21 @@ def showMeet():
 def generateKeys():
     users = User.query.all()
     id = request.args.get('id', None)
-    #a_user = db.session.query(User).filter(User.idPerson == id)
+    _users = db.session.query(User).filter(User.idPerson == id)
+
+    for user in _users:
+        if user.status == 1:
+            key = RSA.generate(1024)
+            privateKey = key.exportKey()
+            publicKey  = key.publickey().exportKey()
+            fileName = str(user.username)+"_privateKey.txt"
+            file = open(fileName,'w')
+            file.write(str(privateKey))
+            file.close()
+            return send_file(fileName, as_attachment=True)
+
+
+    #print(user)
 
     #if a_user:
     #    print(id)
@@ -144,6 +159,8 @@ def generateKeys():
             #f1.close()
             #f2.close()
     return render_template('RH/generatekeys.html', users = users)
+
+
 
 @app.route('/UsersRequests')
 def UsersRequests():
