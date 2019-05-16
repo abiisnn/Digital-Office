@@ -6,11 +6,6 @@
     background: white;
   }
 </style>
-<br>
-<br>
-<br>
-<br>
-
       <div class="row white">
       <form  class="col s12  m6 offset-m3", id="registerForm", method="POST">
 
@@ -52,7 +47,13 @@
              <i class="material-icons prefix">lock</i>
              <center>{{render_field (form.Repeat_Password)}}</center>
            </div>
+
          </div>
+
+         <div class="row">
+             <center>{{form.language }}</center>
+         </div>
+
          <center>
          <button class="btn waves-effect waves-light light-blue accent-4 btn-small" type="submit" name="action">Submit<i class="material-icons right">person_add</i></button>
          </center>

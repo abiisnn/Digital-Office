@@ -15,9 +15,15 @@ from flask import copy_current_request_context
 from flask import g
 from flask_material import Material
 from flask_wtf import CSRFProtect
-from models import db
-from models import User
-from models import UserRequest
+
+#from models import db
+#from models import User
+#from models import UserRequest
+
+from ModelV1 import db
+from ModelV1 import User
+
+
 from config import DevelopmentConfig
 #from Crypto.Signature import PKCS1_v1_5
 #from Crypto.Hash import SHA256
@@ -45,7 +51,7 @@ def pageNotFound(error):
     if 'userName' in session:
         return redirect(url_for('showDashBoard'))
     else:
-        return render_template('index.html')
+        return render_template('General/index.html')
 
 @app.route('/')
 def index():
@@ -82,11 +88,13 @@ def showLoginForm():
 def showRegisterForm():
     registerForm = forms.registerForm(request.form)
     if request.method == 'POST' and registerForm.validate():
-        possibleUser   = UserRequest(registerForm.UserName.data,
-                                     registerForm.Email.data   ,
-                                     registerForm.Name.data    ,
-                                     registerForm.LastName.data,
-                                     registerForm.Password.data)
+
+        possibleUser   = User(registerForm.UserName.data,
+                              registerForm.Email.data,
+                              registerForm.Name.data,
+                              registerForm.LastName.data,
+                              registerForm.Password.data,
+                              )
 
         db.session.add(possibleUser)
         db.session.commit()
@@ -176,4 +184,4 @@ if __name__ == '__main__':
     mail.init_app(app)
     with app.app_context():
         db.create_all()
-    app.run(port = 8000)
+    app.run(port = 8001)

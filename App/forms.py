@@ -52,9 +52,11 @@ class registerForm(Form):
          validators.length(min = 8, max=25, message = 'The lenght of the password is invalid')
         ], widget = PasswordInput(hide_value = False))
 
-    def validate_UserName(form, field):
-        userName    = field.data
-        userRequest        = UserRequest.query.filter_by(username = userName).first()
-        user = User.query.filter_by(username = userName).first()
-        if userRequest is not None or user is not None:
-            raise validators.ValidationError('The username is already registered')
+    #language = SelectField('Languages', choices = [('cpp', 'C++'),
+    #  ('py', 'Python')])
+    #def validate_UserName(form, field):
+    #    userName    = field.data
+    #    userRequest        = UserRequest.query.filter_by(username = userName).first()
+    #    user = User.query.filter_by(username = userName).first()
+    #    if userRequest is not None or user is not None:
+    #        raise validators.ValidationError('The username is already registered')
