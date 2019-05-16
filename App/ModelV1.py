@@ -16,15 +16,16 @@ class User(db.Model):
     lastName      = db.Column(db.String(50))
     password      = db.Column(db.String(255))
     status        = db.Column(db.Integer, default = 0)
-    position      = db.Column(db.String(50), default = "pendiente")
+    position      = db.Column(db.String(50))
     signature     = db.Column(db.String(50), default = "llave")
 
-    def __init__(self, username,email,name,lastName,password):
+    def __init__(self, username,email,name,lastName,password, position):
         self.username = username
         self.email = email
         self.name = name
         self.lastName = lastName
         self.password = generate_password_hash(password)
+        self.position = position
 
     def verifyPassword(self, password):
         return check_password_hash(self.password, password)

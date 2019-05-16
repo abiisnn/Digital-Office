@@ -87,14 +87,21 @@ def showLoginForm():
 @app.route('/register', methods = ['GET','POST'])
 def showRegisterForm():
     registerForm = forms.registerForm(request.form)
+    #select = request.form.get('comboBox')
+    #print(str(select))
+
+
     if request.method == 'POST' and registerForm.validate():
+        select = request.form.get('comboBox')
 
         possibleUser   = User(registerForm.UserName.data,
                               registerForm.Email.data,
                               registerForm.Name.data,
                               registerForm.LastName.data,
                               registerForm.Password.data,
+                              str(select)
                               )
+
 
         db.session.add(possibleUser)
         db.session.commit()

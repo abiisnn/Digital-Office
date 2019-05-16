@@ -3,8 +3,7 @@ from wtforms import StringField, TextField
 from wtforms.widgets import PasswordInput
 from wtforms.fields.html5 import EmailField
 from wtforms import validators
-from models import User
-from models import UserRequest
+from wtforms import SelectField
 
 class loginForm(Form):
 
@@ -27,12 +26,12 @@ class registerForm(Form):
         ])
 
     Name = StringField('Name',
-        [validators.required(message = "The username is required"),
+        [validators.required(message = "The name is required"),
          validators.length(min = 1, max = 25, message = 'The lenght of the name is invalid')
         ])
 
     LastName = StringField('Last Name',
-        [validators.required(message = "The username is required"),
+        [validators.required(message = "The lastname is required"),
          validators.length(min = 1, max = 25, message = 'The lenght of the lastname is invalid')
         ])
 
@@ -52,9 +51,6 @@ class registerForm(Form):
          validators.length(min = 8, max=25, message = 'The lenght of the password is invalid')
         ], widget = PasswordInput(hide_value = False))
 
-    #language = SelectField('Languages', choices = [('cpp', 'C++'),
-    #  ('py', 'Python')])
-    #def validate_UserName(form, field):
     #    userName    = field.data
     #    userRequest        = UserRequest.query.filter_by(username = userName).first()
     #    user = User.query.filter_by(username = userName).first()

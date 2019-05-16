@@ -19,3 +19,13 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+select {
+  text-align: center;
+  text-align-last: center;
+  /* webkit*/
+}
+option {
+  text-align: left;
+  /* reset to left*/
+}
