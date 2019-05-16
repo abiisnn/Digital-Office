@@ -25,9 +25,9 @@ from ModelV1 import User
 
 
 from config import DevelopmentConfig
-#from Crypto.Signature import PKCS1_v1_5
-#from Crypto.Hash import SHA256
-#from Crypto.PublicKey import RSA
+from Crypto.Signature import PKCS1_v1_5
+from Crypto.Hash import SHA256
+from Crypto.PublicKey import RSA
 
 import forms
 
@@ -114,9 +114,36 @@ def showRegisterForm():
 @app.route('/admindashboard')
 def showAdminDashBoard():
     return render_template('CEO/adminDashBoard.html')
+
+@app.route('/rhdashboard')
+def showRHDashBoard():
+    return render_template('RH/RHDashboard.html')
+
+
 @app.route('/newMeet')
 def showMeet():
     return render_template('CEO/createMeeting.html')
+
+
+@app.route('/generatekeys')
+def generateKeys():
+    users = User.query.all()
+    id = request.args.get('id', None)
+    #a_user = db.session.query(User).filter(User.idPerson == id)
+
+    #if a_user:
+    #    print(id)
+            #key = RSA.generate(1024)
+
+            #privateKey = key.exportKey()
+            #publicKey  = key.publickey().exportKey()
+            #f1 = open('privateKey.txt','w')
+            #f2 = open('publicKey.txt' ,'w')
+            #f1.write(str(privateKey))
+            #f2.write(str(publicKey))
+            #f1.close()
+            #f2.close()
+    return render_template('RH/generatekeys.html', users = users)
 
 @app.route('/UsersRequests')
 def UsersRequests():
@@ -127,16 +154,16 @@ def UsersRequests():
 
         if option == 'Approve':
 
-            userToAdd = db.session.query(UserRequest).filter(UserRequest.idPerson==id)
+            a_user = db.session.query(User).filter(User.idPerson == id).one()
+            a_user.status = 1
+            #row = userToAdd[0]
 
-            row = userToAdd[0]
-
-            user      =  User(row.username,
-                              row.email,
-                              row.name,
-                              row.lastName,
-                              "asasasasa",
-                              row.password)
+            #user      =  User(row.username,
+            #                  row.email,
+            #                  row.name,
+            #                  row.lastName,
+            #                  "asasasasa",
+            #                  row.password)
 
             #key = RSA.generate(1024)
 
@@ -155,16 +182,18 @@ def UsersRequests():
             def sendMessage(userEmail, userName,name):
                 sendEmail(userEmail,userName,name)
 
-            sender = threading.Thread(name='mail_sender',target=sendMessage, args=(row.email,row.username,row.name))
-            sender.start()
+            #sender = threading.Thread(name='mail_sender',target=sendMessage, args=(row.email,row.username,row.name))
+            #sender.start()
 
-            db.session.add(user)
+            #db.session.add(user)
 
-        db.session.query(UserRequest).filter(UserRequest.idPerson==id).delete()
+        elif option == 'Reject':
+
+            a_user = db.session.query(User).filter(User.idPerson == id).delete()
 
         db.session.commit()
 
-    usersRequests = UserRequest.query.all()
+    usersRequests = User.query.all()
 
     return render_template('CEO/usersRequests.html', usersRequests = usersRequests)
 
@@ -190,5 +219,9 @@ if __name__ == '__main__':
     db.init_app(app)
     mail.init_app(app)
     with app.app_context():
+
         db.create_all()
+
+
+
     app.run(port = 8001)
