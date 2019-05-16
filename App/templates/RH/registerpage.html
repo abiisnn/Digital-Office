@@ -1,0 +1,80 @@
+{% extends 'base/RHDashboardBase.html'%}
+{% block content %}
+{% from 'macro/_errorsAlertMacro.html' import render_field%}
+
+      <br>
+      <div class="row white">
+      <form  class="col s12  m6 offset-m3", id="registerForm", method="POST">
+
+         <div class="row">
+
+           <div class="input-field col s6">
+             <i class="material-icons prefix">account_circle</i>
+
+             <center>{{render_field (form.UserName)}}</center>
+           </div>
+
+           <div class="input-field col s6">
+             <i class="material-icons prefix">email</i>
+             <center>{{render_field (form.Email)}}</center>
+           </div>
+
+         </div>
+         <div class="row">
+
+           <div class="input-field col s6">
+             <i class="material-icons prefix">person</i>
+             <center>{{render_field (form.Name)}}</center>
+           </div>
+
+           <div class="input-field col s6">
+             <i class="material-icons prefix">person</i>
+             <center>{{render_field (form.LastName)}}</center>
+           </div>
+
+         </div>
+
+         <div class="row">
+
+           <div class="input-field col s6">
+             <i class="material-icons prefix">lock</i>
+             <center>{{render_field (form.Password)}}</center>
+          </div>
+
+           <div class="input-field col s6">
+             <i class="material-icons prefix">lock</i>
+             <center>{{render_field (form.Repeat_Password)}}</center>
+           </div>
+
+         </div>
+
+         <div class="row">
+
+             <div class="input-field col s12">
+
+               <select  name = "comboBox" class="browser-default">
+                 <option value="" disabled selected>Choose the position</option>
+                 <option value="Digital Analyst">Digital Analyst</option>
+                 <option value="Product Manager">Product Manager</option>
+                 <option value="Analyst">Analyst</option>
+                 <option value="Computer Technician">Computer Technician</option>
+                 <option value="Social Media Manager">Social Media Manager</option>
+                 <option value="Benefits Administrator">Benefits Administrator</option>
+                 <option value="Personnel Administrator">Personnel Administrator</option>
+                 <option value="Junior Developer">Junior Developer</option>
+                 <option value="Senior Developer">Senior Developer</option>
+                 <option value="Accountant">Accountant</option>
+                 <option value="Secretary">Secretary</option>
+                 <option value="Receptionist">Receptionist</option>
+                 <option value="Financial Director">Financial Director</option>
+                 <option value="Marketing Manager">Marketing Manager</option>
+                 <option value="">Administration Manager</option>
+                </select>
+              </div>
+         </div>
+         <center>
+         <button class="btn waves-effect waves-light light-blue accent-4 btn-small" type="submit" name="action">Submit<i class="material-icons right">person_add</i></button>
+         </center>
+       </form>
+     </div>
+{% endblock %}
