@@ -23,6 +23,7 @@ from flask_wtf import CSRFProtect
 
 from ModelV1 import db
 from ModelV1 import User
+from ModelV1 import Meeting
 
 
 from config import DevelopmentConfig
@@ -37,6 +38,7 @@ app.config.from_object(DevelopmentConfig)
 mail = Mail()
 recipientsOfTheMemorandum = {}
 recipientsOfTheMeeting = {}
+# recipientsInCharge = {}
 
 
 @app.before_request
@@ -124,6 +126,10 @@ def showRegisterForm():
 def showAdminDashBoard():
     return render_template('CEO/adminDashBoard.html')
 
+@app.route('/emitBill')
+def emitBill():
+    return render_template('Employee/bill.html')
+
 @app.route('/emitmemorandum', methods = ['GET','POST'])
 def emitMemorandum():
     users = User.query.all()
@@ -146,26 +152,54 @@ def emitMemorandum():
 def showRHDashBoard():
     return render_template('RH/RHDashboard.html')
 
+asunto = ""
+fecha = ""
 
 @app.route('/newMeet', methods = ['GET', 'POST'])
 def showMeet():
     users = User.query.all()
-    username = ""
-    userInCharge = ""
+    global asunto
+    global fecha
+    global recipientsOfTheMeeting
 
     if request.method == 'POST':
-
-        username = request.form.get('searchField')
         userInCharge = request.form.get('inCharge')
-        data = User.query.filter_by(username = username).first()
-        print(recipientsOfTheMeeting) #Users will be part in the meeting
-        print(userInCharge) #User in charge of the meeting
+        if userInCharge is not None:
+            print(recipientsOfTheMeeting) #Users will be part in the meeting
+            print(userInCharge) #User in charge of the meeting
+            print(asunto) #User in charge of the meeting
+            print(fecha) #User in charge of the meeting]
 
-        if data:
-            if data.idPerson not in recipientsOfTheMeeting.keys():
+            aux = User.query.filter_by(username = userInCharge).first()
+            newMeeting = Meeting(aux.idPerson,asunto,fecha,"ruta")
 
-                recipientsOfTheMeeting[data.idPerson] = data
+            db.session.add(newMeeting)
+            db.session.commit()
+            
+            recipientsOfTheMeeting = {}
+            asunto=""
+            fecha=""
+        else:
+            username = request.form.get('searchField')
+            print(username)
+            if username is not "":
+                if asunto == "":
+                    asunto = request.form.get('asunto')
+                if fecha == "":
+                    fecha = request.form.get('fecha')
+                
+                data = User.query.filter_by(username = username).first()
+                if data:
+                    if data.idPerson not in recipientsOfTheMeeting.keys():
+                        recipientsOfTheMeeting[data.idPerson] = data
+            else:
+                recipientsOfTheMeeting = {}
 
+    else:#Aqui va a ser un get para los demas
+        recipientsOfTheMeeting = {}
+        asunto=""
+        fecha=""
+        #print('Otro metodo')
     return render_template('CEO/createMeeting.html', users = users, dictionary = recipientsOfTheMeeting)
 
 
