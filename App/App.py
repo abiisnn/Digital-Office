@@ -37,7 +37,6 @@ app.config.from_object(DevelopmentConfig)
 mail = Mail()
 recipientsOfTheMemorandum = {}
 recipientsOfTheMeeting = {}
-recipientsInCharge = {}
 
 
 @app.before_request
@@ -166,9 +165,8 @@ def showMeet():
             if data.idPerson not in recipientsOfTheMeeting.keys():
 
                 recipientsOfTheMeeting[data.idPerson] = data
-                recipientsInCharge[data.idPerson] = data
 
-    return render_template('CEO/createMeeting.html', users = users, dictionary = recipientsOfTheMeeting, dictionaryInCharge = recipientsInCharge)
+    return render_template('CEO/createMeeting.html', users = users, dictionary = recipientsOfTheMeeting)
 
 
 @app.route('/generatekeys')
