@@ -23,6 +23,7 @@ from flask_wtf import CSRFProtect
 
 from ModelV1 import db
 from ModelV1 import User
+from ModelV1 import Meeting
 
 
 from config import DevelopmentConfig
@@ -168,6 +169,13 @@ def showMeet():
             print(userInCharge) #User in charge of the meeting
             print(asunto) #User in charge of the meeting
             print(fecha) #User in charge of the meeting]
+
+            aux = User.query.filter_by(username = userInCharge).first()
+            newMeeting = Meeting(aux.idPerson,asunto,fecha,"ruta")
+
+            db.session.add(newMeeting)
+            db.session.commit()
+            
             recipientsOfTheMeeting = {}
             asunto=""
             fecha=""

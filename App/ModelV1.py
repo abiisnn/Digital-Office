@@ -44,27 +44,19 @@ class Memo(db.Model):
         self.idPerson = idPerson
         self.content = content
 
-class Bill(db.Model):
-    __tablename__ = 'Bill'
-    idBill        = db.Column(db.Integer, primary_key = True)
-    idMeeting     = db.Column(db.Integer, db.ForeignKey("Meeting.idMeeting"),nullable = False)
-    title         = db.Column(db.String(50))
-    content       = db.Column(db.String(50))
-
-    def __init__(self, title,content,idMeeting):
-        self.idMeeting = idMeeting
-        self.title = title
-        self.content = content
-
 class Meeting(db.Model):
     __tablename__ = 'Meeting'
     idMeeting     = db.Column(db.Integer, primary_key = True)
-    idBill        = db.Column(db.Integer, db.ForeignKey("Bill.idBill"),nullable = False)
+    idPerson      = db.Column(db.Integer, db.ForeignKey("Users.idPerson"),nullable = False)
+    issue         = db.Column(db.String(50))
+    date          = db.Column(db.String(50))
+    path          = db.Column(db.String(100))
 
-    def __init__(self, title,content,idBill):
-        self.idBill = idBill
-        self.title = title
-        self.content = content
+    def __init__(self,idPerson,issue,date,path):
+        self.idPerson = idPerson
+        self.issue = issue
+        self.date = date
+        self.path = path
 
 class Rel_Meeting_User(db.Model):
     __tablename__ = 'Rel_Meeting_User'
