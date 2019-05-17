@@ -36,6 +36,7 @@ app = Flask(__name__)
 app.config.from_object(DevelopmentConfig)
 mail = Mail()
 recipientsOfTheMemorandum = {}
+recipientsOfTheMeeting = {}
 
 
 
@@ -147,9 +148,22 @@ def showRHDashBoard():
     return render_template('RH/RHDashboard.html')
 
 
-@app.route('/newMeet')
+@app.route('/newMeet', methods = ['GET', 'POST'])
 def showMeet():
-    return render_template('CEO/createMeeting.html')
+    users = User.query.all()
+    username = ""
+
+    if request.method == 'POST':
+
+        username = request.form.get('searchField')
+        data = User.query.filter_by(username = username).first()
+
+        if data:
+            if data.idPerson not in recipientsOfTheMeeting.keys():
+
+                recipientsOfTheMeeting[data.idPerson] = data
+
+    return render_template('CEO/createMeeting.html', users = users, dictionary = recipientsOfTheMeeting)
 
 
 @app.route('/generatekeys')
