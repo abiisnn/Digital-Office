@@ -37,6 +37,7 @@ app.config.from_object(DevelopmentConfig)
 mail = Mail()
 recipientsOfTheMemorandum = {}
 recipientsOfTheMeeting = {}
+# recipientsInCharge = {}
 
 
 @app.before_request
@@ -123,6 +124,10 @@ def showRegisterForm():
 @app.route('/admindashboard')
 def showAdminDashBoard():
     return render_template('CEO/adminDashBoard.html')
+
+@app.route('/emitBill')
+def emitBill():
+    return render_template('Employee/bill.html')
 
 @app.route('/emitmemorandum', methods = ['GET','POST'])
 def emitMemorandum():
