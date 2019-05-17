@@ -146,26 +146,47 @@ def emitMemorandum():
 def showRHDashBoard():
     return render_template('RH/RHDashboard.html')
 
+asunto = ""
+fecha = ""
 
 @app.route('/newMeet', methods = ['GET', 'POST'])
 def showMeet():
     users = User.query.all()
-    username = ""
-    userInCharge = ""
+    global asunto
+    global fecha
+    global recipientsOfTheMeeting
 
     if request.method == 'POST':
-
-        username = request.form.get('searchField')
         userInCharge = request.form.get('inCharge')
-        data = User.query.filter_by(username = username).first()
-        print(recipientsOfTheMeeting) #Users will be part in the meeting
-        print(userInCharge) #User in charge of the meeting
+        if userInCharge is not None:
+            print(recipientsOfTheMeeting) #Users will be part in the meeting
+            print(userInCharge) #User in charge of the meeting
+            print(asunto) #User in charge of the meeting
+            print(fecha) #User in charge of the meeting]
+            recipientsOfTheMeeting = {}
+            asunto=""
+            fecha=""
+        else:
+            username = request.form.get('searchField')
+            print(username)
+            if username is not "":
+                if asunto == "":
+                    asunto = request.form.get('asunto')
+                if fecha == "":
+                    fecha = request.form.get('fecha')
+                
+                data = User.query.filter_by(username = username).first()
+                if data:
+                    if data.idPerson not in recipientsOfTheMeeting.keys():
+                        recipientsOfTheMeeting[data.idPerson] = data
+            else:
+                recipientsOfTheMeeting = {}
 
-        if data:
-            if data.idPerson not in recipientsOfTheMeeting.keys():
-
-                recipientsOfTheMeeting[data.idPerson] = data
-
+    else:#Aqui va a ser un get para los demas
+        recipientsOfTheMeeting = {}
+        asunto=""
+        fecha=""
+        #print('Otro metodo')
     return render_template('CEO/createMeeting.html', users = users, dictionary = recipientsOfTheMeeting)
 
 
