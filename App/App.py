@@ -37,7 +37,7 @@ app.config.from_object(DevelopmentConfig)
 mail = Mail()
 recipientsOfTheMemorandum = {}
 recipientsOfTheMeeting = {}
-
+recipientsInCharge = {}
 
 
 @app.before_request
@@ -152,18 +152,23 @@ def showRHDashBoard():
 def showMeet():
     users = User.query.all()
     username = ""
+    userInCharge = ""
 
     if request.method == 'POST':
 
         username = request.form.get('searchField')
+        userInCharge = request.form.get('inCharge')
         data = User.query.filter_by(username = username).first()
+        print(username)
+        print(userInCharge)
 
         if data:
             if data.idPerson not in recipientsOfTheMeeting.keys():
 
                 recipientsOfTheMeeting[data.idPerson] = data
+                recipientsInCharge[data.idPerson] = data
 
-    return render_template('CEO/createMeeting.html', users = users, dictionary = recipientsOfTheMeeting)
+    return render_template('CEO/createMeeting.html', users = users, dictionary = recipientsOfTheMeeting, dictionaryInCharge = recipientsInCharge)
 
 
 @app.route('/generatekeys')
