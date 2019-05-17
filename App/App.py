@@ -159,6 +159,8 @@ def showMeet():
         username = request.form.get('searchField')
         userInCharge = request.form.get('inCharge')
         data = User.query.filter_by(username = username).first()
+        print(recipientsOfTheMeeting) #Users will be part in the meeting
+        print(userInCharge) #User in charge of the meeting
 
         if data:
             if data.idPerson not in recipientsOfTheMeeting.keys():
