@@ -125,7 +125,8 @@ def showAdminDashBoard():
 
 @app.route('/emitmemorandum')
 def emitMemorandum():
-    return render_template('CEO/emitMemorandum.html')
+    users = User.query.all()
+    return render_template('CEO/emitMemorandum.html', users = users)
 
 
 

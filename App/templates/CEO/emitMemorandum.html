@@ -5,9 +5,26 @@
 
   <div class="col s4">
     <div class="col s12 center search input-field">
-    <input class="autocomplete" type="text" id="autocomplete-input" placeholder="Search" />
+    <input class="autocomplet"/>
   </div>
   </div>
+
+  <script>
+    {% if users %}
+    $(document).ready(function(){
+    	$('input.autocomplet').autocomplete({
+    		data: {
+          {% for user in users%}
+    			{{user.username}}: null,
+          {% endfor %}
+
+    		},
+    	});
+    });
+    {% endif %}
+  </script>
+
+
 
 
   <div class="col s8">
