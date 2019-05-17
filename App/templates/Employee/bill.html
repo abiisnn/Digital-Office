@@ -4,18 +4,18 @@
 <style type="text/css">
 
 .scrollable {
-    height: 225px;       /* Just for the demo          */
+    height: 400px;       /* Just for the demo          */
     width: 450px;
     overflow-y: auto;    /* Trigger vertical scroll    */
     overflow-x: auto;  /* Hide the horizontal scroll */
 }
 </style>
 	<div class="container">
-		<br><br><br><br>
+		<br><br>
 		<div class="row ">
 	   		
 	   		<!-- First column -->
-			<form class="col s5" id="addMember" method="POST">
+			<form class="col s6" id="addMember" method="POST">
 			    <div class="row">
 			        <div class="input-field col s6">
 			            <label for="issue">Issue: It's an example</label>
@@ -41,14 +41,21 @@
 			<div class="col s6 ">
 				<div class="scrollable">
 				    <ul class="collection">
-				      <li class="collection-item avatar">
-				        <i class="material-icons circle light-blue accent-4">person</i>
-				        <center><span class="title">Abigail Nicolas</span></center>
-				        <center><p>Sistemas </p></center>
-				        <center><span class="title">File name</span></center>
-				        
-				      </li>
+				      	<li class="collection-item avatar">
+					        <center><span class="title">Abigail Nicolas</span></center>
+					      	<form class = "file-field input-field">
+			                  	<div class = "btn-small waves-effect blue">
+			                     	<span>Add key</span>
+			                     	<input type = "file" />
+			                  	</div>
+			                  	<div class = "file-path-wrapper">
+			                    	<input class = "file-path validate" type = "text"
+			                        placeholder = "Upload file" />
+			                  	</div>
+			               	</form>
+		               	</li>
 				    </ul>
+				    
 				</div>
 			</div>
 		</div>
