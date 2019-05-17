@@ -4,9 +4,55 @@
 <div class='row'>
 
   <div class="col s4">
+
+    <form id="addMember" method="POST">
+
     <div class="col s12 center search input-field">
-    <input class="autocomplet"/>
+    <input class="autocomplet" name="searchField" value=""/>
+    <br>
+    <br>
+    <div style="width:400px;">
+    <div style="float: left; width: 200px">
+      <button class="waves-effect waves-light btn-small green" type='submit'><i class="material-icons left">group_add</i>Add member</button>
+    </div>
+    <div style="float: right; width: 200px">
+      <button class="waves-effect waves-light btn-small red" type='submit'><i class="material-icons left">close</i>Remove all</button>
+    </div>
   </div>
+    </div>
+    </form>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    {% if dictionary %}
+    {% for user in dictionary.values() %}
+    <ul class="collection">
+      <li class="collection-item avatar">
+        <i class="material-icons circle light-blue accent-4">person</i>
+        <center><span class="title">{{user.name+' '+user.lastName}}</span></center>
+        <center><p>{{user.position}} </p></center>
+        <center><p>{{user.email}}</p></center>
+        <a href="#!" class="secondary-content"><i class="material-icons">close</i></a>
+      </li>
+    </ul>
+    {% endfor %}
+    {% endif %}
+
+
+  </div>
+  <div class="col s8">
+    <ul class="collapsible">
+       <li>
+         <div class="collapsible-header"><i class="material-icons">filter_none</i>Aqui va el form :D</div>
+         <div class="collapsible-body"><span>Document.</span></div>
+         <div class="collapsible-body"><span>Document.</span></div>       </li>
+     </ul>
+  </div>
+
+
   </div>
 
   <script>
@@ -15,7 +61,9 @@
     	$('input.autocomplet').autocomplete({
     		data: {
           {% for user in users%}
-    			{{user.username}}: null,
+          {% if user.status == 1 %}
+    			   {{user.username}}: null,
+          {% endif %}
           {% endfor %}
 
     		},
@@ -25,21 +73,6 @@
   </script>
 
 
-
-
-  <div class="col s8">
-    <ul class="collapsible">
-       <li>
-         <div class="collapsible-header"><i class="material-icons">filter_none</i>Memorandum</div>
-         <div class="collapsible-body"><span>Document.</span></div>
-         <div class="collapsible-body"><span>Document.</span></div>       </li>
-     </ul>
-  </div>
-
-
-  </div>
-
-</div>
 
 
 {% endblock %}

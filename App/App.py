@@ -35,6 +35,9 @@ import forms
 app = Flask(__name__)
 app.config.from_object(DevelopmentConfig)
 mail = Mail()
+recipientsOfTheMemorandum = {}
+
+
 
 @app.before_request
 def before_request():
@@ -97,8 +100,6 @@ def showRegisterForm():
     registerForm = forms.registerForm(request.form)
     #select = request.form.get('comboBox')
     #print(str(select))
-
-
     if request.method == 'POST' and registerForm.validate():
         select = request.form.get('comboBox')
 
@@ -123,12 +124,22 @@ def showRegisterForm():
 def showAdminDashBoard():
     return render_template('CEO/adminDashBoard.html')
 
-@app.route('/emitmemorandum')
+@app.route('/emitmemorandum', methods = ['GET','POST'])
 def emitMemorandum():
     users = User.query.all()
-    return render_template('CEO/emitMemorandum.html', users = users)
+    username = ""
 
+    if request.method == 'POST':
 
+        username = request.form.get('searchField')
+        data = User.query.filter_by(username = username).first()
+
+        if data:
+            if data.idPerson not in recipientsOfTheMemorandum.keys():
+
+                recipientsOfTheMemorandum[data.idPerson] = data
+
+    return render_template('CEO/emitMemorandum.html', users = users, dictionary = recipientsOfTheMemorandum)
 
 
 @app.route('/rhdashboard')
