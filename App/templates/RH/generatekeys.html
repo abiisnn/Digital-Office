@@ -29,6 +29,8 @@
             <td>  <a href="{{url_for('generateKeys', id = user.idPerson)}}" class="btn-floating btn-small waves-effect waves-light green approved"><i class="material-icons">vpn_key</i></a></td>
             {% elif user.status == 0 %}
             <td>  <a class="btn-floating btn-small waves-effect waves-light amber accent-4"><i class="material-icons">vpn_key</i></a></td>
+            {% elif user.status == 2 %}
+            <td>  <a href="{{url_for('generateKeys', id = user.idPerson)}}" class="btn-floating btn-small waves-effect waves-light red approved"><i class="material-icons">vpn_key</i></a></td>
             {% endif %}
           </tr>
         {% endfor %}

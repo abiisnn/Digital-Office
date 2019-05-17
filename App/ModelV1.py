@@ -17,7 +17,7 @@ class User(db.Model):
     password      = db.Column(db.String(255))
     status        = db.Column(db.Integer, default = 0)
     position      = db.Column(db.String(50))
-    signature     = db.Column(db.String(50), default = "llave")
+    publicKey     = db.Column(db.String(50), default = "-")
 
     def __init__(self, username,email,name,lastName,password, position):
         self.username = username

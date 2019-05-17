@@ -4,13 +4,25 @@ from wtforms.widgets import PasswordInput
 from wtforms.fields.html5 import EmailField
 from wtforms import validators
 from wtforms import SelectField
+from ModelV1 import db
+from ModelV1 import User
+
+
+
+def check(form,field):
+    userName = str(field.data)
+    user = db.session.query(User).filter(User.username == userName).first()
+    if user is not None and user.status<1:
+        raise validators.ValidationError('Your request has not yet been approved')
+    if user is None:
+        raise validators.ValidationError("The user isn't registered")
 
 class loginForm(Form):
-
     userName = StringField('Username',
         [
         validators.required(message = "The username is required"),
-        validators.length(min = 4, max = 25, message = 'The lenght of the username is invalid')
+        validators.length(min = 4, max = 25, message = 'The lenght of the username is invalid'),
+        check
         ])
     password = StringField('Password',
         [

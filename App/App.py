@@ -54,6 +54,13 @@ def pageNotFound(error):
     else:
         return render_template('General/index.html')
 
+
+@app.route('/meetings')
+def meetings():
+    obtainUserName()
+    return render_template('meetings.html')
+
+
 @app.route('/')
 def index():
     return render_template('General/index.html')
@@ -76,10 +83,10 @@ def showLoginForm():
         username = request.form['userName']
         password = request.form['password']
         user = User.query.filter_by(username = username).first()
-
         if user is not None and user.verifyPassword(password):
         #if 1==1:
             session['userName'] = username
+            print(user.position)
             return redirect(url_for('showDashBoard'))
 
 
@@ -116,6 +123,13 @@ def showRegisterForm():
 def showAdminDashBoard():
     return render_template('CEO/adminDashBoard.html')
 
+@app.route('/emitmemorandum')
+def emitMemorandum():
+    return render_template('CEO/emitMemorandum.html')
+
+
+
+
 @app.route('/rhdashboard')
 def showRHDashBoard():
     return render_template('RH/RHDashboard.html')
@@ -134,14 +148,30 @@ def generateKeys():
 
     for user in _users:
         if user.status == 1:
+
             key = RSA.generate(1024)
             privateKey = key.exportKey()
             publicKey  = key.publickey().exportKey()
-            fileName = str(user.username)+"_privateKey.txt"
-            file = open(fileName,'w')
+
+            userName = str(user.username)
+
+            fileName_prk = 'privateKeys/'+userName+"_privateKey.txt"
+            fileName_puk = 'publicKeys/'+userName+"_publicKey.txt"
+
+            file = open(fileName_prk,'w')
             file.write(str(privateKey))
             file.close()
-            return send_file(fileName, as_attachment=True)
+
+            _file = open(fileName_puk, 'w')
+            _file.write(str(publicKey))
+            _file.close()
+
+            _user = db.session.query(User).filter(User.idPerson == id).one()
+            _user.publicKey = fileName_puk
+            #a_user.status = 2
+            db.session.commit()
+            #print(a_user)
+            return send_file(fileName_prk, as_attachment=True)
 
 
     #print(user)
@@ -173,36 +203,13 @@ def UsersRequests():
 
             a_user = db.session.query(User).filter(User.idPerson == id).one()
             a_user.status = 1
-            #row = userToAdd[0]
-
-            #user      =  User(row.username,
-            #                  row.email,
-            #                  row.name,
-            #                  row.lastName,
-            #                  "asasasasa",
-            #                  row.password)
-
-            #key = RSA.generate(1024)
-
-            #privateKey = key.exportKey()
-            #publicKey  = key.publickey().exportKey()
-            #f1 = open('privateKey.txt','w')
-            #f2 = open('publicKey.txt' ,'w')
-            #f1.write(str(privateKey))
-            #f2.write(str(publicKey))
-            #f1.close()
-            #f2.close()
-
-
 
             @copy_current_request_context
             def sendMessage(userEmail, userName,name):
                 sendEmail(userEmail,userName,name)
 
-            #sender = threading.Thread(name='mail_sender',target=sendMessage, args=(row.email,row.username,row.name))
-            #sender.start()
-
-            #db.session.add(user)
+            sender = threading.Thread(name='mail_sender',target=sendMessage, args=(a_user.email,a_user.username,a_user.name))
+            sender.start()
 
         elif option == 'Reject':
 
@@ -232,13 +239,10 @@ def sendEmail(userEmail, userName,name):
 
     mail.send(msg)
 
+
 if __name__ == '__main__':
     db.init_app(app)
     mail.init_app(app)
     with app.app_context():
-
         db.create_all()
-
-
-
     app.run(port = 8001)
