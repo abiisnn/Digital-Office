@@ -9,7 +9,7 @@ from ModelV1 import User
 
 
 
-def check(form,field):
+def loginCheck(form,field):
     userName = str(field.data)
     user = db.session.query(User).filter(User.username == userName).first()
     if user is not None and user.status<1:
@@ -17,12 +17,18 @@ def check(form,field):
     if user is None:
         raise validators.ValidationError("The user isn't registered")
 
+def registerCheck(form,field):
+    userName = str(field.data)
+    user = db.session.query(User).filter(User.username == userName).first()
+    if user is not None:
+        raise validators.ValidationError("The user is already registered")
+
 class loginForm(Form):
     userName = StringField('Username',
         [
         validators.required(message = "The username is required"),
         validators.length(min = 4, max = 25, message = 'The lenght of the username is invalid'),
-        check
+        loginCheck
         ])
     password = StringField('Password',
         [
@@ -34,7 +40,8 @@ class registerForm(Form):
 
     UserName = StringField('Username',
         [validators.required(message = "The username is required"),
-         validators.length(min = 4, max = 25, message = 'The lenght of the username is invalid')
+         validators.length(min = 4, max = 25, message = 'The lenght of the username is invalid'),
+         registerCheck
         ])
 
     Name = StringField('Name',
