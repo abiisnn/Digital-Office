@@ -24,6 +24,7 @@ from flask_wtf import CSRFProtect
 from ModelV1 import db
 from ModelV1 import User
 from ModelV1 import Meeting
+from ModelV1 import Rel_Meeting_User
 
 
 from config import DevelopmentConfig
@@ -39,7 +40,6 @@ mail = Mail()
 recipientsOfTheMemorandum = {}
 recipientsOfTheMeeting = {}
 # recipientsInCharge = {}
-
 
 @app.before_request
 def before_request():
@@ -59,12 +59,15 @@ def pageNotFound(error):
     else:
         return render_template('General/index.html')
 
+@app.route('/employees')
+def employees():
+    users = User.query.all()
+    return render_template('CEO/employees.html', users = users)
 
 @app.route('/meetings')
 def meetings():
     obtainUserName()
     return render_template('meetings.html')
-
 
 @app.route('/')
 def index():
@@ -130,6 +133,17 @@ def showAdminDashBoard():
 def emitBill():
     return render_template('Employee/bill.html')
 
+@app.route('/removeAll')
+def removeAll():
+    recipientsOfTheMemorandum.clear()
+    return redirect(url_for('emitMemorandum'))
+@app.route('/removeUser')
+def removeUser():
+    id = request.args.get('id', None)
+    del recipientsOfTheMemorandum[int(id)]
+    return redirect(url_for('emitMemorandum'))
+
+
 @app.route('/emitmemorandum', methods = ['GET','POST'])
 def emitMemorandum():
     users = User.query.all()
@@ -141,6 +155,7 @@ def emitMemorandum():
         data = User.query.filter_by(username = username).first()
 
         if data:
+
             if data.idPerson not in recipientsOfTheMemorandum.keys():
 
                 recipientsOfTheMemorandum[data.idPerson] = data
@@ -175,6 +190,17 @@ def showMeet():
 
             db.session.add(newMeeting)
             db.session.commit()
+
+
+            records = Meeting.query.all()
+            currMeeting = -1
+            for r in records:
+                currMeeting = r.idMeeting
+
+            for k in recipientsOfTheMeeting:
+                relation = Rel_Meeting_User(k,currMeeting)
+                db.session.add(relation)
+                db.session.commit()
 
             recipientsOfTheMeeting = {}
             asunto=""

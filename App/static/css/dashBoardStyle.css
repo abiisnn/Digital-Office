@@ -1,8 +1,19 @@
 textarea {
   border: 2px solid #888;
   resize: none;
-  height: 300px;
+  height: 340px;
+  width: 890px;
 }
 select{
     text-align-last:center;
 }
+
+.scrollable {
+    height: 400px;       /* Just for the demo          */
+    width: 430px;
+    overflow-y: auto;    /* Trigger vertical scroll    */
+    overflow-x: auto;  /* Hide the horizontal scroll */
+}
+
+p {
+  color: #4c4a37; font-family: 'Source Sans Pro', sans-serif; font-size: 18px; line-height: 32px; margin: 0 0 24px; }
