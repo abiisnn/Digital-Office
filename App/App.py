@@ -24,6 +24,7 @@ from flask_wtf import CSRFProtect
 from ModelV1 import db
 from ModelV1 import User
 from ModelV1 import Meeting
+from ModelV1 import Rel_Meeting_User
 
 
 from config import DevelopmentConfig
@@ -175,6 +176,16 @@ def showMeet():
 
             db.session.add(newMeeting)
             db.session.commit()
+
+            records = Meeting.query.all()
+            currMeeting = -1
+            for r in records:
+                currMeeting = r.idMeeting
+
+            for k in recipientsOfTheMeeting:
+                relation = Rel_Meeting_User(k,currMeeting)
+                db.session.add(relation)
+                db.session.commit()
             
             recipientsOfTheMeeting = {}
             asunto=""
