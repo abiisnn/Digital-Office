@@ -1,75 +1,60 @@
 {% extends 'base/adminDashBoardBase.html'%}
 {% block content %}
 
-<style type="text/css">
-
-.scrollable {
-    height: 400px;       /* Just for the demo          */
-    width: 450px;
-    overflow-y: auto;    /* Trigger vertical scroll    */
-    overflow-x: auto;  /* Hide the horizontal scroll */
-}
-</style>
-	<div class="container">
-		<br><br>
-		<div class="row ">
-	   		
-	   		<!-- First column -->
-			<form class="col s6" id="addMember" method="POST">
-			    <div class="row">
-			        <div class="input-field col s6">
-			            <label for="issue">Issue: It's an example</label>
-			        </div>
-			        <div class="input-field col s6">
-			            <label for="date">Date: May 22, 2019</label>
-			        </div>
-			    </div>
-			    <div class="row">
-			    	<br>
-				    <form class="col s12">
-				      <div class="row">
-				        <div class="input-field col s12">
-				          <textarea id="textarea1" class="materialize-textarea"></textarea>
-				          <label for="textarea1">Bill</label>
-				        </div>
-				      </div>
-				    </form>
-				</div>
-			</form>
-
-			<!-- Second colum -->
-			<div class="col s6 ">
-				<div class="scrollable">
-				    <ul class="collection">
-				      	<li class="collection-item avatar">
-					        <center><span class="title">Abigail Nicolas</span></center>
-					      	<form class = "file-field input-field">
-			                  	<div class = "btn-small waves-effect blue">
-			                     	<span>Add key</span>
-			                     	<input type = "file" />
-			                  	</div>
-			                  	<div class = "file-path-wrapper">
-			                    	<input class = "file-path validate" type = "text"
-			                        placeholder = "Upload file" />
-			                  	</div>
-			               	</form>
-		               	</li>
-				    </ul>
-				    
-				</div>
-			</div>
-		</div>
-		<div class="row">
-			<form class="col s12" class="col s5" id="addCharge" method="#">
-				<div class="col s12 center">
-					<button class="btn waves-effect green" type="submit" name="action">Create bill
-						<i class="material-icons right"></i>
-						</button>
-				</div>
-			</form>
-		</div>
+<div class='row'>
+  <!-- FIST COLUMN -->
+  <div class="col s4">
+    <div class="col s12 center search input-field">
+      <div class="scrollable">
+        <ul class="collection">
+          <li class="collection-item avatar">
+            <center><span class="title">Abigail Nicolas</span></center>
+            <form class = "file-field input-field">
+              <div class = "btn-small waves-effect blue">
+                <span>Add key</span>
+                <input type = "file" />
+              </div>
+              <div class = "file-path-wrapper">
+                <input class = "file-path validate" type = "text"
+                  placeholder = "Upload file" />
+              </div>
+            </form>
+          </li>
+        </ul>
+      </div>
     </div>
+  </div>
 
-
+  <!-- SECOND COLUMN -->
+  <div class="col s8">
+    <div class="row">
+      <form class="col s12" id="sendDocument" method="POST">
+        <div class="row">
+          <!-- Issue -->
+          <div class="input-field col s6">
+            <i class="material-icons prefix">email</i>
+            <label>Issue: </label>
+          </div>
+          <!-- Date -->
+          <div class="input-field col s6">
+            <i class="material-icons prefix">date_range</i>
+            <label>Date: </label>
+          </div>
+          <br><br><br>
+          <!-- Text area -->
+          <textarea rows="200" cols="20" name="body"></textarea>
+        </div>
+        <center>
+          <button class="waves-effect waves-light btn-small light-blue accent-4" type='submit'><i class="material-icons left">send</i>Confirm</button>
+        </center>
+        
+        {% if flag %}
+        <script>
+          swal("Memorandum sent sucessfully", "", "success");
+        </script>
+        {% endif %}
+      </form>
+    </div>
+  </div>
 
 {% endblock %}
