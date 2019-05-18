@@ -33,15 +33,17 @@ from Crypto.Hash import SHA256
 from Crypto.PublicKey import RSA
 
 import forms
+import os
 
 app = Flask(__name__)
 app.config.from_object(DevelopmentConfig)
 mail = Mail()
 
-
+APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 #Meeting
 recipientsOfTheMeeting = {}
 # recipientsInCharge = {}
+
 
 @app.before_request
 def before_request():
@@ -149,9 +151,6 @@ def removeUser():
     del recipientsOfTheMemorandum[int(id)]
     return redirect(url_for('emitMemorandum'))
 
-
-
-
 #Memorandum
 recipientsOfTheMemorandum = {}
 memorandumSubject = ""
@@ -181,7 +180,7 @@ def emitMemorandum():
         privateKey        = request.form.get('obtainFile')
 
         if memorandumType is not None and len(memorandumSubject) > 0 and len(memorandumBody) > 0 and privateKey is not None and not data:
-
+            print(privateKey)
             flag = True
             #f = open(privateKey,'r')
             #content = f.read()
