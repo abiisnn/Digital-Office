@@ -42,14 +42,42 @@
       <form class="col s12">
         <div class="row">
           <div class="input-field col s6">
+            <i class="material-icons prefix">email</i>
+
             <input placeholder="Subject" id="title" type="text">
           </div>
           <div class="input-field col s6">
-            <input placeholder="Subject" id="title" type="text">
-          </div>
+
+            <select class="browser-default">
+              <option value="" disabled selected>Select type of memorandum</option>
+              <option value="1">Public Memorandum</option>
+              <option value="2">Confidential Memorandum</option>
+            </select>
+
+            </div>
         </div>
+        <textarea rows="200" cols="20">
+          Enter your text here...
+      </textarea>
+      <br>
+      <br>
+      <div class="file-field input-field">
+           <div class="btn light-blue accent-4">
+             <span>File</span>
+             <input type="file">
+           </div>
+           <div class="file-path-wrapper ">
+             <input class="file-path validate" type="text">
+           </div>
+        </div>
+
+        <center><a class="waves-effect waves-light btn-small light-blue accent-4"><i class="material-icons left">send</i>Confirm</a></center>
+
       </form>
+
+
     </div>
+
   </div>
 
 

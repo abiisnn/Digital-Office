@@ -175,7 +175,7 @@ def showMeet():
 
             db.session.add(newMeeting)
             db.session.commit()
-            
+
             recipientsOfTheMeeting = {}
             asunto=""
             fecha=""
@@ -187,7 +187,7 @@ def showMeet():
                     asunto = request.form.get('asunto')
                 if fecha == "":
                     fecha = request.form.get('fecha')
-                
+
                 data = User.query.filter_by(username = username).first()
                 if data:
                     if data.idPerson not in recipientsOfTheMeeting.keys():
