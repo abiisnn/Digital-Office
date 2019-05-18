@@ -1,8 +1,6 @@
 {% extends 'base/adminDashBoardBase.html'%}
 {% block content %}
-<script>
-  swal("Good job!", "You clicked the button!", "success");
-</script>
+
 <div class='row'>
   <div class="col s4">
     <form id="addMember" method="POST">
@@ -73,6 +71,11 @@
            </div>
         </div>
         <center><button class="waves-effect waves-light btn-small light-blue accent-4" type='submit'><i class="material-icons left">send</i>Confirm</button></center>
+        {% if flag %}
+        <script>
+          swal("Memorandum sent sucessfully", "", "success");
+        </script>
+        {% endif %}
       </form>
 
 

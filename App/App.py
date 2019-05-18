@@ -162,6 +162,8 @@ def emitMemorandum():
     global memorandumBody
     global memorandumType
 
+    flag = False
+
     users = User.query.all()
     username = ""
 
@@ -176,9 +178,10 @@ def emitMemorandum():
 
         if memorandumType is not None and len(memorandumSubject) > 0 and len(memorandumBody) > 0 and privateKey is not None and not data:
 
-            f = open(privateKey,'r')
-            content = f.read()
-            f.close()
+            flag = True
+            #f = open(privateKey,'r')
+            #content = f.read()
+            #f.close()
 
 
         if data:
@@ -188,7 +191,7 @@ def emitMemorandum():
                 recipientsOfTheMemorandum[data.idPerson] = data
 
 
-    return render_template('CEO/emitMemorandum.html', users = users, dictionary = recipientsOfTheMemorandum)
+    return render_template('CEO/emitMemorandum.html', users = users, dictionary = recipientsOfTheMemorandum, flag = flag)
 
 
 @app.route('/rhdashboard')
