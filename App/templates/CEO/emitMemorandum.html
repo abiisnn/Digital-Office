@@ -47,11 +47,11 @@
           <div class="input-field col s6">
             <i class="material-icons prefix">email</i>
 
-            <input placeholder="Subject" id="title" type="text">
+            <input placeholder="Subject" id="title" type="text" name = "subject">
           </div>
           <div class="input-field col s6">
 
-            <select class="browser-default">
+            <select class="browser-default" name = "memorandumType">
 
               <option value="" disabled selected><p>Select type of memorandum</p></option>
               <option value="1"><p> Public Memorandum</p></option>
@@ -59,13 +59,12 @@
             </select>
 
             </div>
-            <textarea rows="200" cols="20">      </textarea>
-
+              <textarea rows="200" cols="20" name="body"></textarea>
         </div>
       <div class="file-field input-field">
            <div class="btn-small light-blue accent-4"><i class="material-icons left">file_upload</i>
              <span>Private key</span>
-             <input type="file">
+             <input type="file" name = 'obtainFile'>
            </div>
            <div class="file-path-wrapper ">
              <input class="file-path validate" type="text">

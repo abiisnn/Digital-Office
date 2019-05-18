@@ -37,7 +37,9 @@ import forms
 app = Flask(__name__)
 app.config.from_object(DevelopmentConfig)
 mail = Mail()
-recipientsOfTheMemorandum = {}
+
+
+#Meeting
 recipientsOfTheMeeting = {}
 # recipientsInCharge = {}
 
@@ -144,22 +146,49 @@ def removeUser():
     del recipientsOfTheMemorandum[int(id)]
     return redirect(url_for('emitMemorandum'))
 
+
+
+
+#Memorandum
+recipientsOfTheMemorandum = {}
+memorandumSubject = ""
+memorandumBody = ""
+memorandumType = ""
+
 @app.route('/emitmemorandum', methods = ['GET','POST'])
 def emitMemorandum():
+
+    global recipientsOfTheMemorandum
+    global memorandumSubject
+    global memorandumBody
+    global memorandumType
+
     users = User.query.all()
     username = ""
 
     if request.method == 'POST':
-        print("xD")
 
-        username = request.form.get('searchField')
-        data = User.query.filter_by(username = username).first()
+        data = User.query.filter_by(username = request.form.get('searchField')).first()
+
+        memorandumSubject = str(request.form.get('subject'))       .strip()
+        memorandumType    = str(request.form.get('memorandumType')).strip()
+        memorandumBody    = str(request.form.get('body'))          .strip()
+        privateKey        = request.form.get('obtainFile')
+
+        print(privateKey)
+
+        if memorandumType is not None and len(memorandumSubject) > 0 and len(memorandumBody) > 0 and not data:
+
+            print(memorandumSubject)
+            print(memorandumType)
+            print(memorandumBody)
 
         if data:
 
             if data.idPerson not in recipientsOfTheMemorandum.keys():
 
                 recipientsOfTheMemorandum[data.idPerson] = data
+
 
     return render_template('CEO/emitMemorandum.html', users = users, dictionary = recipientsOfTheMemorandum)
 
