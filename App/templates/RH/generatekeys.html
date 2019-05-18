@@ -2,6 +2,8 @@
 {% block content %}
 {% from 'macro/_errorsAlertMacro.html' import render_field%}
 
+
+
 <table class = "striped highlight centered responsive-table">
   <thead>
     <tr>
@@ -12,6 +14,7 @@
         <th>Email</th>
         <th>Position</th>
         <th>Generate key</th>
+        <th>Delete</th>
     </tr>
   </thead>
 
@@ -19,24 +22,30 @@
       {% if users%}
         {% for user in users%}
             <tr>
-            <td>{{user.idPerson}}</td>
+
+            {% if user.status == 1 %}
+            <td class = "green lighten-3">{{user.idPerson}}</td>
             <td>{{user.name}}    </td>
             <td>{{user.lastName}}</td>
             <td>{{user.username}}</td>
             <td>{{user.email}}   </td>
             <td>{{user.position}}</td>
-            {% if user.status == 1 %}
-            <td>  <a href="{{url_for('generateKeys', id = user.idPerson)}}" class="btn-floating btn-small waves-effect waves-light green approved"><i class="material-icons">vpn_key</i></a></td>
+            <td>  <a href="{{url_for('generateKeys', id = user.idPerson, flag = True)}}" class="btn-floating btn-small waves-effect waves-light green approved"><i class="material-icons">vpn_key</i></a></td>
+            <td>  <a  href="{{url_for('deleteEmployee', id = user.idPerson, option = 'delete')}}" class="btn-floating btn-small waves-effect waves-light red approved"><i class="material-icons">delete_forever</i></a></td>
+
             {% elif user.status == 0 %}
+            <td class = "yellow lighten-3">{{user.idPerson}}</td>
+            <td>{{user.name}}    </td>
+            <td>{{user.lastName}}</td>
+            <td>{{user.username}}</td>
+            <td>{{user.email}}   </td>
+            <td>{{user.position}}</td>
             <td>  <a class="btn-floating btn-small waves-effect waves-light amber accent-4"><i class="material-icons">vpn_key</i></a></td>
-            {% elif user.status == 2 %}
-            <td>  <a href="{{url_for('generateKeys', id = user.idPerson)}}" class="btn-floating btn-small waves-effect waves-light red approved"><i class="material-icons">vpn_key</i></a></td>
+            <td>  <a  href="{{url_for('deleteEmployee', id = user.idPerson, option = 'delete')}}" class="btn-floating btn-small waves-effect waves-light red approved"><i class="material-icons">delete_forever</i></a></td>
             {% endif %}
           </tr>
         {% endfor %}
       {% endif %}
-
-
   </tbody>
 </table>
 

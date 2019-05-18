@@ -61,10 +61,12 @@ def pageNotFound(error):
     else:
         return render_template('General/index.html')
 
-@app.route('/employees')
-def employees():
-    users = User.query.all()
-    return render_template('CEO/employees.html', users = users)
+@app.route('/deleteEmployee')
+def deleteEmployee():
+    id = request.args.get('id', None)
+    user = db.session.query(User).filter(User.idPerson == id).delete()
+    db.session.commit()
+    return redirect(url_for('generateKeys'))
 
 @app.route('/meetings')
 def meetings():
@@ -133,6 +135,8 @@ def showAdminDashBoard():
 @app.route('/emitBill')
 def emitBill():
     return render_template('Employee/bill.html')
+
+
 
 @app.route('/removeAll')
 def removeAll():
@@ -264,11 +268,13 @@ def showMeet():
 def generateKeys():
     users = User.query.all()
     id = request.args.get('id', None)
+
+
     _users = db.session.query(User).filter(User.idPerson == id)
 
     for user in _users:
-        if user.status == 1:
 
+        if user.status == 1:
             key = RSA.generate(1024)
             privateKey = key.exportKey()
             publicKey  = key.publickey().exportKey()
@@ -290,6 +296,7 @@ def generateKeys():
             _user.publicKey = fileName_puk
             db.session.commit()
             return send_file(fileName_prk, as_attachment=True)
+
 
     return render_template('RH/generatekeys.html', users = users)
 

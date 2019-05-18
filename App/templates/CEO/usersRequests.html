@@ -4,7 +4,6 @@
 <table class = "striped highlight centered responsive-table">
   <thead>
     <tr>
-        <th>Id</th>
         <th>Name</th>
         <th>Last Name</th>
         <th>Username</th>
@@ -20,14 +19,13 @@
         {% for userRequest in usersRequests%}
         {% if userRequest.status != 1 %}
             <tr>
-            <td>{{userRequest.idPerson}}</td>
             <td>{{userRequest.name}}    </td>
             <td>{{userRequest.lastName}}</td>
             <td>{{userRequest.username}}</td>
             <td>{{userRequest.email}}   </td>
             <td>{{userRequest.position}}</td>
             <td>  <a href="{{url_for('UsersRequests', id = userRequest.idPerson, option = 'Approve')}}" class="btn-floating btn-small waves-effect waves-light green approved"><i class="material-icons">done</i></a></td>
-            <td>  <a href="{{url_for('UsersRequests', id = userRequest.idPerson, option = 'Reject')}}" class="btn-floating btn-small waves-effect waves-light red"><i    class="material-icons">do_not_disturb</i></a></td>
+            <td>  <a href="{{url_for('UsersRequests', id = userRequest.idPerson, option = 'Reject')}}" class="btn-floating btn-small waves-effect waves-light red"><i    class="material-icons">delete_forever</i></a></td>
           </tr>
         {% endif %}
         {% endfor %}
