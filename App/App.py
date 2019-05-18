@@ -104,6 +104,7 @@ def showLoginForm():
 
 @app.route('/register', methods = ['GET','POST'])
 def showRegisterForm():
+    flag = False
     registerForm = forms.registerForm(request.form)
     #select = request.form.get('comboBox')
     #print(str(select))
@@ -118,14 +119,12 @@ def showRegisterForm():
                               str(select)
                               )
 
-
+        flag = True
         db.session.add(possibleUser)
         db.session.commit()
 
-        return redirect(url_for('showRegisterForm'))
 
-
-    return render_template('RH/registerpage.html', form = registerForm)
+    return render_template('RH/registerpage.html', form = registerForm, flag = flag)
 
 @app.route('/admindashboard')
 def showAdminDashBoard():
@@ -175,13 +174,12 @@ def emitMemorandum():
         memorandumBody    = str(request.form.get('body'))          .strip()
         privateKey        = request.form.get('obtainFile')
 
-        print(privateKey)
+        if memorandumType is not None and len(memorandumSubject) > 0 and len(memorandumBody) > 0 and privateKey is not None and not data:
 
-        if memorandumType is not None and len(memorandumSubject) > 0 and len(memorandumBody) > 0 and not data:
+            f = open(privateKey,'r')
+            content = f.read()
+            f.close()
 
-            print(memorandumSubject)
-            print(memorandumType)
-            print(memorandumBody)
 
         if data:
 
