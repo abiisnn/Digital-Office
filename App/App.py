@@ -137,12 +137,12 @@ def emitBill():
 def removeAll():
     recipientsOfTheMemorandum.clear()
     return redirect(url_for('emitMemorandum'))
+
 @app.route('/removeUser')
 def removeUser():
     id = request.args.get('id', None)
     del recipientsOfTheMemorandum[int(id)]
     return redirect(url_for('emitMemorandum'))
-
 
 @app.route('/emitmemorandum', methods = ['GET','POST'])
 def emitMemorandum():
@@ -150,6 +150,7 @@ def emitMemorandum():
     username = ""
 
     if request.method == 'POST':
+        print("xD")
 
         username = request.form.get('searchField')
         data = User.query.filter_by(username = username).first()
@@ -257,26 +258,9 @@ def generateKeys():
 
             _user = db.session.query(User).filter(User.idPerson == id).one()
             _user.publicKey = fileName_puk
-            #a_user.status = 2
             db.session.commit()
-            #print(a_user)
             return send_file(fileName_prk, as_attachment=True)
 
-
-    #print(user)
-
-    #if a_user:
-    #    print(id)
-            #key = RSA.generate(1024)
-
-            #privateKey = key.exportKey()
-            #publicKey  = key.publickey().exportKey()
-            #f1 = open('privateKey.txt','w')
-            #f2 = open('publicKey.txt' ,'w')
-            #f1.write(str(privateKey))
-            #f2.write(str(publicKey))
-            #f1.close()
-            #f2.close()
     return render_template('RH/generatekeys.html', users = users)
 
 
