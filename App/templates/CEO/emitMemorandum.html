@@ -42,7 +42,7 @@
   <div class="col s8">
     <div class="row">
 
-      <form class="col s12" id="sendDocument" method="POST" action="{{url_for('upload')}}" enctype="multipart/form-data">
+      <form class="col s12" id="sendDocument" method="POST" enctype="multipart/form-data">
         <div class="row">
           <div class="input-field col s6">
             <i class="material-icons prefix">email</i>
@@ -64,19 +64,13 @@
       <div class="file-field input-field">
            <div class="btn-small light-blue accent-4"><i class="material-icons left">file_upload</i>
              <span>Private key</span>
-             <input type="file" name = 'file'>
+             <input enctype= "multipart/form-data" type="file" name = 'obtainFile'>
            </div>
            <div class="file-path-wrapper ">
              <input class="file-path validate" type="text">
            </div>
         </div>
-
-        <center>
-          <center><button class="waves-effect waves-light btn-small light-blue accent-4">Send<i class="material-icons left">send</i> <input type="submit" value=""></button></center>
-
-       </center>
-
-
+        <center><button class="waves-effect waves-light btn-small light-blue accent-4" type='submit'><i class="material-icons left">send</i>Confirm</button></center>
         {% if flag %}
         <script>
           swal("Memorandum sent sucessfully", "", "success");
@@ -102,7 +96,6 @@
     			   {{user.username}}: null,
           {% endif %}
           {% endfor %}
-
     		},
     	});
     });

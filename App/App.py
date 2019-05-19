@@ -185,20 +185,20 @@ def emitMemorandum():
 
     if request.method == 'POST':
 
+        print("pruebaaaaaaa")
         data = User.query.filter_by(username = request.form.get('searchField')).first()
 
         memorandumSubject = str(request.form.get('subject'))       .strip()
         memorandumType    = str(request.form.get('memorandumType')).strip()
         memorandumBody    = str(request.form.get('body'))          .strip()
-        privateKey        = request.form.get('obtainFile')
+        privateKey        = request.form.get('file')
 
+        print(memorandumSubject)
+        print(memorandumType)
+        print(memorandumBody)
+        print(privateKey)
         if memorandumType is not None and len(memorandumSubject) > 0 and len(memorandumBody) > 0 and privateKey is not None and not data:
-            print(privateKey)
             flag = True
-            #f = open(privateKey,'r')
-            #content = f.read()
-            #f.close()
-
 
         if data:
 
