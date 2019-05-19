@@ -51,6 +51,7 @@ def upload():
         os.mkdir(target)
     for file in request.files.getlist("file"):
         filename = file.filename
+        print(filename)
         destination = "/".join([target,filename])
         file.save(destination)
 
@@ -190,10 +191,24 @@ def emitMemorandum():
         memorandumSubject = str(request.form.get('subject'))       .strip()
         memorandumType    = str(request.form.get('memorandumType')).strip()
         memorandumBody    = str(request.form.get('body'))          .strip()
-        privateKey        = request.form.get('obtainFile')
+        privateKey        =  request.files.getlist("file")
+
+        print(memorandumSubject)
+        print(memorandumType)
+        print(memorandumBody)
+        print(privateKey)
 
         if memorandumType is not None and len(memorandumSubject) > 0 and len(memorandumBody) > 0 and privateKey is not None and not data:
-            print(privateKey)
+            if privateKey is not None:
+                target = os.path.join(APP_ROOT,'temporaryFolder/')
+                if not os.path.isdir(target):
+                    os.mkdir(target)
+                for file in request.files.getlist("file"):
+                    filename = file.filename
+                    print(filename)
+                    destination = "/".join([target,filename])
+                    file.save(destination)
+
             flag = True
             #f = open(privateKey,'r')
             #content = f.read()
@@ -201,11 +216,8 @@ def emitMemorandum():
 
 
         if data:
-
             if data.idPerson not in recipientsOfTheMemorandum.keys():
-
                 recipientsOfTheMemorandum[data.idPerson] = data
-
 
     return render_template('CEO/emitMemorandum.html', users = users, dictionary = recipientsOfTheMemorandum, flag = flag)
 
