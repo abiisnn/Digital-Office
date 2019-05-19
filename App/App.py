@@ -186,6 +186,7 @@ def emitMemorandum():
 
     if request.method == 'POST':
 
+        #print("pruebaaaaaaa")
         data = User.query.filter_by(username = request.form.get('searchField')).first()
 
         memorandumSubject = str(request.form.get('subject'))       .strip()
@@ -210,10 +211,6 @@ def emitMemorandum():
                     file.save(destination)
 
             flag = True
-            #f = open(privateKey,'r')
-            #content = f.read()
-            #f.close()
-
 
         if data:
             if data.idPerson not in recipientsOfTheMemorandum.keys():
