@@ -38,11 +38,24 @@ import os
 app = Flask(__name__)
 app.config.from_object(DevelopmentConfig)
 mail = Mail()
-
-APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 #Meeting
 recipientsOfTheMeeting = {}
 # recipientsInCharge = {}
+APP_ROOT = os.path.dirname(os.path.abspath(__file__))
+
+
+@app.route('/upload', methods = ['POST','GET'])
+def upload():
+    target = os.path.join(APP_ROOT,'temporaryFolder/')
+    if not os.path.isdir(target):
+        os.mkdir(target)
+    for file in request.files.getlist("file"):
+        filename = file.filename
+        destination = "/".join([target,filename])
+        file.save(destination)
+
+    return redirect(url_for('emitMemorandum'))
+
 
 
 @app.before_request
