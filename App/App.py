@@ -185,8 +185,6 @@ def emitMemorandum():
     username = ""
 
     if request.method == 'POST':
-
-        #print("pruebaaaaaaa")
         data = User.query.filter_by(username = request.form.get('searchField')).first()
 
         memorandumSubject = str(request.form.get('subject'))       .strip()

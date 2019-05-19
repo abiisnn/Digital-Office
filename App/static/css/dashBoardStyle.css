@@ -1,20 +1,33 @@
 textarea {
-  border: 2px solid #888;
+  border: 2px solid #0091ea;
   resize: none;
   height: 340px;
   width: 890px;
+  background: #eceff1;
 }
 select{
     text-align-last:center;
+    border: 2px solid #0091ea;
+    background: #0091ea;
+    color: white;
 }
 
-.scrollable {
+
+.scrollable1 {
+    height: 432px;       /* Just for the demo          */
+    width: 430px;
+    overflow-y: auto;    /* Trigger vertical scroll    */
+    overflow-x: auto;  /* Hide the horizontal scroll */
+}
+
+.scrollable2 {
     height: 400px;       /* Just for the demo          */
     width: 430px;
     overflow-y: auto;    /* Trigger vertical scroll    */
     overflow-x: auto;  /* Hide the horizontal scroll */
 }
 
-p { color: #4c4a37; 
+
+p { color: #4c4a37;
     font-family: 'Source Sans Pro', sans-serif; font-size: 18px; line-height: 32px; margin: 0 0 24px;
   }

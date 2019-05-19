@@ -5,7 +5,8 @@
   <div class="col s4">
     <form id="addMember" method="POST">
     <div class="col s12 center search input-field">
-    <input placeholder="Search member" class="autocomplet" name="searchField" value=""/>
+
+    <input placeholder="Search member" class="autocomplet" name="searchField" style="text-align:center"/>
     <br>
     <br>
     <div style="width:400px;">
@@ -18,7 +19,7 @@
   </div>
     </div>
     </form>
-    <div class="scrollable">
+    <div class="scrollable2">
 
     {% if dictionary %}
     {% for user in dictionary.values() %}
@@ -46,7 +47,7 @@
           <div class="input-field col s6">
             <i class="material-icons prefix">email</i>
 
-            <input placeholder="Subject" id="title" type="text" name = "subject">
+            <input placeholder="Subject" id="title" type="text" name = "subject" style="text-align:center">
           </div>
           <div class="input-field col s6">
 
@@ -66,7 +67,7 @@
              <input enctype= "multipart/form-data" type="file" name = 'file'>
            </div>
            <div class="file-path-wrapper ">
-             <input class="file-path validate" type="text">
+             <input class="file-path validate" type="text" style="text-align:center">
            </div>
         </div>
         <center><button class="waves-effect waves-light btn-small light-blue accent-4" type='submit'><i class="material-icons left">send</i>Confirm</button></center>
