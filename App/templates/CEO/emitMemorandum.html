@@ -1,6 +1,7 @@
 {% extends 'base/adminDashBoardBase.html'%}
 {% block content %}
 
+
 <div class='row'>
   <div class="col s4">
     <form id="addMember" method="POST">
@@ -51,11 +52,10 @@
           </div>
           <div class="input-field col s6">
 
-            <select class="browser-default" name = "memorandumType">
-
+            <select class="browser-default" name = "memorandumType"  onchange="window.location.href=this.value;">
               <option value="" disabled selected><p>Select type of memorandum</p></option>
-              <option value="1"><p> Public Memorandum</p></option>
-              <option value="2"><p>Confidential Memorandum</p></option>
+              <option value="{{url_for('comboEvent', type=1)}}"><p> Public Memorandum</p></option>
+              <option value="{{url_for('comboEvent', type=2)}}"><p>Confidential Memorandum</p></option>
             </select>
 
             </div>
@@ -84,6 +84,7 @@
   </div>
 
 
+
   </div>
 
   <script>
@@ -99,7 +100,9 @@
     		},
     	});
     });
+
     {% endif %}
+
   </script>
 
 

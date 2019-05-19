@@ -44,6 +44,13 @@ recipientsOfTheMeeting = {}
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 
+@app.route('/comboEvent')
+def comboEvent():
+    type = request.args.get('type', None)
+    print(type)
+    return redirect(url_for('emitMemorandum'))
+
+
 @app.route('/upload', methods = ['POST','GET'])
 def upload():
     target = os.path.join(APP_ROOT,'temporaryFolder/')
