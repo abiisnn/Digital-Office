@@ -1,101 +1,53 @@
-{% extends 'base/adminDashBoardBase.html'%}
+{% extends 'base/dashboardBase.html'%}
 {% block content %}
+{% from 'macro/_errorsAlertMacro.html' import render_field%}
 
+<table class = "striped highlight centered responsive-table">
+  <thead>
+    <tr>
+        <th>Date</th>
+        <th>Issue</th>
+        <th>Members</th>
+        <th>In charge</th>
+    </tr>
+  </thead>
 
-		<div class="row ">
-	   		<!-- First column -->
-			<form class="col s4" id="addMember" method="POST">
-				<br>
-			    <div class="row">
-				    <div class="col s12 center search input-field"> <!-- added .input-field -->
-						<input class="autocomplet" name="searchField" placeholder="Search member" value=""/>
-					</div>
-					<div class="col s12 center">
-						<button class="waves-effect waves-light btn-small green" type='submit'>
-						 	<i class="material-icons left">group_add</i>Add member
-						</button>
-						<button class="waves-effect waves-light btn-small red" type='submit'>
-							<i class="material-icons left">close</i>Remove all
-						</button>
-					</div>
-				</div>
-				<br>
-				<br>
-				<div class="row">
-						<div class="input-field col s6">
-								<input placeholder="Asunto" id="first_name" name="asunto" type="text" class="validate">
-								<label for="first_name">Asunto</label>
-						</div>
-						<div class="input-field col s6">
-								<input type="text" class="datepicker" name="fecha">
-								<label for="last_name">Fecha</label>
-						</div>
-				</div>
-			</form>
+  <tbody>
+      {% if meetings%}
+        {% for meeting in meetings%}
+            <tr>
+           
+            <!-- Verificar que pertezca a la junta -->
+            {% if user.status == 1 %}
+                <td class = "green lighten-3">{{meeting.date}}</td>
+                <td>{{meeting.issue}}</td>
 
-			<!-- Second colum -->
-			<div class="col s8 ">
-				<div class="scrollable">
-				{% if dictionary %}
-				    {% for user in dictionary.values() %}
-				    <ul class="collection">
-				      <li class="collection-item avatar">
-				        <i class="material-icons circle light-blue accent-4">person</i>
-				        <center><span class="title">{{user.name+' '+user.lastName}}</span></center>
-				        <center><p>{{user.position}} </p></center>
-				        <center><p>{{user.email}}</p></center>
-				        <a href="#!" class="secondary-content"><i class="material-icons">close</i></a>
-				      </li>
-				    </ul>
-				    {% endfor %}
-				{% endif %}
-				</div>
-			</div>
-		</div>
-		<div class="row">
-			<form class="col s12" class="col s5" id="addCharge" method="POST">
-			     <div class="col s12 center search input-field"> <!-- added .input-field -->
-						<input class="autocompletCharge" name="inCharge" placeholder="In charge" value=""/>
-				</div>
-				<div class="col s12 center">
-					<button class="btn waves-effect green" type="submit" name="action">Create meeting
-						<i class="material-icons right"></i>
-						</button>
-				</div>
-			</form>
-		</div>
+                <!-- Members -->
+                <td>
+                  <ul>
+                    <!-- Mostrar todos los miembros -->
+                    {% for member in meetings %}
+                      <li>{{member.name}}</li>                 
+                    {% endfor %}
+                  </ul>
+                </td>
+                <!-- Si es encargado de la junta, poner el boton para poder crear la minuta -->
+                <!-- Es decir, el botón tendra el link para crear la minuta de esa junta -->
+                {% if user.status == 1 %}
+                    <td>  <a href="{{url_for('generateKeys', id = user.idPerson)}}" class="btn-floating btn-small waves-effect waves-light green approved"><i class="material-icons">vpn_key</i></a></td>
+                
+                <!-- Si no es encargado, entonces solo es un miembro más. -->
+                {% elif user.status == 0 %}
+                    <td>Member</td>
 
- <script>
-    {% if users %}
-    $(document).ready(function(){
-    	$('input.autocomplet').autocomplete({
-    		data: {
-	          {% for user in users%}
-	          {% if user.status == 1 %}
-	    			   {{user.username}}: null,
-	          {% endif %}
-	          {% endfor %}
+                {% endif %}
 
-    		},
-    	});
-    });
-    {% endif %}
+            {% endif %}
+            </tr>
+        {% endfor %}
+      {% endif %}
+  </tbody>
+</table>
 
-     {% if dictionary %}
-    $(document).ready(function(){
-    	$('input.autocompletCharge').autocomplete({
-    		data: {
-	          {% for user in dictionary.values()%}
-	          {% if user.status == 1 %}
-	    			   {{user.username}}: null,
-	          {% endif %}
-	          {% endfor %}
-
-    		},
-    	});
-    });
-    {% endif %}
-
-  </script>
 
 {% endblock %}
