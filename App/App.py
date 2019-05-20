@@ -137,6 +137,7 @@ def showLoginForm():
         if user is not None and user.verifyPassword(password):
         #if 1==1:
             session['userName'] = username
+            session['idP'] = user.idPerson
             print(user.position)
             return redirect(url_for('showDashBoard'))
 
@@ -415,7 +416,9 @@ def EmeetingList():
 @app.route('/CEOmeetingList')
 def CEOmeetingList():
     m = Meeting.query.all()
-    return render_template('CEO/meetingList.html',meetings = m)
+    rel = Rel_Meeting_User.query.all()
+    u = User.query.all()
+    return render_template('CEO/meetingList.html',meetings = m,rel = rel, users = u,idP = 1)
 
 @app.route('/RHmeetingList')
 def RHmeetingList():

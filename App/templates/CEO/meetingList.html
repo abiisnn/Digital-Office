@@ -15,35 +15,38 @@
 
   <tbody>
       {% if meetings%}
-        {% for meeting in meetings%}
+        {% for m in meetings%}
             <tr>
 
             <!-- Verificar que pertezca a la junta -->
-            {% if user.status == 1 %}
-                <td class = "green lighten-3">{{meeting.date}}</td>
-                <td>{{meeting.issue}}</td>
+            <td class = "green lighten-3">{{m.date}}</td>
+            <td>{{m.issue}}</td>
 
-                <!-- Members -->
-                <td>
-                  <ul>
-                    <!-- Mostrar todos los miembros -->
-                    {% for member in meetings %}
-                      <li>{{member.name}}</li>
+            <!-- Members -->
+                <!-- Mostrar todos los miembros -->
+                {% for r in rel%}
+                  {%if r.idMeeting == m.idMeeting%}
+                    {% for u in users %}
+                      {%if u.idPerson == r.idPerson%}
+                        <td>
+                          <ul>
+                            <li>{{u.name}}</li>
+                          </ul>
+                        </td>
+                        <!-- Si es encargado de la junta, poner el boton para poder crear la minuta -->
+                        <!-- Es decir, el botón tendra el link para crear la minuta de esa junta -->
+                        {% if idP == m.idPerson %}
+                            <td>  <a href="{{url_for('generateKeys', id = u.idPerson)}}" class="btn-floating btn-small waves-effect waves-light green approved"><i class="material-icons">vpn_key</i></a></td>
+
+                        <!-- Si no es encargado, entonces solo es un miembro más. -->
+                        {% elif idP != m.idPerson %}
+                            <td>Member</td>
+
+                        {% endif %}
+                      {% endif %}
                     {% endfor %}
-                  </ul>
-                </td>
-                <!-- Si es encargado de la junta, poner el boton para poder crear la minuta -->
-                <!-- Es decir, el botón tendra el link para crear la minuta de esa junta -->
-                {% if user.status == 1 %}
-                    <td>  <a href="{{url_for('generateKeys', id = user.idPerson)}}" class="btn-floating btn-small waves-effect waves-light green approved"><i class="material-icons">vpn_key</i></a></td>
-
-                <!-- Si no es encargado, entonces solo es un miembro más. -->
-                {% elif user.status == 0 %}
-                    <td>Member</td>
-
-                {% endif %}
-
-            {% endif %}
+                  {% endif %}
+                {% endfor %}
             </tr>
         {% endfor %}
       {% endif %}
