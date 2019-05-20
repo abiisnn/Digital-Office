@@ -1,11 +1,10 @@
 {% extends 'base/adminDashBoardBase.html'%}
 {% block content %}
 
-
-
 <table class = "striped highlight centered responsive-table">
   <thead>
     <tr>
+        <th>#Meeting</th>
         <th>Date</th>
         <th>Issue</th>
         <th>Members</th>
@@ -21,24 +20,25 @@
             <tr>
 
             <!-- Imprimimos su fecha y el issue -->
-            <td class = "green lighten-3">{{m.date}}</td>
+            <td class = "green lighten-3">{{m.idMeeting}}</td>
+            <td>{{m.date}}</td>
             <td>{{m.issue}}</td>
 
-            <!-- Members -->
+            <td>
+              <!-- Members -->
                 <!-- Todo este for es para mostrar a TODOS los usuarios de la junta -->
                 {% for r in rel%}
                   {%if r.idMeeting == m.idMeeting%}
                     {% for u in users %}
                       {%if u.idPerson == r.idPerson%}
-                        <td>
                           <ul>
-                            <li>{{u.name}}</li>
+                            <li>{{u.name}} {{u.lastName}}</li>
                           </ul>
-                        </td>
                       {% endif %}
                     {% endfor %}
                   {% endif %}
                 {% endfor %}
+            </td>
                 <!--  Esta parte es para ver si quien visualiza la pantalla es el creador de esa junta -->
                 {% if idP == m.idPerson %}
                     <td>  <a href="{{url_for('generateKeys', id = m.idPerson)}}" class="btn-floating btn-small waves-effect waves-light green approved"><i class="material-icons">vpn_key</i></a></td>
