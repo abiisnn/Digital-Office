@@ -414,7 +414,8 @@ def EmeetingList():
 
 @app.route('/CEOmeetingList')
 def CEOmeetingList():
-    return render_template('CEO/meetingList.html')
+    m = Meeting.query.all()
+    return render_template('CEO/meetingList.html',meetings = m)
 
 @app.route('/RHmeetingList')
 def RHmeetingList():
