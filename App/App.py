@@ -232,15 +232,16 @@ def emitMemorandum():
             db.session.add(new_memo)
             db.session.commit()
 
-            records = Memo.query.all()
-            lastMemo = -1
-            for r in records:
-                lastMemo = r.idMemo
+            if memorandumType is not "1":  
+                records = Memo.query.all()
+                lastMemo = -1
+                for r in records:
+                    lastMemo = r.idMemo
 
-            for k in recipientsOfTheMemorandum:
-                relation = Rel_Memo_User(k,lastMemo)
-                db.session.add(relation)
-                db.session.commit()
+                for k in recipientsOfTheMemorandum:
+                    relation = Rel_Memo_User(k,lastMemo)
+                    db.session.add(relation)
+                    db.session.commit()
 
         if data:
             if data.idPerson not in recipientsOfTheMemorandum.keys():
@@ -387,6 +388,10 @@ def UsersRequests():
 def binnacle():
     return render_template('RH/binnacle.html')
 
+
+@app.route('/meetingList')
+def meetingL():
+    return render_template('General/meetingList.html')
 
 
 def obtainUserName():

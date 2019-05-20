@@ -1,4 +1,6 @@
-USE digital_offices;
+DROP database digital_office;
+create database digital_office;
+USE digital_office;
 
 DELETE FROM users;
 
