@@ -14,16 +14,18 @@
   </thead>
 
   <tbody>
+      <!-- Si tenemos juntas que desplegar -->
       {% if meetings%}
+      <!-- Por cada junta -->
         {% for m in meetings%}
             <tr>
 
-            <!-- Verificar que pertezca a la junta -->
+            <!-- Imprimimos su fecha y el issue -->
             <td class = "green lighten-3">{{m.date}}</td>
             <td>{{m.issue}}</td>
 
             <!-- Members -->
-                <!-- Mostrar todos los miembros -->
+                <!-- Todo este for es para mostrar a TODOS los usuarios de la junta -->
                 {% for r in rel%}
                   {%if r.idMeeting == m.idMeeting%}
                     {% for u in users %}
@@ -33,13 +35,11 @@
                             <li>{{u.name}}</li>
                           </ul>
                         </td>
-                        <!-- Si es encargado de la junta, poner el boton para poder crear la minuta -->
-                        <!-- Es decir, el botón tendra el link para crear la minuta de esa junta -->
-                       
                       {% endif %}
                     {% endfor %}
                   {% endif %}
                 {% endfor %}
+                <!--  Esta parte es para ver si quien visualiza la pantalla es el creador de esa junta -->
                 {% if idP == m.idPerson %}
                     <td>  <a href="{{url_for('generateKeys', id = m.idPerson)}}" class="btn-floating btn-small waves-effect waves-light green approved"><i class="material-icons">vpn_key</i></a></td>
 
