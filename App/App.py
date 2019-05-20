@@ -25,6 +25,8 @@ from ModelV1 import db
 from ModelV1 import User
 from ModelV1 import Meeting
 from ModelV1 import Rel_Meeting_User
+from ModelV1 import Memo
+from ModelV1 import Rel_Memo_User
 
 from config import DevelopmentConfig
 from Crypto.Signature import PKCS1_v1_5
@@ -56,8 +58,14 @@ def comboEvent():
 
     if Mtype == '1':
         users = User.query.all()
+        recipientsOfTheMemorandum.clear()
         for user in users:
-            print(user)
+            id = int(user.idPerson)
+            recipientsOfTheMemorandum[id] = user
+
+    else:
+        print("limpiar")
+        recipientsOfTheMemorandum.clear()
 
     return redirect(url_for('emitMemorandum', Mtype = Mtype))
 
@@ -221,7 +229,6 @@ def emitMemorandum():
                     print(filename)
                     destination = "/".join([target,filename])
                     file.save(destination)
-
                     flag = True
 
         if data:
