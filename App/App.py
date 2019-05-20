@@ -232,7 +232,7 @@ def emitMemorandum():
             db.session.add(new_memo)
             db.session.commit()
 
-            if memorandumType is not "1":  
+            if memorandumType is not "1":
                 records = Memo.query.all()
                 lastMemo = -1
                 for r in records:
@@ -348,7 +348,7 @@ def generateKeys():
             _user = db.session.query(User).filter(User.idPerson == id).one()
             _user.publicKey = fileName_puk
             db.session.commit()
-            
+
             return send_file(fileName_prk, as_attachment=True)
 
 
@@ -404,11 +404,21 @@ def sendEmail(userEmail, userName,name):
                    sender = app.config['MAIL_USERNAME'],
                    recipients = [userEmail]
                   )
-
     msg.html = render_template('General/email.html', name = name, userName = userName)
-
-
     mail.send(msg)
+
+@app.route('/EmeetingList')
+def EmeetingList():
+    obtainUserName()
+    return render_template('Employee/meetingList.html')
+
+@app.route('/CEOmeetingList')
+def CEOmeetingList():
+    return render_template('CEO/meetingList.html')
+
+@app.route('/RHmeetingList')
+def RHmeetingList():
+    return render_template('RH/meetingList.html')
 
 
 if __name__ == '__main__':
