@@ -77,3 +77,12 @@ class Rel_Memo_User(db.Model):
     def __init__(self, idPerson,idMemo):
         self.idPerson = idPerson
         self.idMemo = idMemo
+
+class Binnacle(db.Model):
+    __tablename__ = 'binnacle'
+    id = db.Column(db.Integer, primary_key = True)
+    action     = db.Column(db.String(255))
+    created_date  = db.Column(db.DateTime, default = datetime.datetime.now)
+
+    def __init__(self, action):
+        self.action = action

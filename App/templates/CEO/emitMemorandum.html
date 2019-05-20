@@ -53,9 +53,23 @@
           <div class="input-field col s6">
 
             <select class="browser-default" name = "memorandumType"  onchange="window.location.href=this.value;">
-              <option value="" disabled selected><p>Select type of memorandum</p></option>
-              <option value="{{url_for('comboEvent', type=1)}}"><p> Public Memorandum</p></option>
-              <option value="{{url_for('comboEvent', type=2)}}"><p>Confidential Memorandum</p></option>
+              {% if  Mtype is none %}
+                <option value="" disabled selected><p>Select type of memorandum</p></option>
+                <option value="{{url_for('comboEvent', Mtype=1)}}"><p> Public Memorandum</p></option>
+                <option value="{{url_for('comboEvent', Mtype=2)}}"><p>Confidential Memorandum</p></option>
+              
+              {% elif Mtype == '1' %}
+                <option value="" disabled selected><p>Select type of memorandum</p></option>
+                <option selected="selected" value="{{url_for('comboEvent', Mtype=1)}}"><p> Public Memorandum</p></option>
+                <option value="{{url_for('comboEvent', Mtype=2)}}"><p>Confidential Memorandum</p></option>
+            
+              {% elif Mtype == '2' %}
+                <option value="" disabled selected><p>Select type of memorandum</p></option>
+                <option value="{{url_for('comboEvent', Mtype=1)}}"><p> Public Memorandum</p></option>
+                <option selected="selected" value="{{url_for('comboEvent', Mtype=2)}}"><p>Confidential Memorandum</p></option>
+              {% endif %}
+
+            
             </select>
 
             </div>

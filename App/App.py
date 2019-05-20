@@ -26,7 +26,6 @@ from ModelV1 import User
 from ModelV1 import Meeting
 from ModelV1 import Rel_Meeting_User
 
-
 from config import DevelopmentConfig
 from Crypto.Signature import PKCS1_v1_5
 from Crypto.Hash import SHA256
@@ -44,11 +43,23 @@ recipientsOfTheMeeting = {}
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 
+#Memorandum
+recipientsOfTheMemorandum = {}
+memorandumSubject = ""
+memorandumBody = ""
+memorandumType = ""
+
+
 @app.route('/comboEvent')
 def comboEvent():
-    type = request.args.get('type', None)
-    print(type)
-    return redirect(url_for('emitMemorandum'))
+    Mtype = request.args.get('Mtype', None)
+
+    if Mtype == '1':
+        users = User.query.all()
+        for user in users:
+            print(user)
+
+    return redirect(url_for('emitMemorandum', Mtype = Mtype))
 
 
 @app.route('/upload', methods = ['POST','GET'])
@@ -172,15 +183,11 @@ def removeUser():
     del recipientsOfTheMemorandum[int(id)]
     return redirect(url_for('emitMemorandum'))
 
-#Memorandum
-recipientsOfTheMemorandum = {}
-memorandumSubject = ""
-memorandumBody = ""
-memorandumType = ""
+
 
 @app.route('/emitmemorandum', methods = ['GET','POST'])
 def emitMemorandum():
-
+    Mtype = request.args.get('Mtype', None)
     global recipientsOfTheMemorandum
     global memorandumSubject
     global memorandumBody
@@ -215,13 +222,13 @@ def emitMemorandum():
                     destination = "/".join([target,filename])
                     file.save(destination)
 
-            flag = True
+                    flag = True
 
         if data:
             if data.idPerson not in recipientsOfTheMemorandum.keys():
                 recipientsOfTheMemorandum[data.idPerson] = data
 
-    return render_template('CEO/emitMemorandum.html', users = users, dictionary = recipientsOfTheMemorandum, flag = flag)
+    return render_template('CEO/emitMemorandum.html', users = users, dictionary = recipientsOfTheMemorandum, flag = flag, Mtype = Mtype)
 
 
 @app.route('/rhdashboard')
@@ -298,6 +305,7 @@ def generateKeys():
 
     _users = db.session.query(User).filter(User.idPerson == id)
 
+    print(_users)
     for user in _users:
 
         if user.status == 1:
@@ -321,11 +329,11 @@ def generateKeys():
             _user = db.session.query(User).filter(User.idPerson == id).one()
             _user.publicKey = fileName_puk
             db.session.commit()
+            
             return send_file(fileName_prk, as_attachment=True)
 
 
     return render_template('RH/generatekeys.html', users = users)
-
 
 
 @app.route('/UsersRequests')
@@ -357,6 +365,12 @@ def UsersRequests():
 
     return render_template('CEO/usersRequests.html', usersRequests = usersRequests)
 
+@app.route('/binnacle')
+def binnacle():
+    return render_template('RH/binnacle.html')
+
+
+
 def obtainUserName():
     userName = session['userName']
     sucess_message = '{}'.format(userName)
@@ -370,8 +384,6 @@ def sendEmail(userEmail, userName,name):
 
     msg.html = render_template('General/email.html', name = name, userName = userName)
 
-    with app.open_resource("static/img/logo2.png") as fp:
-        msg.attach("logo2.png", "logo2/png", fp.read())
 
     mail.send(msg)
 
