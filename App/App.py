@@ -212,7 +212,7 @@ def emitMemorandum():
         privateKey        =  request.files.getlist("file")
 
         print(memorandumSubject)
-        print(memorandumType)
+        print(memorandumType.split("=")[1])
         print(memorandumBody)
         print(privateKey)
 
@@ -227,6 +227,20 @@ def emitMemorandum():
                     destination = "/".join([target,filename])
                     file.save(destination)
                     flag = True
+            memorandumType = memorandumType.split("=")[1]
+            new_memo = Memo(memorandumSubject,memorandumType,1,memorandumBody)
+            db.session.add(new_memo)
+            db.session.commit()
+
+            records = Memo.query.all()
+            lastMemo = -1
+            for r in records:
+                lastMemo = r.idMemo
+
+            for k in recipientsOfTheMemorandum:
+                relation = Rel_Memo_User(k,lastMemo)
+                db.session.add(relation)
+                db.session.commit()
 
         if data:
             if data.idPerson not in recipientsOfTheMemorandum.keys():
