@@ -388,6 +388,10 @@ def binnacle():
     return render_template('RH/binnacle.html')
 
 
+@app.route('/meetingList')
+def meetingL():
+    return render_template('General/meetingList.html')
+
 
 def obtainUserName():
     userName = session['userName']
