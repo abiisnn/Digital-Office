@@ -124,7 +124,12 @@ def logout():
 @app.route('/dashboard', methods = ['GET', 'POST'])
 def showDashBoard():
     obtainUserName()
-    return render_template('Employee/dashboard.html')
+    mtngs = Meeting.query.all()
+    rel_mtngs = Rel_Meeting_User.query.all()
+    val = session['idP']
+    memos = Memo.query.all()
+    rel_memo = Rel_Memo_User.query.all()
+    return render_template('Employee/dashboard.html',meetings = mtngs,rel_m_u = rel_mtngs,idP=val,memo = memos,rel_memo = rel_memo)
 
 
 @app.route('/login', methods = ['GET', 'POST'])
@@ -137,6 +142,7 @@ def showLoginForm():
         if user is not None and user.verifyPassword(password):
         #if 1==1:
             session['userName'] = username
+            session['idP'] = user.idPerson
             print(user.position)
             return redirect(url_for('showDashBoard'))
 
@@ -169,7 +175,11 @@ def showRegisterForm():
 
 @app.route('/admindashboard')
 def showAdminDashBoard():
-    return render_template('CEO/adminDashBoard.html')
+    mtngs = Meeting.query.all()
+    rel_mtngs = Rel_Meeting_User.query.all()
+    memos = Memo.query.all()
+    rel_memo = Rel_Memo_User.query.all()
+    return render_template('CEO/adminDashBoard.html',meetings = mtngs,rel_m_u = rel_mtngs,memo = memos,rel_memo = rel_memo)
 
 @app.route('/emitBill')
 def emitBill():
@@ -212,7 +222,7 @@ def emitMemorandum():
         privateKey        =  request.files.getlist("file")
 
         print(memorandumSubject)
-        print(memorandumType.split("=")[1])
+        print(memorandumType)
         print(memorandumBody)
         print(privateKey)
 
@@ -266,6 +276,8 @@ def showMeet():
 
     if request.method == 'POST':
         userInCharge = request.form.get('inCharge')
+        #asunto = request.form.get('asunto')
+        #fecha = request.form.get('fecha')
         if userInCharge is not None:
             print(recipientsOfTheMeeting) #Users will be part in the meeting
             print(userInCharge) #User in charge of the meeting
@@ -300,7 +312,8 @@ def showMeet():
                     asunto = request.form.get('asunto')
                 if fecha == "":
                     fecha = request.form.get('fecha')
-
+                print(asunto)
+                print(fecha)
                 data = User.query.filter_by(username = username).first()
                 if data:
                     if data.idPerson not in recipientsOfTheMeeting.keys():
@@ -410,12 +423,18 @@ def sendEmail(userEmail, userName,name):
 @app.route('/EmeetingList')
 def EmeetingList():
     obtainUserName()
-    return render_template('Employee/meetingList.html')
+    m = Meeting.query.all()
+    rel = Rel_Meeting_User.query.all()
+    val = session['idP']
+    u = User.query.all()
+    return render_template('Employee/meetingList.html',meetings = m,rel = rel, users = u,idP = val)
 
 @app.route('/CEOmeetingList')
 def CEOmeetingList():
     m = Meeting.query.all()
-    return render_template('CEO/meetingList.html',meetings = m)
+    rel = Rel_Meeting_User.query.all()
+    u = User.query.all()
+    return render_template('CEO/meetingList.html',meetings = m,rel = rel, users = u,idP = 1)
 
 @app.route('/RHmeetingList')
 def RHmeetingList():

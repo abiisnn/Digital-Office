@@ -1,9 +1,10 @@
-{% extends 'base/dashBoardBase.html'%}
+{% extends 'base/adminDashBoardBase.html'%}
 {% block content %}
 
 <table class = "striped highlight centered responsive-table">
   <thead>
     <tr>
+        <th>#Meeting</th>
         <th>Date</th>
         <th>Issue</th>
         <th>Members</th>
@@ -12,39 +13,48 @@
   </thead>
 
   <tbody>
-      {% if meetings%}
-        {% for meeting in meetings%}
-            <tr>
+      <!-- Si tenemos juntas que desplegar -->
+      <!-- Por cada junta -->
+      {%for r in rel%}
+        {%if r.idPerson == idP%}
+          {% for m in meetings%}
+            {%if m.idMeeting == r.idMeeting%}
+              <tr>
+              <!-- Imprimimos su fecha y el issue -->
+              <td class = "green lighten-3">{{m.idMeeting}}</td>
+              <td>{{m.date}}</td>
+              <td>{{m.issue}}</td>
 
-            <!-- Verificar que pertezca a la junta -->
-            {% if user.status == 1 %}
-                <td class = "green lighten-3">{{meeting.date}}</td>
-                <td>{{meeting.issue}}</td>
-
+              <td>
                 <!-- Members -->
-                <td>
-                  <ul>
-                    <!-- Mostrar todos los miembros -->
-                    {% for member in meetings %}
-                      <li>{{member.name}}</li>
-                    {% endfor %}
-                  </ul>
-                </td>
-                <!-- Si es encargado de la junta, poner el boton para poder crear la minuta -->
-                <!-- Es decir, el botón tendra el link para crear la minuta de esa junta -->
-                {% if user.status == 1 %}
-                    <td>  <a href="{{url_for('generateKeys', id = user.idPerson)}}" class="btn-floating btn-small waves-effect waves-light green approved"><i class="material-icons">vpn_key</i></a></td>
+                  <!-- Todo este for es para mostrar a TODOS los usuarios de la junta -->
+                  {% for r2 in rel%}
+                    {%if r2.idMeeting == m.idMeeting%}
+                      {% for u in users %}
+                        {%if u.idPerson == r2.idPerson%}
+                            <ul>
+                              <li>{{u.name}} {{u.lastName}}</li>
+                            </ul>
+                        {% endif %}
+                      {% endfor %}
+                    {% endif %}
+                  {% endfor %}
+              </td>
+                  <!--  Esta parte es para ver si quien visualiza la pantalla es el creador de esa junta -->
+                  {% if idP == m.idPerson %}
+                      <td>  <a href="{{url_for('generateKeys', id = m.idPerson)}}" class="btn-floating btn-small waves-effect waves-light green approved"><i class="material-icons">vpn_key</i></a></td>
 
-                <!-- Si no es encargado, entonces solo es un miembro más. -->
-                {% elif user.status == 0 %}
-                    <td>Member</td>
+                  <!-- Si no es encargado, entonces solo es un miembro más. -->
+                  {% elif idP != m.idPerson %}
+                      <td>Member</td>
 
-                {% endif %}
-
-            {% endif %}
-            </tr>
-        {% endfor %}
-      {% endif %}
+                  {% endif %}
+              </tr>
+            {%endif%}
+          {% endfor %}
+        {%endif%}
+      {%endfor%}
+      
   </tbody>
 </table>
 
