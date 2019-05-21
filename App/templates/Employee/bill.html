@@ -1,4 +1,4 @@
-{% extends 'base/adminDashBoardBase.html'%}
+{% extends 'base/dashBoardBase.html'%}
 {% block content %}
 
 <div class='row'>
@@ -47,7 +47,7 @@
         <center>
           <button class="waves-effect waves-light btn-small light-blue accent-4" type='submit'><i class="material-icons left">send</i>Confirm</button>
         </center>
-        
+
         {% if flag %}
         <script>
           swal("Memorandum sent sucessfully", "", "success");

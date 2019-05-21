@@ -49,6 +49,7 @@ memorandumBody = ""
 memorandumType = ""
 
 
+
 @app.route('/comboEvent')
 def comboEvent():
     Mtype = request.args.get('Mtype', None)
@@ -214,7 +215,7 @@ def emitMemorandum():
     username = ""
 
     if request.method == 'POST':
-        
+
         data = User.query.filter_by(username = request.form.get('searchField')).first()
 
         memorandumSubject = str(request.form.get('subject'))       .strip()
