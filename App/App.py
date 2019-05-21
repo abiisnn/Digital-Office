@@ -184,6 +184,11 @@ def showAdminDashBoard():
 
 @app.route('/emitBill')
 def emitBill():
+
+    idMeeting = request.args.get('idMeeting', None)
+    issue    = request.args.get('issue', None)
+    print(idMeeting)
+
     return render_template('Employee/bill.html')
 
 
