@@ -320,7 +320,11 @@ def emitMemorandum():
 
 @app.route('/rhdashboard')
 def showRHDashBoard():
-    return render_template('RH/RHDashboard.html')
+    mtngs = Meeting.query.all()
+    rel_mtngs = Rel_Meeting_User.query.all()
+    memos = Memo.query.all()
+    rel_memo = Rel_Memo_User.query.all()
+    return render_template('RH/RHDashboard.html',meetings = mtngs,rel_m_u = rel_mtngs,memo = memos,rel_memo = rel_memo)
 
 asunto = ""
 fecha = ""
