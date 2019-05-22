@@ -518,62 +518,63 @@ def addKey():
                 filename = file.filename
                 fileNames.append(filename)
                 destination = "/".join([target,filename])
+                print(destination)
                 file.save(destination)
         try:
             memorandumType = memorandumType.split("=")[1]
         except:
             pass
 
-        # userKey = ""
+        memorandumBody = "Holaquetal"
+        memorandumBody = memorandumBody.encode()
+        h = SHA256.new(memorandumBody)
 
-        # fileName = 'temporaryFolder/'+ filename
-        # memorandumBody = "Holaquetal"
-        # memorandumBody = memorandumBody.encode()
+        priv_key = RSA.importKey(open("temporaryFolder/"+fileNames[0]).read())
+        singer = PKCS1_v1_5.new(priv_key)
+        signature = singer.sign(h)
 
-        # h = SHA256.new(memorandumBody)
+        hexify = codecs.getencoder ('hex')
+        m = hexify(signature)[0]
 
-        # priv_key = RSA.importKey(open(fileName).read())
-        # singer = PKCS1_v1_5.new(priv_key)
-        # signature = singer.sign(h)
+        user = db.session.query(User).filter(User.idPerson == int(session['idP'])).one()
+        print("ensenamos user")
+        print(user)
+        #file = open(user.publicKey, 'r')
+        userPublicKey = RSA.importKey(open(user.publicKey).read())
+        #file.close()
 
-        # hexify = codecs.getencoder ('hex')
-        # m = hexify(signature)[0]
+        verifier = PKCS1_v1_5.new(userPublicKey)
 
-        # user = db.session.query(User).filter(User.position == 'CEO').one()
-        # #file = open(user.publicKey, 'r')
-        # ceoPublicKey = RSA.importKey(open(user.publicKey).read())
-        # #file.close()
+        finalMessage = "Error: Llave no valida"
 
-        # verifier = PKCS1_v1_5.new(ceoPublicKey)
-        finalMessage = "Error"
-        #if verifier.verify(h, signature):
-        
-        getrelmemo = Rel_Memo_User.query.all()
-        usuarios = User.query.all()
-        print(getIdMemo)
-        print(session['idP'])
-        aux_idP = int(session['idP'])
-        for aux_m in getrelmemo:
-            print("Nueva")
-            print(aux_m.idMemo)
+        if verifier.verify(h, signature):  
+            getrelmemo = Rel_Memo_User.query.all()
+            usuarios = User.query.all()
             print(getIdMemo)
-            print(aux_m.idMemo == int(getIdMemo))
-            if aux_m.idMemo == int(getIdMemo):
-                if aux_m.idPerson == aux_idP:      
-                    mensaje = aux_m.cMessage
-                    
-                    mensaje = mensaje.encode()
-                    aux_hex = codecs.getdecoder('hex')
-                    mensaje = aux_hex(mensaje)[0]
-                    print("temporaryFolder/"+fileNames[0])
-                    fileName = "temporaryFolder/"+fileNames[0]
-                    private_key = RSA.importKey(open(fileName).read())
-                    ciphered = PKCS1_OAEP.new(private_key)
-                    finalMessage = ciphered.decrypt(mensaje)
+            print(session['idP'])
+            aux_idP = int(session['idP'])
+            for aux_m in getrelmemo:
+                print("Nueva")
+                print(aux_m.idMemo)
+                print(getIdMemo)
+                print(aux_m.idMemo == int(getIdMemo))
+                if aux_m.idMemo == int(getIdMemo):
+                    if aux_m.idPerson == aux_idP:      
+                        mensaje = aux_m.cMessage
+                        
+                        mensaje = mensaje.encode()
+                        aux_hex = codecs.getdecoder('hex')
+                        mensaje = aux_hex(mensaje)[0]
+                        print("temporaryFolder/"+fileNames[0])
+                        fileName = "temporaryFolder/"+fileNames[0]
+                        private_key = RSA.importKey(open(fileName).read())
+                        ciphered = PKCS1_OAEP.new(private_key)
+                        finalMessage = str(ciphered.decrypt(mensaje))
+                        finalMessage = finalMessage[2:-1]
+                    else:
+                        print("caca")
                 else:
-                    print("caca")
-            else:
-                print("caca1")
+                    print("caca1")
 
     return render_template('Employee/addKey.html',printMessage=finalMessage)
 
