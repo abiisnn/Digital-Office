@@ -49,6 +49,7 @@ memorandumBody = ""
 memorandumType = ""
 
 
+
 @app.route('/comboEvent')
 def comboEvent():
     Mtype = request.args.get('Mtype', None)
@@ -183,9 +184,15 @@ def showAdminDashBoard():
 
 @app.route('/emitBill')
 def emitBill():
-    return render_template('Employee/bill.html')
+
+    idMeeting = request.args.get('idMeeting', None)
+    issue    = request.args.get('issue', None)
+    date = request.args.get('date', None)
+
+    rel = Rel_Meeting_User.query.all()
 
 
+    return render_template('Employee/bill.html',issue = issue, date = date,rel = rel)
 
 @app.route('/removeAll')
 def removeAll():
@@ -214,6 +221,7 @@ def emitMemorandum():
     username = ""
 
     if request.method == 'POST':
+
         data = User.query.filter_by(username = request.form.get('searchField')).first()
 
         memorandumSubject = str(request.form.get('subject'))       .strip()
@@ -276,8 +284,8 @@ def showMeet():
 
     if request.method == 'POST':
         userInCharge = request.form.get('inCharge')
-        #asunto = request.form.get('asunto')
-        #fecha = request.form.get('fecha')
+        asunto = request.form.get('asunto')
+        fecha = request.form.get('fecha')
         if userInCharge is not None:
             print(recipientsOfTheMeeting) #Users will be part in the meeting
             print(userInCharge) #User in charge of the meeting
@@ -308,12 +316,6 @@ def showMeet():
             username = request.form.get('searchField')
             print(username)
             if username is not "":
-                if asunto == "":
-                    asunto = request.form.get('asunto')
-                if fecha == "":
-                    fecha = request.form.get('fecha')
-                print(asunto)
-                print(fecha)
                 data = User.query.filter_by(username = username).first()
                 if data:
                     if data.idPerson not in recipientsOfTheMeeting.keys():

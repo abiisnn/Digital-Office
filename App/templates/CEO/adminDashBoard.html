@@ -41,9 +41,21 @@
          <div class="collapsible-header"><i class="material-icons">filter_none</i>Memorandum</div>
          {%for mem in memo%}
           {%if mem.memo_type == '1'%}
-            <div class="collapsible-body"><span>{{mem.title}}</span></div>
+            <div class="collapsible-body">
+              <div class = "row">
+                <div class = "col s8">
+                  <span>{{mem.title}}</span>
+                </div>
+                <div class = "col s2">
+                  <center><a class="btn-floating btn-small waves-effect waves-light green"><i class="material-icons">done</i></a></center>
+                </div>
+                <div class = "col s2">
+                  <center><a class="btn-floating btn-small waves-effect waves-light light-blue accent-4"><i class="material-icons">remove_red_eye</i></a></center>
+                </div>
+              </div>
+          </div>
           {%endif%}
-         {%endfor%}    
+         {%endfor%}
        </li>
      </ul>
   </div>
@@ -56,7 +68,19 @@
          {% for r in rel_memo%}
           {%for m in memo%}
             {%if m.idMemo == r.idMemo%}
-              <div class="collapsible-body"><span>{{m.title}}</span></div>
+            <div class="collapsible-body">
+              <div class = "row">
+                <div class = "col s8">
+                  <span>{{m.title}}</span>
+                </div>
+                <div class = "col s2">
+                  <center><a class="btn-floating btn-small waves-effect waves-light green"><i class="material-icons">done</i></a></center>
+                </div>
+                <div class = "col s2">
+                  <center><a class="btn-floating btn-small waves-effect waves-light light-blue accent-4"><i class="material-icons">remove_red_eye</i></a></center>
+                </div>
+              </div>
+          </div>
             {%endif%}
           {%endfor%}
          {% endfor %}

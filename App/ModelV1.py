@@ -36,7 +36,7 @@ class Memo(db.Model):
     title         = db.Column(db.String(50))
     memo_type     = db.Column(db.String(50))
     idPerson      = db.Column(db.Integer, db.ForeignKey("Users.idPerson"),nullable = False)
-    content       = db.Column(db.String(50))
+    content       = db.Column(db.String(2000))
 
     def __init__(self,title, memo_type,idPerson,content):
         self.title = title

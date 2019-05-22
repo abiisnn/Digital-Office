@@ -1,4 +1,4 @@
-{% extends 'base/adminDashBoardBase.html'%}
+{% extends 'base/dashBoardBase.html'%}
 {% block content %}
 
 <div class='row'>
@@ -21,8 +21,26 @@
             </form>
           </li>
         </ul>
+
+        <ul class="collection">
+          <li class="collection-item avatar">
+            <center><span class="title">Abigail Nicolas</span></center>
+            <form class = "file-field input-field">
+              <div class = "btn-small waves-effect blue">
+                <span>Add key</span>
+                <input type = "file" />
+              </div>
+              <div class = "file-path-wrapper">
+                <input class = "file-path validate" type = "text"
+                  placeholder = "Upload file" />
+              </div>
+            </form>
+          </li>
+        </ul>
+
       </div>
     </div>
+
   </div>
 
   <!-- SECOND COLUMN -->
@@ -33,12 +51,12 @@
           <!-- Issue -->
           <div class="input-field col s6">
             <i class="material-icons prefix">email</i>
-            <label>Issue: </label>
+            <label>Issue: {{issue}}</label>
           </div>
           <!-- Date -->
           <div class="input-field col s6">
             <i class="material-icons prefix">date_range</i>
-            <label>Date: </label>
+            <label>Date: {{date}}</label>
           </div>
           <br><br><br>
           <!-- Text area -->
@@ -47,7 +65,7 @@
         <center>
           <button class="waves-effect waves-light btn-small light-blue accent-4" type='submit'><i class="material-icons left">send</i>Confirm</button>
         </center>
-        
+
         {% if flag %}
         <script>
           swal("Memorandum sent sucessfully", "", "success");
@@ -56,5 +74,10 @@
       </form>
     </div>
   </div>
+  {% for r in rel %}
+
+    <p>{{r.idPerson}}</p>
+
+  {% endfor %}
 
 {% endblock %}
