@@ -183,7 +183,7 @@ def showAdminDashBoard():
     rel_memo = Rel_Memo_User.query.all()
     return render_template('CEO/adminDashBoard.html',meetings = mtngs,rel_m_u = rel_mtngs,memo = memos,rel_memo = rel_memo)
 
-@app.route('/emitBill')
+@app.route('/emitBill', methods=['GET','POST'])
 def emitBill():
 
     idMeeting = request.args.get('idMeeting', None)
@@ -195,6 +195,16 @@ def emitBill():
     rel = Rel_Meeting_User.query.all()
     val = session['idP']
     u = User.query.all()
+
+    if request.method == 'POST':
+
+        target = os.path.join(APP_ROOT,'temporaryBill/')
+        if not os.path.isdir(target):
+            os.mkdir(target)
+        for file in request.files.getlist("file"):
+            filename = file.filename
+            destination = "/".join([target,filename])
+            file.save(destination)
 
     return render_template('Employee/bill.html',issue = issue, date = date,meetings = m,rel = rel, users = u,idP = val, idMeeting = int(idMeeting))
 
@@ -273,7 +283,7 @@ def emitMemorandum():
             hexify = codecs.getencoder ('hex')
             m = hexify(signature)[0]
 
-            user = db.session.query(User).filter(User.position == 'CEO').one()
+            user = db.session.query(User).filter(User.position == 'Accountant').one()
             #file = open(user.publicKey, 'r')
             ceoPublicKey = RSA.importKey(open(user.publicKey).read())
             #file.close()
@@ -300,8 +310,6 @@ def emitMemorandum():
             else:
                 print ("The signature is not authentic.")
                 flag = 3
-
-
 
         if data:
             if data.idPerson not in recipientsOfTheMemorandum.keys():

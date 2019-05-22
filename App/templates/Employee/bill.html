@@ -4,34 +4,27 @@
 <div class='row'>
   <!-- FIST COLUMN -->
   <div class="col s4">
-    <div class="col s12 center search input-field">
-      <div class="scrollable3">
 
+    <div class="col s12 center search input-field">
+      <center><p>Members</p></center>
+
+      <div class="scrollable3">
         {% for r2 in rel%}
           {%if r2.idMeeting == idMeeting%}
             {% for u in users %}
               {%if u.idPerson == r2.idPerson%}
-        <ul class="collection">
-          <li class="collection-item avatar">
-            <center><span class="title">{{u.name}} {{u.lastName}}</span></center>
-            <form class = "file-field input-field">
-              <div class = "btn-small waves-effect blue">
-                <span>Add key</span>
-                <input type = "file" />
-              </div>
-              <div class = "file-path-wrapper">
-                <input class = "file-path validate" type = "text"
-                  placeholder = "Upload file" />
-              </div>
-            </form>
-          </li>
-        </ul>
+              <ul class="collection">
+                <li class="collection-item avatar">
+                  <i class="material-icons circle light-blue accent-4">person</i>
+                  <center><span class="title">{{u.name}} {{u.lastName}}</span></center>
+                  <center><p>{{u.email}}</p></center>
+                  <center><p>{{u.position}}</p></center>
+                </li>
+              </ul>
         {% endif %}
       {% endfor %}
     {% endif %}
   {% endfor %}
-
-
       </div>
     </div>
 
@@ -56,9 +49,18 @@
           <!-- Text area -->
           <textarea rows="200" cols="20" name="body"></textarea>
         </div>
-        <center>
-          <button class="waves-effect waves-light btn-small light-blue accent-4" type='submit'><i class="material-icons left">send</i>Confirm</button>
-        </center>
+
+
+        <div class="file-field input-field">
+             <div class="btn-small light-blue accent-4"><i class="material-icons left">file_upload</i>
+               <span>Keys</span>
+               <input enctype= "multipart/form-data" type="file" name = 'file'>
+             </div>
+             <div class="file-path-wrapper ">
+               <input class="file-path validate" type="text" style="text-align:center">
+             </div>
+          </div>
+      <center><button class="waves-effect waves-light btn-small light-blue accent-4" type='submit'><i class="material-icons left">send</i>Verify</button></center>
 
         {% if flag %}
         <script>
