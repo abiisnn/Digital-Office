@@ -283,7 +283,7 @@ def emitMemorandum():
             hexify = codecs.getencoder ('hex')
             m = hexify(signature)[0]
 
-            user = db.session.query(User).filter(User.position == 'Accountant').one()
+            user = db.session.query(User).filter(User.position == 'CEO').one()
             #file = open(user.publicKey, 'r')
             ceoPublicKey = RSA.importKey(open(user.publicKey).read())
             #file.close()
