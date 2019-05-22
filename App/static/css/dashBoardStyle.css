@@ -21,12 +21,18 @@ select{
 }
 
 .scrollable2 {
-    height: 400px;       /* Just for the demo          */
+    height: 430px;       /* Just for the demo          */
     width: 430px;
     overflow-y: auto;    /* Trigger vertical scroll    */
     overflow-x: auto;  /* Hide the horizontal scroll */
 }
 
+.scrollable3 {
+    height: 480px;       /* Just for the demo          */
+    width: 410px;
+    overflow-y: auto;    /* Trigger vertical scroll    */
+    overflow-x: auto;  /* Hide the horizontal scroll */
+}
 
 p { color: #4c4a37;
     font-family: 'Source Sans Pro', sans-serif; font-size: 18px; line-height: 32px; margin: 0 0 24px;

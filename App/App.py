@@ -189,10 +189,13 @@ def emitBill():
     issue    = request.args.get('issue', None)
     date = request.args.get('date', None)
 
+
+    m = Meeting.query.all()
     rel = Rel_Meeting_User.query.all()
+    val = session['idP']
+    u = User.query.all()
 
-
-    return render_template('Employee/bill.html',issue = issue, date = date,rel = rel)
+    return render_template('Employee/bill.html',issue = issue, date = date,meetings = m,rel = rel, users = u,idP = val, idMeeting = int(idMeeting))
 
 @app.route('/removeAll')
 def removeAll():
@@ -245,7 +248,10 @@ def emitMemorandum():
                     destination = "/".join([target,filename])
                     file.save(destination)
                     flag = True
-            memorandumType = memorandumType.split("=")[1]
+            try:
+                memorandumType = memorandumType.split("=")[1]
+            except:
+                pass
             new_memo = Memo(memorandumSubject,memorandumType,1,memorandumBody)
             db.session.add(new_memo)
             db.session.commit()
