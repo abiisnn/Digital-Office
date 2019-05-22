@@ -296,7 +296,7 @@ def emitMemorandum():
                 new_memo = Memo(memorandumSubject,memorandumType,1,memorandumBody)
                 db.session.add(new_memo)
                 db.session.commit()
-
+                usuarios = Users.query.all()
                 if memorandumType is not "1":#
                     new_memo = Memo(memorandumSubject,memorandumType,1,'nada')
                     db.session.add(new_memo)
@@ -307,9 +307,23 @@ def emitMemorandum():
                         lastMemo = r.idMemo
 
                     for k in recipientsOfTheMemorandum:
-                        relation = Rel_Memo_User(k,lastMemo,ciphered)
-                        db.session.add(relation)
-                        db.session.commit()
+                        for u in usuarios:
+                            if k == u.idPerson:
+                                auxM = memorandumBody.encode()
+
+                                fileName = u.publicKey
+                                aux_public_key = RSA.importKey(open(fileName).read())
+                                
+                                aux_cipher = PKCS1_OAEP.new(aux_public_key)
+                                encrypted_message = aux_cipher.encrypt(auxM)
+                                
+                                aux_hexify = codecs.getencoder('hex')
+                                aux_m = hexify(encrypted_message)[0]
+                                
+                                encrypted_message = aux_m.decode() 
+                                relation = Rel_Memo_User(k,lastMemo,encrypted_message)
+                                db.session.add(relation)
+                                db.session.commit()
                 else:
                     new_memo = Memo(memorandumSubject,memorandumType,1,memorandumBody)
                     db.session.add(new_memo)

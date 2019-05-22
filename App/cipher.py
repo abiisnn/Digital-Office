@@ -25,6 +25,7 @@ m = hexify(encrypted_message)[0]
 
 encrypted_message = m.decode()
 print("MENSAJE CIFRADO\n")
+print(encrypted_message)
 print(type(encrypted_message))
 print("\n\n")
 
