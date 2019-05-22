@@ -271,7 +271,7 @@ def emitMemorandum():
 
  #           userKey = str(file.read())
 #            file.close()
-
+            aux_memo = memorandumBody
             memorandumBody = memorandumBody.encode()
 
             h = SHA256.new(memorandumBody)
@@ -293,10 +293,10 @@ def emitMemorandum():
             if verifier.verify(h, signature):
                 print ("The signature is authentic.")
                 flag = 2
-                new_memo = Memo(memorandumSubject,memorandumType,1,memorandumBody)
-                db.session.add(new_memo)
-                db.session.commit()
-                usuarios = Users.query.all()
+                #new_memo = Memo(memorandumSubject,memorandumType,1,memorandumBody)
+                # # db.session.add(new_memo)
+                # db.session.commit()
+                usuarios = User.query.all()
                 if memorandumType is not "1":#
                     new_memo = Memo(memorandumSubject,memorandumType,1,'nada')
                     db.session.add(new_memo)
@@ -309,7 +309,7 @@ def emitMemorandum():
                     for k in recipientsOfTheMemorandum:
                         for u in usuarios:
                             if k == u.idPerson:
-                                auxM = memorandumBody.encode()
+                                auxM = memorandumBody
 
                                 fileName = u.publicKey
                                 aux_public_key = RSA.importKey(open(fileName).read())
@@ -324,8 +324,10 @@ def emitMemorandum():
                                 relation = Rel_Memo_User(k,lastMemo,encrypted_message)
                                 db.session.add(relation)
                                 db.session.commit()
+                            else:
+                                print(k)
                 else:
-                    new_memo = Memo(memorandumSubject,memorandumType,1,memorandumBody)
+                    new_memo = Memo(memorandumSubject,memorandumType,1,aux_memo)
                     db.session.add(new_memo)
                     db.session.commit()
 
