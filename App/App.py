@@ -28,6 +28,7 @@ from ModelV1 import Memo
 from ModelV1 import Rel_Memo_User
 from config import DevelopmentConfig
 from Crypto.Signature import PKCS1_v1_5
+from Crypto.Cipher import PKCS1_OAEP
 from Crypto.Hash import SHA256
 from Crypto.PublicKey import RSA
 
@@ -132,6 +133,10 @@ def showDashBoard():
     memos = Memo.query.all()
     rel_memo = Rel_Memo_User.query.all()
     return render_template('Employee/dashboard.html',meetings = mtngs,rel_m_u = rel_mtngs,idP=val,memo = memos,rel_memo = rel_memo)
+
+@app.route('/viewDoc')
+def viewDoc():
+    return render_template('Employee/viewDoc.html')
 
 
 @app.route('/login', methods = ['GET', 'POST'])
@@ -305,13 +310,16 @@ def emitMemorandum():
                     lastMemo = -1
                     for r in records:
                         lastMemo = r.idMemo
-
+                    print(lastMemo)
+                    print(recipientsOfTheMemorandum)
+                    print(usuarios)
                     for k in recipientsOfTheMemorandum:
                         for u in usuarios:
                             if k == u.idPerson:
                                 auxM = memorandumBody
 
                                 fileName = u.publicKey
+                                print(fileName)
                                 aux_public_key = RSA.importKey(open(fileName).read())
                                 
                                 aux_cipher = PKCS1_OAEP.new(aux_public_key)

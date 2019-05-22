@@ -5,43 +5,12 @@
   <div class="col s8">
     <div class="row">
       <form class="col s12" id="sendDocument" method="POST"  enctype="multipart/form-data">
-        <div class="row">
-          <div class="input-field col s6">
-            <i class="material-icons prefix">email</i>
-
-            <input placeholder="Subject" id="title" type="text" name = "subject" style="text-align:center">
-          </div>
-          <div class="input-field col s6">
-
-            </div>
+        <div class="row">          
               <textarea rows="200" cols="20" name="body"></textarea>
         </div>
-      <div class="file-field input-field">
-           <div class="btn-small light-blue accent-4"><i class="material-icons left">file_upload</i>
-             <span>Private key</span>
-             <input enctype= "multipart/form-data" type="file" name = 'file'>
-           </div>
-           <div class="file-path-wrapper ">
-             <input class="file-path validate" type="text" style="text-align:center">
-           </div>
-        </div>
-        <center><button class="waves-effect waves-light btn-small light-blue accent-4" type='submit'><i class="material-icons left">send</i>Confirm</button></center>
-        {% if flag == 2 %}
-        <script>
-          swal("Memorandum sent sucessfully", "", "success");
-        </script>
-        {% elif flag == 3 %}
-        <script>
-          swal("The signature is not authentic", "", "error");
-        </script>
-        {% endif %}
       </form>
-
-
     </div>
-
   </div>
-
 
 
   </div>
