@@ -499,9 +499,64 @@ def binnacle():
 def meetingL():
     return render_template('General/meetingList.html')
 
-@app.route('/addKey')
+app.route('/addKey')
 def addKey():
-    return render_template('Employee/addKey.html')
+    getIdMemo = request.args.get('idM',None)
+    if request.method == 'POST':
+        privateKey        =  request.files.getlist("file")
+        if privateKey is not None:
+            target = os.path.join(APP_ROOT,'temporaryFolder/')
+            if not os.path.isdir(target):
+                os.mkdir(target)
+            for file in request.files.getlist("file"):
+                filename = file.filename
+                destination = "/".join([target,filename])
+                file.save(destination)
+        try:
+            memorandumType = memorandumType.split("=")[1]
+        except:
+            pass
+
+        userKey = ""
+
+        fileName = 'temporaryFolder/'+ filename
+        aux_memo = memorandumBody
+        memorandumBody = memorandumBody.encode()
+
+        h = SHA256.new(memorandumBody)
+
+        priv_key = RSA.importKey(open(fileName).read())
+        singer = PKCS1_v1_5.new(priv_key)
+        signature = singer.sign(h)
+
+        hexify = codecs.getencoder ('hex')
+        m = hexify(signature)[0]
+
+        user = db.session.query(User).filter(User.position == 'CEO').one()
+        #file = open(user.publicKey, 'r')
+        ceoPublicKey = RSA.importKey(open(user.publicKey).read())
+        #file.close()
+
+        verifier = PKCS1_v1_5.new(ceoPublicKey)
+        finalMessage = "Error"
+        if verifier.verify(h, signature):
+            getrelmemo = Rel_Memo_User.query.all()
+            usuarios = User.query.all()
+
+            for aux_m in getrelmemo:
+                if aux_m.idMemo == getIdMemo:
+                    for u in usuarios:
+                        if aux_m.idPerson == u.idPerson:      
+                            mensaje = aux_m.cMessage
+                            mensaje = mensaje.encode()
+                            aux_hex = codecs.getdecoder('hex')
+                            mensaje = hexify(mensaje)[0]
+                            fileName = u.publicKey
+                            private_key = RSA.importKey(open(fileName).read())
+                            cihered = PKCS1_OAEP.new(private_key)
+                            finalMessage = cipher.decrypt(mensaje)
+
+    return render_template('Employee/addKey.html',printMessage=finalMessage)
 
 def obtainUserName():
     userName = session['userName']
