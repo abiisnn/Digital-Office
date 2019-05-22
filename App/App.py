@@ -219,7 +219,7 @@ def emitMemorandum():
     global memorandumBody
     global memorandumType
 
-    flag = False
+    flag = 1
 
     users = User.query.all()
     username = ""
@@ -248,7 +248,6 @@ def emitMemorandum():
                     filename = file.filename
                     destination = "/".join([target,filename])
                     file.save(destination)
-                    flag = True
             try:
                 memorandumType = memorandumType.split("=")[1]
             except:
@@ -273,33 +272,36 @@ def emitMemorandum():
 
             hexify = codecs.getencoder ('hex')
             m = hexify(signature)[0]
-           
+
             user = db.session.query(User).filter(User.position == 'CEO').one()
             #file = open(user.publicKey, 'r')
             ceoPublicKey = RSA.importKey(open(user.publicKey).read())
             #file.close()
-            
+
             verifier = PKCS1_v1_5.new(ceoPublicKey)
-            
+
             if verifier.verify(h, signature):
                 print ("The signature is authentic.")
+                flag = 2
+                new_memo = Memo(memorandumSubject,memorandumType,1,memorandumBody)
+                db.session.add(new_memo)
+                db.session.commit()
+
+                if memorandumType is not "1":
+                    records = Memo.query.all()
+                    lastMemo = -1
+                    for r in records:
+                        lastMemo = r.idMemo
+
+                    for k in recipientsOfTheMemorandum:
+                        relation = Rel_Memo_User(k,lastMemo)
+                        db.session.add(relation)
+                        db.session.commit()
             else:
                 print ("The signature is not authentic.")
+                flag = 3
 
-            new_memo = Memo(memorandumSubject,memorandumType,1,memorandumBody)
-            db.session.add(new_memo)
-            db.session.commit()
 
-            if memorandumType is not "1":
-                records = Memo.query.all()
-                lastMemo = -1
-                for r in records:
-                    lastMemo = r.idMemo
-
-                for k in recipientsOfTheMemorandum:
-                    relation = Rel_Memo_User(k,lastMemo)
-                    db.session.add(relation)
-                    db.session.commit()
 
         if data:
             if data.idPerson not in recipientsOfTheMemorandum.keys():

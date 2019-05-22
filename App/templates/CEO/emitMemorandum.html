@@ -57,19 +57,19 @@
                 <option value="" disabled selected><p>Select type of memorandum</p></option>
                 <option value="{{url_for('comboEvent', Mtype=1)}}"><p> Public Memorandum</p></option>
                 <option value="{{url_for('comboEvent', Mtype=2)}}"><p>Confidential Memorandum</p></option>
-              
+
               {% elif Mtype == '1' %}
                 <option value="" disabled selected><p>Select type of memorandum</p></option>
                 <option selected="selected" value="{{url_for('comboEvent', Mtype=1)}}"><p> Public Memorandum</p></option>
                 <option value="{{url_for('comboEvent', Mtype=2)}}"><p>Confidential Memorandum</p></option>
-            
+
               {% elif Mtype == '2' %}
                 <option value="" disabled selected><p>Select type of memorandum</p></option>
                 <option value="{{url_for('comboEvent', Mtype=1)}}"><p> Public Memorandum</p></option>
                 <option selected="selected" value="{{url_for('comboEvent', Mtype=2)}}"><p>Confidential Memorandum</p></option>
               {% endif %}
 
-            
+
             </select>
 
             </div>
@@ -85,9 +85,13 @@
            </div>
         </div>
         <center><button class="waves-effect waves-light btn-small light-blue accent-4" type='submit'><i class="material-icons left">send</i>Confirm</button></center>
-        {% if flag %}
+        {% if flag == 2 %}
         <script>
           swal("Memorandum sent sucessfully", "", "success");
+        </script>
+        {% elif flag == 3 %}
+        <script>
+          swal("The signature is not authentic", "", "error");
         </script>
         {% endif %}
       </form>
