@@ -5,26 +5,15 @@
   <!-- FIST COLUMN -->
   <div class="col s4">
     <div class="col s12 center search input-field">
-      <div class="scrollable">
-        <ul class="collection">
-          <li class="collection-item avatar">
-            <center><span class="title">Abigail Nicolas</span></center>
-            <form class = "file-field input-field">
-              <div class = "btn-small waves-effect blue">
-                <span>Add key</span>
-                <input type = "file" />
-              </div>
-              <div class = "file-path-wrapper">
-                <input class = "file-path validate" type = "text"
-                  placeholder = "Upload file" />
-              </div>
-            </form>
-          </li>
-        </ul>
+      <div class="scrollable3">
 
+        {% for r2 in rel%}
+          {%if r2.idMeeting == idMeeting%}
+            {% for u in users %}
+              {%if u.idPerson == r2.idPerson%}
         <ul class="collection">
           <li class="collection-item avatar">
-            <center><span class="title">Abigail Nicolas</span></center>
+            <center><span class="title">{{u.name}} {{u.lastName}}</span></center>
             <form class = "file-field input-field">
               <div class = "btn-small waves-effect blue">
                 <span>Add key</span>
@@ -37,6 +26,11 @@
             </form>
           </li>
         </ul>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+  {% endfor %}
+
 
       </div>
     </div>
@@ -74,10 +68,12 @@
       </form>
     </div>
   </div>
-  {% for r in rel %}
 
-    <p>{{r.idPerson}}</p>
 
-  {% endfor %}
+
+
+
+
+
 
 {% endblock %}
