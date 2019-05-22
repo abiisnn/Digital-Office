@@ -561,14 +561,15 @@ def addKey():
             if aux_m.idMemo == int(getIdMemo):
                 if aux_m.idPerson == aux_idP:      
                     mensaje = aux_m.cMessage
+                    
                     mensaje = mensaje.encode()
                     aux_hex = codecs.getdecoder('hex')
                     mensaje = aux_hex(mensaje)[0]
-                    print(fileNames[0])
-                    fileName = fileNames[0]
+                    print("temporaryFolder/"+fileNames[0])
+                    fileName = "temporaryFolder/"+fileNames[0]
                     private_key = RSA.importKey(open(fileName).read())
-                    cihered = PKCS1_OAEP.new(private_key)
-                    finalMessage = cipher.decrypt(mensaje)
+                    ciphered = PKCS1_OAEP.new(private_key)
+                    finalMessage = ciphered.decrypt(mensaje)
                 else:
                     print("caca")
             else:

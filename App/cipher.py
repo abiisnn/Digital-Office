@@ -29,6 +29,7 @@ print(encrypted_message)
 print(type(encrypted_message))
 print("\n\n")
 
+
 # RECUPERAR DE LA BD
 encrypted_message = encrypted_message.encode()
 hexify = codecs.getdecoder('hex')
