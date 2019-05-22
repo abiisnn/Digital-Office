@@ -15,6 +15,9 @@
           </div>
       </div>
       <center><button class="waves-effect waves-light btn-small light-blue accent-4" type='submit'><i class="material-icons left">send</i>Confirm</button></center>
+      {%if printMessage%}
+        <h1>{{printMessage}}</h1>
+      {%endif%}
     </form>
   </div>
 </div>
