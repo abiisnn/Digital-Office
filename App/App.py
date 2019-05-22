@@ -187,11 +187,12 @@ def emitBill():
 
     idMeeting = request.args.get('idMeeting', None)
     issue    = request.args.get('issue', None)
-    print(idMeeting)
+    date = request.args.get('date', None)
 
-    return render_template('Employee/bill.html')
+    rel = Rel_Meeting_User.query.all()
 
 
+    return render_template('Employee/bill.html',issue = issue, date = date,rel = rel)
 
 @app.route('/removeAll')
 def removeAll():

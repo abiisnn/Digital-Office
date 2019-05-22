@@ -1,4 +1,4 @@
-{% extends 'base/adminDashBoardBase.html'%}
+{% extends 'base/dashBoardBase.html'%}
 {% block content %}
 
 <table class = "striped highlight centered responsive-table">
@@ -39,10 +39,12 @@
                       {% endfor %}
                     {% endif %}
                   {% endfor %}
+
+
               </td>
                   <!--  Esta parte es para ver si quien visualiza la pantalla es el creador de esa junta -->
                   {% if idP == m.idPerson %}
-                      <td>  <a href="{{url_for('emitBill', idMeeting = m.idMeeting, issue = m.issue)}}" class="btn-floating btn-small waves-effect waves-light orange approved"><i class="material-icons">group</i></a></td>
+                      <td>  <a href="{{url_for('emitBill', idMeeting = m.idMeeting, issue = m.issue, date = m.date)}}" class="btn-floating btn-small waves-effect waves-light orange approved"><i class="material-icons">group</i></a></td>
 
                   <!-- Si no es encargado, entonces solo es un miembro más. -->
                   {% elif idP != m.idPerson %}
