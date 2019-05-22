@@ -466,6 +466,9 @@ def binnacle():
 def meetingL():
     return render_template('General/meetingList.html')
 
+@app.route('/addKey')
+def meetingL():
+    return render_template('Employee/addKey.html')
 
 def obtainUserName():
     userName = session['userName']
