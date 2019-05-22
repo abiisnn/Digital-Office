@@ -1,6 +1,27 @@
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
  
+def draw_paragraph(self, text, max_width, max_height, style):
+        if not text:
+            text = ''
+        if not isinstance(text, str):
+            text = str(text)
+        text = text.strip(string.whitespace)
+        text = text.replace('\n', "<br/>")
+        p = Paragraph(text, style)
+        used_width, used_height = p.wrap(max_width, max_height)
+        line_widths = p.getActualLineWidths0()
+        number_of_lines = len(line_widths)
+        if number_of_lines > 1:
+            actual_width = used_width
+        elif number_of_lines == 1:
+            actual_width = min(line_widths)
+            used_width, used_height = p.wrap(actual_width + 0.1, max_height)
+        else:
+            return 0, 0
+        p.drawOn(self.canvas, self.cursor.x, self.cursor.y - used_height)
+        return used_width, used_height 
+
 canvas = canvas.Canvas("idDocument.pdf", pagesize=letter)
 canvas.setLineWidth(.3)
 # canvas.setFont('Helvetica', 12)
@@ -12,7 +33,5 @@ canvas.setLineWidth(.3)
 # canvas.line(120,700,580,700)
 # canvas.drawString(120,703,"Put date")
  
-canvas.drawString(30,750,"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue velit cursus nunc,")
-
 
 canvas.save()

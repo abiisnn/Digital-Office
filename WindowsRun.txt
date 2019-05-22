@@ -1,5 +1,4 @@
 Windows:
 py -m venv env
 env\Scripts\activate
-
 py App.py
