@@ -501,7 +501,7 @@ def meetingL():
 
 @app.route('/addKey', methods = ['GET','POST'])
 def addKey():
-    fileNames = 
+    fileNames = []
     obtainUserName()
     getIdMemo = request.args.get('idM',None)
     finalMessage = ""
@@ -516,6 +516,7 @@ def addKey():
                 os.mkdir(target)
             for file in request.files.getlist("file"):
                 filename = file.filename
+                fileNames.append(filename)
                 destination = "/".join([target,filename])
                 file.save(destination)
         try:
@@ -563,8 +564,8 @@ def addKey():
                     mensaje = mensaje.encode()
                     aux_hex = codecs.getdecoder('hex')
                     mensaje = aux_hex(mensaje)[0]
-                    print(privateKey)
-                    fileName = privateKey
+                    print(fileNames[0])
+                    fileName = fileNames[0]
                     private_key = RSA.importKey(open(fileName).read())
                     cihered = PKCS1_OAEP.new(private_key)
                     finalMessage = cipher.decrypt(mensaje)
