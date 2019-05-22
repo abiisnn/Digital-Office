@@ -499,11 +499,17 @@ def binnacle():
 def meetingL():
     return render_template('General/meetingList.html')
 
-app.route('/addKey')
+@app.route('/addKey', methods = ['GET','POST'])
 def addKey():
+    fileNames = 
+    obtainUserName()
     getIdMemo = request.args.get('idM',None)
+    finalMessage = ""
+    print(request.method)
     if request.method == 'POST':
+        print("holaaaaa")
         privateKey        =  request.files.getlist("file")
+        print(privateKey)
         if privateKey is not None:
             target = os.path.join(APP_ROOT,'temporaryFolder/')
             if not os.path.isdir(target):
@@ -517,44 +523,55 @@ def addKey():
         except:
             pass
 
-        userKey = ""
+        # userKey = ""
 
-        fileName = 'temporaryFolder/'+ filename
-        aux_memo = memorandumBody
-        memorandumBody = memorandumBody.encode()
+        # fileName = 'temporaryFolder/'+ filename
+        # memorandumBody = "Holaquetal"
+        # memorandumBody = memorandumBody.encode()
 
-        h = SHA256.new(memorandumBody)
+        # h = SHA256.new(memorandumBody)
 
-        priv_key = RSA.importKey(open(fileName).read())
-        singer = PKCS1_v1_5.new(priv_key)
-        signature = singer.sign(h)
+        # priv_key = RSA.importKey(open(fileName).read())
+        # singer = PKCS1_v1_5.new(priv_key)
+        # signature = singer.sign(h)
 
-        hexify = codecs.getencoder ('hex')
-        m = hexify(signature)[0]
+        # hexify = codecs.getencoder ('hex')
+        # m = hexify(signature)[0]
 
-        user = db.session.query(User).filter(User.position == 'CEO').one()
-        #file = open(user.publicKey, 'r')
-        ceoPublicKey = RSA.importKey(open(user.publicKey).read())
-        #file.close()
+        # user = db.session.query(User).filter(User.position == 'CEO').one()
+        # #file = open(user.publicKey, 'r')
+        # ceoPublicKey = RSA.importKey(open(user.publicKey).read())
+        # #file.close()
 
-        verifier = PKCS1_v1_5.new(ceoPublicKey)
+        # verifier = PKCS1_v1_5.new(ceoPublicKey)
         finalMessage = "Error"
-        if verifier.verify(h, signature):
-            getrelmemo = Rel_Memo_User.query.all()
-            usuarios = User.query.all()
-
-            for aux_m in getrelmemo:
-                if aux_m.idMemo == getIdMemo:
-                    for u in usuarios:
-                        if aux_m.idPerson == u.idPerson:      
-                            mensaje = aux_m.cMessage
-                            mensaje = mensaje.encode()
-                            aux_hex = codecs.getdecoder('hex')
-                            mensaje = hexify(mensaje)[0]
-                            fileName = u.publicKey
-                            private_key = RSA.importKey(open(fileName).read())
-                            cihered = PKCS1_OAEP.new(private_key)
-                            finalMessage = cipher.decrypt(mensaje)
+        #if verifier.verify(h, signature):
+        
+        getrelmemo = Rel_Memo_User.query.all()
+        usuarios = User.query.all()
+        print(getIdMemo)
+        print(session['idP'])
+        aux_idP = int(session['idP'])
+        for aux_m in getrelmemo:
+            print("Nueva")
+            print(aux_m.idMemo)
+            print(getIdMemo)
+            print(aux_m.idMemo == int(getIdMemo))
+            if aux_m.idMemo == int(getIdMemo):
+                if aux_m.idPerson == aux_idP:      
+                    mensaje = aux_m.cMessage
+                    mensaje = mensaje.encode()
+                    aux_hex = codecs.getdecoder('hex')
+                    mensaje = aux_hex(mensaje)[0]
+                    print(privateKey)
+                    fileName = privateKey
+                    private_key = RSA.importKey(open(fileName).read())
+                    cihered = PKCS1_OAEP.new(private_key)
+                    finalMessage = cipher.decrypt(mensaje)
+                else:
+                    print("caca")
+            else:
+                print("caca1")
 
     return render_template('Employee/addKey.html',printMessage=finalMessage)
 
