@@ -73,10 +73,12 @@ class Rel_Memo_User(db.Model):
     idRelMemoUser = db.Column(db.Integer, primary_key = True)
     idPerson      = db.Column(db.Integer, db.ForeignKey("Users.idPerson"),nullable = False)
     idMemo        = db.Column(db.Integer, db.ForeignKey("Memo.idMemo"),nullable = False)
+    cMessage      = db.Column(db.String(2000))
 
-    def __init__(self, idPerson,idMemo):
+    def __init__(self, idPerson,idMemo,cMessage):
         self.idPerson = idPerson
         self.idMemo = idMemo
+        self.cMessage = cMessage
 
 class Binnacle(db.Model):
     __tablename__ = 'binnacle'

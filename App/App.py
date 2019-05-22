@@ -297,16 +297,24 @@ def emitMemorandum():
                 db.session.add(new_memo)
                 db.session.commit()
 
-                if memorandumType is not "1":
+                if memorandumType is not "1":#
+                    new_memo = Memo(memorandumSubject,memorandumType,1,'nada')
+                    db.session.add(new_memo)
+                    db.session.commit() 
                     records = Memo.query.all()
                     lastMemo = -1
                     for r in records:
                         lastMemo = r.idMemo
 
                     for k in recipientsOfTheMemorandum:
-                        relation = Rel_Memo_User(k,lastMemo)
+                        relation = Rel_Memo_User(k,lastMemo,ciphered)
                         db.session.add(relation)
                         db.session.commit()
+                else:
+                    new_memo = Memo(memorandumSubject,memorandumType,1,memorandumBody)
+                    db.session.add(new_memo)
+                    db.session.commit()
+
             else:
                 print ("The signature is not authentic.")
                 flag = 3
