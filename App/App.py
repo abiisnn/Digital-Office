@@ -256,33 +256,35 @@ def emitMemorandum():
 
             userKey = ""
 
-            fileName = 'temporaryFolder/'+filename
+            fileName = 'temporaryFolder/'+ filename
 
-            file = open(fileName,'r')
+  #          file = open(fileName,'r')
 
-            userKey = str(file.read())
-            file.close()
+ #           userKey = str(file.read())
+#            file.close()
 
             memorandumBody = memorandumBody.encode()
 
             h = SHA256.new(memorandumBody)
 
-            priv_key = RSA.importKey(userKey)
+            priv_key = RSA.importKey(open(fileName).read())
             singer = PKCS1_v1_5.new(priv_key)
             signature = singer.sign(h)
 
-
             hexify = codecs.getencoder ('hex')
             m = hexify(signature)[0]
-            user = db.session.query(User).filter(User.position == 'Accountant').one()
-            file = open(user.publicKey, 'r')
-            ceoPublicKey = file.read()
-            file.close()
+           
+            user = db.session.query(User).filter(User.position == 'CEO').one()
+            #file = open(user.publicKey, 'r')
+            ceoPublicKey = RSA.importKey(open(user.publicKey).read())
+            #file.close()
+            
             verifier = PKCS1_v1_5.new(ceoPublicKey)
-            #if verifier.verify(h, signature):
-            #    print ("The signature is authentic.")
-            #else:
-            #    print ("The signature is not authentic.")
+            
+            if verifier.verify(h, signature):
+                print ("The signature is authentic.")
+            else:
+                print ("The signature is not authentic.")
 
             new_memo = Memo(memorandumSubject,memorandumType,1,memorandumBody)
             db.session.add(new_memo)
