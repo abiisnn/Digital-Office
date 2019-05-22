@@ -1,5 +1,6 @@
 import flask
 import threading
+import codecs
 from flask import send_file
 from flask_mail import Mail
 from flask_mail import Message
@@ -232,11 +233,12 @@ def emitMemorandum():
         memorandumBody    = str(request.form.get('body'))          .strip()
         privateKey        =  request.files.getlist("file")
 
-        print(memorandumSubject)
-        print(memorandumType)
-        print(memorandumBody)
-        print(privateKey)
+        #print(memorandumSubject)
+        #print(memorandumType)
+        #print(memorandumBody)
+        #print(privateKey)
 
+        filename = ""
         if memorandumType is not None and len(memorandumSubject) > 0 and len(memorandumBody) > 0 and privateKey is not None and not data:
             if privateKey is not None:
                 target = os.path.join(APP_ROOT,'temporaryFolder/')
@@ -244,7 +246,6 @@ def emitMemorandum():
                     os.mkdir(target)
                 for file in request.files.getlist("file"):
                     filename = file.filename
-                    print(filename)
                     destination = "/".join([target,filename])
                     file.save(destination)
                     flag = True
@@ -252,6 +253,37 @@ def emitMemorandum():
                 memorandumType = memorandumType.split("=")[1]
             except:
                 pass
+
+            userKey = ""
+
+            fileName = 'temporaryFolder/'+filename
+
+            file = open(fileName,'r')
+
+            userKey = str(file.read())
+            file.close()
+
+            memorandumBody = memorandumBody.encode()
+
+            h = SHA256.new(memorandumBody)
+
+            priv_key = RSA.importKey(userKey)
+            singer = PKCS1_v1_5.new(priv_key)
+            signature = singer.sign(h)
+
+
+            hexify = codecs.getencoder ('hex')
+            m = hexify(signature)[0]
+            user = db.session.query(User).filter(User.position == 'Accountant').one()
+            file = open(user.publicKey, 'r')
+            ceoPublicKey = file.read()
+            file.close()
+            verifier = PKCS1_v1_5.new(ceoPublicKey)
+            #if verifier.verify(h, signature):
+            #    print ("The signature is authentic.")
+            #else:
+            #    print ("The signature is not authentic.")
+
             new_memo = Memo(memorandumSubject,memorandumType,1,memorandumBody)
             db.session.add(new_memo)
             db.session.commit()
@@ -358,12 +390,16 @@ def generateKeys():
             fileName_prk = 'privateKeys/'+userName+"_privateKey.txt"
             fileName_puk = 'publicKeys/'+userName+"_publicKey.txt"
 
-            file = open(fileName_prk,'w')
-            file.write(str(privateKey))
+            file = open(fileName_prk,'wb')
+            file.write(privateKey)
+
             file.close()
 
-            _file = open(fileName_puk, 'w')
-            _file.write(str(publicKey))
+            _file = open(fileName_puk, 'wb')
+            _file.write(publicKey)
+
+            print(publicKey)
+
             _file.close()
 
             _user = db.session.query(User).filter(User.idPerson == id).one()
