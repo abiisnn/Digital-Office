@@ -14,4 +14,3 @@ UPDATE meeting SET date='May 22, 2019' WHERE idMeeting=1;
 UPDATE users SET position='CEO' WHERE idPerson=1;
 
 UPDATE users SET position='RH' WHERE idPerson=6;
-mysqldump -u root -p digital_office > "C:\Users\UnADM\Documents\ESCUELA\GitHub\Digital-Office\BD\digital_office.sql"

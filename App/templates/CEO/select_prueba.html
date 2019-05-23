@@ -1,0 +1,130 @@
+<html>
+   <head>
+      <title>The Materialize Selects Example</title>
+      <meta name = "viewport" content = "width = device-width, initial-scale = 1">      
+      <link rel = "stylesheet"
+         href = "https://fonts.googleapis.com/icon?family=Material+Icons">
+      <link rel = "stylesheet"
+         href = "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/css/materialize.min.css">
+      <script type = "text/javascript"
+         src = "https://code.jquery.com/jquery-2.1.1.min.js"></script>           
+      <script src = "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js">
+      </script> 
+      
+      <script>
+         $(document).ready(function() {
+            $('select').material_select();
+         });
+      </script>
+   </head>
+   
+   <body class = "container">   
+      <div class = "row">
+         <form class = "col s12">
+            <div class = "row">
+            <label>Materialize Select</label>
+               <select>
+                  <option value = "" disabled selected>Select Fruit</option>
+                  <option value = "1">Mango</option>
+                  <option value = "2">Orange</option>
+                  <option value = "3">Apple</option>
+               </select>               
+            </div>
+            
+            <div class = "row">
+               <label>Materialize Multi Select</label>
+               <select multiple>
+                  <option value = "" disabled selected>Select Fruit</option>
+                  <option value = "1">Mango</option>
+                  <option value = "2">Orange</option>
+                  <option value = "3">Apple</option>
+                  <option value = "4">Abigail</option>
+                  <option value = "5">Abimael</option>
+                  <option value = "1">Mango</option>
+                  <option value = "2">Orange</option>
+                  <option value = "3">Apple</option>
+                  <option value = "4">Abigail</option>
+                  <option value = "5">Abimael</option><option value = "1">Mango</option>
+                  <option value = "2">Orange</option>
+                  <option value = "3">Apple</option>
+                  <option value = "4">Abigail</option>
+                  <option value = "5">Abimael</option><option value = "1">Mango</option>
+                  <option value = "2">Orange</option>
+                  <option value = "3">Apple</option>
+                  <option value = "4">Abigail</option>
+                  <option value = "5">Abimael</option><option value = "1">Mango</option>
+                  <option value = "2">Orange</option>
+                  <option value = "3">Apple</option>
+                  <option value = "4">Abigail</option>
+                  <option value = "5">Abimael</option><option value = "1">Mango</option>
+                  <option value = "2">Orange</option>
+                  <option value = "3">Apple</option>
+                  <option value = "4">Abigail</option>
+                  <option value = "5">Abimael</option>
+               </select>              
+            </div>
+            
+            <div class = "row">
+               <label>Select with Optgroup</label>
+               <select>
+                  <optgroup label = "Fruits">
+                     <option value = "1">Mango</option>
+                     <option value = "2">Orange</option>
+                     <option value = "3">Apple</option>
+                  </optgroup>
+                  
+                  <optgroup label = "Vegs">
+                     <option value = "4">Brinjal</option>
+                     <option value = "5">Potato</option>
+                     <option value = "6">Tomato</option>
+                  </optgroup>
+               </select>
+            </div>
+            
+            <div class = "row">
+               <label>Select with images</label>
+               <select class = "icons">
+                  <option value = "" disabled selected>Select Technology</option>
+                  <option value = "1" data-icon = "/html5/images/html5-mini-logo.jpg" class = "circle">
+                     HTML</option>
+                  <option value = "2">JavaScript</option>
+                  <option value = "3">CSS</option>
+               </select>
+            </div>
+            
+            <div class = "row">
+               <label>Browser default Select</label>
+               <select class = "browser-default">
+                  <option value = "" disabled selected>Select Fruit</option>
+                  <option value = "1">Mango</option>
+                  <option value = "2">Orange</option>
+                  <option value = "3">Apple</option>
+                  <option value = "3">Abigail</option>
+                  <option value = "3">Abimael</option>
+               </select>
+            </div>
+            
+            <div class = "row">
+               <label>Disabled Materialize Select</label>
+               <label>Disabled Materialize Select</label>
+               <select disabled>
+                  <option value = "" disabled selected>Select Fruit</option>
+                  <option value = "1">Mango</option>
+                  <option value = "2">Orange</option>
+                  <option value = "3">Apple</option>
+               </select>
+            </div>
+            
+            <div class = "row">
+               <label>Disabled Browser default Select</label>
+               <select class = "browser-default" disabled>
+                  <option value = "" disabled selected>Select Fruit</option>
+                  <option value = "1">Mango</option>
+                  <option value = "2">Orange</option>
+                  <option value = "3">Apple</option>
+               </select>
+            </div>			
+         </form>       
+      </div>
+   </body>   
+</html>
