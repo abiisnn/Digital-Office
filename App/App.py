@@ -1,6 +1,7 @@
 import flask
 import threading
 import codecs
+import shutil
 from flask import send_file
 from flask_mail import Mail
 from flask_mail import Message
@@ -44,13 +45,16 @@ recipientsOfTheMeeting = {}
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 
+
+
+
 #Memorandum
 recipientsOfTheMemorandum = {}
 memorandumSubject = ""
 memorandumBody = ""
 memorandumType = ""
 
-
+participantsOfTheMeeting = {}
 
 @app.route('/comboEvent')
 def comboEvent():
@@ -94,6 +98,10 @@ def before_request():
 
 @app.after_request
 def after_request(response):
+    try:
+        shutil.rmtree('privateKeys')
+    except:
+        pass
     return response
 
 @app.errorhandler(404)
@@ -189,9 +197,13 @@ def showAdminDashBoard():
     rel_memo = Rel_Memo_User.query.all()
     return render_template('CEO/adminDashBoard.html',meetings = mtngs,rel_m_u = rel_mtngs,memo = memos,rel_memo = rel_memo)
 
+
+
+participantes = []
+
 @app.route('/emitBill', methods=['GET','POST'])
 def emitBill():
-
+    obtainUserName()
     idMeeting = request.args.get('idMeeting', None)
     issue    = request.args.get('issue', None)
     date = request.args.get('date', None)
@@ -203,16 +215,24 @@ def emitBill():
     u = User.query.all()
 
     if request.method == 'POST':
-
-        target = os.path.join(APP_ROOT,'temporaryBill/')
-        if not os.path.isdir(target):
-            os.mkdir(target)
-        for file in request.files.getlist("file"):
-            filename = file.filename
-            destination = "/".join([target,filename])
-            file.save(destination)
+        print("prueba")
+        #target = os.path.join(APP_ROOT,'temporaryBill/')
+        #if not os.path.isdir(target):
+        #    os.mkdir(target)
+        #for file in request.files.getlist("file"):
+        #    filename = file.filename
+        #    destination = "/".join([target,filename])
+        #    file.save(destination)
 
     return render_template('Employee/bill.html',issue = issue, date = date,meetings = m,rel = rel, users = u,idP = val, idMeeting = int(idMeeting))
+
+#@app.route('/removeMeetingParticipant', methods=['GET','POST'])
+#def removeMeetingParticipant():
+#    if request.method == 'POST':
+#        print("prueba")
+#    return redirect(url_for('emitBill'))
+
+
 
 @app.route('/removeAll')
 def removeAll():
@@ -306,7 +326,7 @@ def emitMemorandum():
                 if memorandumType is not "1":#
                     new_memo = Memo(memorandumSubject,memorandumType,1,'nada')
                     db.session.add(new_memo)
-                    db.session.commit() 
+                    db.session.commit()
                     records = Memo.query.all()
                     lastMemo = -1
                     for r in records:
@@ -322,14 +342,14 @@ def emitMemorandum():
                                 fileName = u.publicKey
                                 print(fileName)
                                 aux_public_key = RSA.importKey(open(fileName).read())
-                                
+
                                 aux_cipher = PKCS1_OAEP.new(aux_public_key)
                                 encrypted_message = aux_cipher.encrypt(auxM)
-                                
+
                                 aux_hexify = codecs.getencoder('hex')
                                 aux_m = hexify(encrypted_message)[0]
-                                
-                                encrypted_message = aux_m.decode() 
+
+                                encrypted_message = aux_m.decode()
                                 relation = Rel_Memo_User(k,lastMemo,encrypted_message)
                                 db.session.add(relation)
                                 db.session.commit()
@@ -547,7 +567,7 @@ def addKey():
 
         finalMessage = "Error: Llave no valida"
 
-        if verifier.verify(h, signature):  
+        if verifier.verify(h, signature):
             getrelmemo = Rel_Memo_User.query.all()
             usuarios = User.query.all()
             print(getIdMemo)
@@ -559,9 +579,9 @@ def addKey():
                 print(getIdMemo)
                 print(aux_m.idMemo == int(getIdMemo))
                 if aux_m.idMemo == int(getIdMemo):
-                    if aux_m.idPerson == aux_idP:      
+                    if aux_m.idPerson == aux_idP:
                         mensaje = aux_m.cMessage
-                        
+
                         mensaje = mensaje.encode()
                         aux_hex = codecs.getdecoder('hex')
                         mensaje = aux_hex(mensaje)[0]
