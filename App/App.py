@@ -38,6 +38,9 @@ app.config.from_object(DevelopmentConfig)
 mail = Mail()
 #Meeting
 recipientsOfTheMeeting = {}
+deletedUsers = []
+
+
 # recipientsInCharge = {}
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 
@@ -46,8 +49,6 @@ recipientsOfTheMemorandum = {}
 memorandumSubject = ""
 memorandumBody = ""
 memorandumType = ""
-
-participantsOfTheMeeting = {}
 
 @app.route('/comboEvent')
 def comboEvent():
@@ -188,14 +189,19 @@ def showAdminDashBoard():
 
 
 
-participantes = []
+_meetingMembers = {}
 
 @app.route('/emitBill', methods=['GET','POST'])
 def emitBill():
     obtainUserName()
+
+    global _meetingMembers
+    global deletedUsers
+
     idMeeting = request.args.get('idMeeting', None)
     issue    = request.args.get('issue', None)
     date = request.args.get('date', None)
+    idMemberToRemove = request.args.get('idMemberToRemove',None)
 
 
     m = Meeting.query.all()
@@ -203,17 +209,42 @@ def emitBill():
     val = session['idP']
     u = User.query.all()
 
-    if request.method == 'POST':
-        print("prueba")
-        #target = os.path.join(APP_ROOT,'temporaryBill/')
-        #if not os.path.isdir(target):
-        #    os.mkdir(target)
-        #for file in request.files.getlist("file"):
-        #    filename = file.filename
-        #    destination = "/".join([target,filename])
-        #    file.save(destination)
+    meetingMembers = {}
+    temporaryList = []
 
-    return render_template('Employee/bill.html',issue = issue, date = date,meetings = m,rel = rel, users = u,idP = val, idMeeting = int(idMeeting))
+    for r in rel:
+        if r.idMeeting == int(idMeeting):
+            for _u in u:
+                if idMemberToRemove is None:
+                    if _u.idPerson == r.idPerson:
+                        temporaryList.append(_u.idPerson)
+                        deletedUsers.clear()
+                else:
+                    if _u.idPerson == r.idPerson:
+                        if not(_u.idPerson == int(idMemberToRemove)) and _u.idPerson not in deletedUsers:
+                            temporaryList.append(_u.idPerson)
+                        else:
+                            deletedUsers.append(int(idMemberToRemove))
+
+    #print(temporaryList)
+    #print(idMemberToRemove)
+
+    for i in temporaryList:
+        aux = User.query.filter_by(idPerson = int(i)).first()
+        meetingMembers[int(i)] = aux
+
+    _meetingMembers = meetingMembers
+
+    if request.method == 'POST':
+        target = os.path.join(APP_ROOT,'billFolder/')
+        if not os.path.isdir(target):
+            os.mkdir(target)
+        for file in request.files.getlist("file"):
+            filename = file.filename
+            destination = "/".join([target,filename])
+            file.save(destination)
+
+    return render_template('Employee/bill.html',issue = issue, date = date, members = meetingMembers.values(), idMeeting = idMeeting)
 
 #@app.route('/removeMeetingParticipant', methods=['GET','POST'])
 #def removeMeetingParticipant():
@@ -469,9 +500,9 @@ def generateKeys():
             db.session.commit()
 
             return send_file(fileName_prk, as_attachment=True)
-            
-    return render_template('RH/generatekeys.html', users = users)
 
+
+    return render_template('RH/generatekeys.html', users = users)
 @app.after_request
 def after_request_callback(response):
     try:
@@ -642,6 +673,17 @@ def CEOmeetingList():
 @app.route('/RHmeetingList')
 def RHmeetingList():
     return render_template('RH/meetingList.html')
+
+
+@app.route('/removeUserM')
+def removeUserM():
+    id = request.args.get('id',None)
+    del _meetingMembers[int(id)]
+    issue = request.args.get('issue',None)
+    date  = request.args.get('date',None)
+    idMeeting = request.args.get('idMeeting',None)
+
+    return redirect(url_for('emitBill',idMeeting = int(idMeeting), issue = issue, date = date, idMemberToRemove = id))
 
 
 if __name__ == '__main__':

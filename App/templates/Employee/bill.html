@@ -9,23 +9,17 @@
       <center><p>Members</p></center>
 
       <div class="scrollable3">
-        {% for r2 in rel%}
-          {%if r2.idMeeting == idMeeting%}
-            {% for u in users %}
-              {%if u.idPerson == r2.idPerson%}
+      {% for member in members %}
               <ul class="collection">
                 <li class="collection-item avatar">
                   <i class="material-icons circle light-blue accent-4">person</i>
-                  <center><span class="title">{{u.name}} {{u.lastName}}</span></center>
-                  <center><p>{{u.email}}</p></center>
-                  <center><p>{{u.position}}</p></center>
-                  <a href="" class="secondary-content"><i class="material-icons">close</i></a>
+                  <center><span class="title">{{member.name}} {{member.lastName}}</span></center>
+                  <center><p>{{member.email}}</p></center>
+                  <center><p>{{member.position}}</p></center>
+                  <a href="{{url_for('removeUserM', id = member.idPerson, issue = issue, date = date, idMeeting = idMeeting)}}" class="secondary-content"><i class="material-icons">close</i></a>
                 </li>
               </ul>
-        {% endif %}
-      {% endfor %}
-    {% endif %}
-  {% endfor %}
+        {% endfor %}
       </div>
     </div>
 
@@ -51,6 +45,7 @@
           <textarea rows="200" cols="20" name="body"></textarea>
         </div>
 
+        <form class="col s12" id="sendBill" method="POST"  enctype="multipart/form-data">
 
         <div class="file-field input-field">
              <div class="btn-small light-blue accent-4"><i class="material-icons left">file_upload</i>
@@ -61,7 +56,9 @@
                <input class="file-path validate" type="text" style="text-align:center">
              </div>
           </div>
-      <center><button class="waves-effect waves-light btn-small light-blue accent-4" type='submit'><i class="material-icons left">send</i>Verify</button></center>
+          <center><button class="waves-effect waves-light btn-small light-blue accent-4" type='submit'><i class="material-icons left">send</i>Confirm</button></center>
+
+      </form>
 
         {% if flag %}
         <script>

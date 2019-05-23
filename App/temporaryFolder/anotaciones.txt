@@ -1,3 +1,0 @@
--Mensaje de error cuando tu contrasena esta mal. Si muestra para usuario.
--Cuando genera la llave no cambia el status a 2, que significa que ya se ha generado su llave
--Faltan mensajes de exito cuando ya se genero una junta
