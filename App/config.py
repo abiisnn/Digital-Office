@@ -12,4 +12,4 @@ class Config(object):
 class DevelopmentConfig(Config):
     DEBUG = True
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:n0m3l0@localhost/digital_office'
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:@localhost/digital_office'
