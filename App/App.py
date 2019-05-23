@@ -91,10 +91,6 @@ def before_request():
 
 @app.after_request
 def after_request(response):
-    try:
-        shutil.rmtree('privateKeys')
-    except:
-        pass
     return response
 
 @app.errorhandler(404)
@@ -443,6 +439,10 @@ def generateKeys():
     for user in _users:
 
         if user.status == 1:
+            target = os.path.join(APP_ROOT,'privateKeys/')
+            if not os.path.isdir(target):
+                os.mkdir(target)
+
             key = RSA.generate(1024)
             privateKey = key.exportKey()
             publicKey  = key.publickey().exportKey()
@@ -469,10 +469,16 @@ def generateKeys():
             db.session.commit()
 
             return send_file(fileName_prk, as_attachment=True)
-
-
+            
     return render_template('RH/generatekeys.html', users = users)
 
+@app.after_request
+def after_request_callback(response):
+    try:
+        shutil.rmtree('privateKeys')
+    except:
+        pass
+    return response
 
 @app.route('/UsersRequests')
 def UsersRequests():
