@@ -499,6 +499,19 @@ def binnacle():
 def meetingL():
     return render_template('General/meetingList.html')
 
+@app.route('/publicMemo', methods = ['GET','POST'])
+def publicMemo():
+    obtainUserName()
+    getIdMemo = request.args.get('idM',None)
+    mensaje = ""
+    if request.meethod == 'POST':
+        memos = Memo.query.all()
+        for m in memos:
+            if m.idMemo == int(getIdMemo):
+                mensaje = m.content
+
+    return render_template('Employee/publicMemo.html',content=mensaje)
+
 @app.route('/addKey', methods = ['GET','POST'])
 def addKey():
     fileNames = []
