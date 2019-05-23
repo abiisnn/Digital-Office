@@ -28,7 +28,7 @@
   <!-- SECOND COLUMN -->
   <div class="col s8">
     <div class="row">
-      <form class="col s12" id="sendDocument" method="POST">
+      <form class="col s12" id="sendDocument" method="POST" enctype="multipart/form-data">
         <div class="row">
           <!-- Issue -->
           <div class="input-field col s6">
@@ -45,12 +45,12 @@
           <textarea rows="200" cols="20" name="body"></textarea>
         </div>
 
-        <form class="col s12" id="sendBill" method="POST"  enctype="multipart/form-data">
+        <!-- <form class="col s12" id="sendBill" method="POST"  enctype="multipart/form-data"> -->
 
         <div class="file-field input-field">
              <div class="btn-small light-blue accent-4"><i class="material-icons left">file_upload</i>
                <span>Keys</span>
-               <input enctype= "multipart/form-data" type="file" name = 'file'>
+               <input enctype= "multipart/form-data" type="file" multiple="" name = 'file[]'>
              </div>
              <div class="file-path-wrapper ">
                <input class="file-path validate" type="text" style="text-align:center">
@@ -58,7 +58,7 @@
           </div>
           <center><button class="waves-effect waves-light btn-small light-blue accent-4" type='submit'><i class="material-icons left">send</i>Confirm</button></center>
 
-      </form>
+      <!--</form>-->
 
         {% if flag %}
         <script>

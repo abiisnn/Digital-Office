@@ -231,18 +231,80 @@ def emitBill():
 
     for i in temporaryList:
         aux = User.query.filter_by(idPerson = int(i)).first()
+        print(aux.username)
         meetingMembers[int(i)] = aux
 
     _meetingMembers = meetingMembers
-
+    print(_meetingMembers)
+    
     if request.method == 'POST':
+        flag1=True
+        notfound=""
+        cuerpo = select = request.form.get('body')
+        rutas = []
+        print(request.files.getlist("file[]"))
         target = os.path.join(APP_ROOT,'billFolder/')
         if not os.path.isdir(target):
             os.mkdir(target)
-        for file in request.files.getlist("file"):
+        for file in request.files.getlist("file[]"):
             filename = file.filename
+            print(filename)
             destination = "/".join([target,filename])
+            rutas.append(filename)
             file.save(destination)
+
+        for mem in _meetingMembers:
+            aux_name =_meetingMembers[mem].username
+            print("Nombre es "+ str(aux_name))
+            aux_flag = False
+            for r in rutas:
+                name_file = r.split('_')[0]
+                if name_file == aux_name:
+                    aux_flag=True
+            if(aux_flag == False):
+                flag1=False
+                notfound=aux_name
+                break
+        mensaje = ""
+        if flag1 == True:
+            flag = True
+            mensaje = "Minuta registrada con exito!"
+            for f in rutas:
+                aux_text = "Holaaaaa"
+                aux_text = aux_text.encode()
+                h = SHA256.new(aux_text)
+                priv_key = RSA.importKey(open("billFolder/"+f).read())
+                singer = PKCS1_v1_5.new(priv_key)
+                signature = singer.sign(h)
+
+                hexify = codecs.getencoder ('hex')
+                m = hexify(signature)[0]
+
+                #aux_search = f.split('\\')[1]
+                aux_search = f.split('_')[0]
+                print(aux_search)
+                user = db.session.query(User).filter(User.username == aux_search).one()
+                print(user)
+                uPublicKey = RSA.importKey(open(user.publicKey).read())
+                verifier = PKCS1_v1_5.new(uPublicKey)
+
+                if verifier.verify(h, signature) == False:
+                    mensaje = "Error, la llave del siguiente usuario no es valida: " + str(aux_search)
+                    flag = False
+            
+            print(idMeeting)
+            print(_meetingMembers)
+            print(cuerpo)
+
+            if flag == True:
+                #print("entramosssssssssss")
+                aux_idmeet = idMeeting
+                minuta = db.session.query(Meeting).filter(Meeting.idMeeting == idMeeting).one()
+                minuta.path = cuerpo
+                db.session.commit()    
+        else:
+            mensaje = "No se econtro una llave para "+notfound
+        print(mensaje)
 
     return render_template('Employee/bill.html',issue = issue, date = date, members = meetingMembers.values(), idMeeting = idMeeting)
 
@@ -554,13 +616,32 @@ def publicMemo():
     obtainUserName()
     getIdMemo = request.args.get('idM',None)
     mensaje = ""
+    titulo = ""
     if request.method == 'GET':
         memos = Memo.query.all()
         for m in memos:
             if m.idMemo == int(getIdMemo):
+                titulo = m.title
                 mensaje = m.content
 
-    return render_template('Employee/publicMemo.html',contenido=mensaje)
+    return render_template('Employee/publicMemo.html',contenido=mensaje,issue = titulo)
+
+@app.route('/showBill', methods = ['GET','POST'])
+def showBill():
+    obtainUserName()
+    getIdMeet = request.args.get('idMeet',None)
+    mensaje = ""
+    titulo = ""
+    date = ""
+    if request.method == 'GET':
+        meetings = Meeting.query.all()
+        for m in meetings:
+            if m.idMeeting == int(getIdMeet):
+                mensaje = m.path
+                titulo = m.issue
+                date = str(m.date)
+
+    return render_template('Employee/showBill.html',contenido=mensaje,issue=titulo,fecha=date)
 
 @app.route('/addKey', methods = ['GET','POST'])
 def addKey():
