@@ -18,9 +18,6 @@ from flask import copy_current_request_context
 from flask import g
 from flask_material import Material
 from flask_wtf import CSRFProtect
-#from models import db
-#from models import User
-#from models import UserRequest
 from ModelV1 import db
 from ModelV1 import User
 from ModelV1 import Meeting
@@ -43,10 +40,6 @@ mail = Mail()
 recipientsOfTheMeeting = {}
 # recipientsInCharge = {}
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
-
-
-
-
 
 #Memorandum
 recipientsOfTheMemorandum = {}

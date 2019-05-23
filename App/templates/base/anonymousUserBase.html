@@ -1,13 +1,14 @@
 <html>
 
 <head>
+  <script src="//code.responsivevoice.org/responsivevoice.js?key=dLk5gJoT"></script>
 
-  <!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link type="text/css" rel="stylesheet" href="../../static/css/MatIcons.css"/>
-
+  <script src="//code.responsivevoice.org/responsivevoice.js?key=dLk5gJoT"></script>
   <link type="text/css" rel="stylesheet" href="../../static/css/materialize.css" media="screen,projection" />
   <link type="text/css" rel="stylesheet" href="../../static/css/anonymousUserStyle.css" media="screen,projection" />
-  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link type="text/css" rel="stylesheet" href="../../static/css/font-awesome.min.css"  />
 
   <script type="text/javascript" src="../../static/js/materialize.js"></script>
@@ -22,7 +23,7 @@
     <div class="nav-wrapper light-blue accent-4">
       <ul class="left hide-on-med-and-down">
         <li><a href="/"><i class="material-icons left">home</i>Home</a></li>
-        <li><a href="sass.html"><i class="material-icons left">business_center</i>About</a></li>
+        <li><a onclick="myFunction()"><i class="material-icons left">business_center</i>About</a></li>
         <li><a href="sass.html"><i class="material-icons left">cloud</i>Our Services</a></li>
         <li><a href="sass.html"><i class="material-icons left">contacts</i>Contact us</a></li>
       </ul>
@@ -44,7 +45,11 @@
   {% endblock%}
 
 </body>
-
+<script>
+function myFunction() {
+  responsiveVoice.speak("Digital office is a website which provide different cryptographic services for the companies");
+}
+</script>
 
 
 </html>
