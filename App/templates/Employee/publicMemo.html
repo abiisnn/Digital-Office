@@ -3,18 +3,17 @@
 
 <br><br><br>
 <div class='row'>
-  <div class="col s12">
-    <form class="col s12" id="pubMemo" method="POST"  enctype="multipart/form-data">
-      <center>{%if contenido%}
-        <h1>{{contenido}}</h1>
-      {%endif%}
-    </center>  
-    </form>
-  </div>
+	<div class="scrollable2">
+		<div class="col s12">
+		    <form class="col s12" id="pubMemo" method="POST"  enctype="multipart/form-data">
+		      	<center>
+			      	{%if contenido%}
+			       		<p>{{contenido}}<p>
+			      	{%endif%}
+		    	</center>  
+		    </form>
+		</div>
+	</div>
 </div>
-
-
-
-
 
 {% endblock %}

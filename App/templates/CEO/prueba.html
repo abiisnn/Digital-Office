@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Prueb</title>
+
+<html>
+
+<head>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link type="text/css" rel="stylesheet" href="../../static/css/materialize.css" media="screen,projection" />
+  <link type="text/css" rel="stylesheet" href="../../static/css/dashBoardStyle.css" media="screen,projection" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <title>Index</title>
+</head>
+
+<ul id="dropdown1" class="dropdown-content">
+  <li><a href="#!">one</a></li>
+  <li><a href="#!">Seetings</a></li>
+  <li class="divider"></li>
+  <li><a href="/">Log Out</a></li>
+</ul>
+
+<nav>
+    <div class="nav-wrapper light-blue accent-4">
+      <ul class="left hide-on-med-and-down">
+        <li class="active"><a href="/dashboard"><i class="material-icons left">home</i>Dashboard</a></li>
+        <li><a href="">Meetings<i class="material-icons left">business_center</i></a></li>
+        <li><a href="/newMeet">Organize meeting<i class="material-icons left">business_center</i></a></li>
+        <li><a href="">Emit Memorandum<i class="material-icons left">business_center</i></a></li>
+        <li><a href="UsersRequests">Requests<i class="material-icons left">business_center</i><span class="new badge">4</span></a></li>
+        <li><a href="">Comments<i class="material-icons left">business_center</i><span class="new badge">4</span></a></li>
+
+      </ul>
+
+
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a href="">Help<i class="material-icons left">help</i></a></li>
+
+        <li><a class="dropdown-trigger" href="#!" data-target="dropdown1"><i class="material-icons right">arrow_drop_down</i></a></li>
+
+
+     </ul>
+    </div>
+  </nav>
+
+</head>
+<body>
+  <div class="row">
+    <form class="col s12">
+      <div class="input-field col s12">
+        <select multiple class="icons">
+          <optgroup label="Add members">
+            <option value="1" class="circle left" data-icon="../../static/img/logo.png" >Opcion 1</option>
+            <option value="1" class="circle left" data-icon="../../static/img/logo.png" >Opcion 2</option>
+          </optgroup>
+        </select>
+      </div>
+       <div class="input-field col s12">
+        <select multiple>
+          <optgroup label="Add members">
+            <option value="1">Opcion 1</option>
+            
+          </optgroup>
+        </select>
+      </div>
+      <div class="input-field col s12">
+    <select multiple>
+      <option value="" disabled selected>Choose your option</option>
+      <option value="1">Option 1</option>
+      <option value="2">Option 2</option>
+      <option value="3">Option 3</option>
+    </select>
+    <label>Materialize Multiple Select</label>
+  </div>
+    </form>
+  </div>
+
+
+  <!-- Jquery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>           
+  <!-- Materialize JS -->
+
+  <script src = "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
+
+  <!-- Select -->
+  <script type = "text/javascript" src = "../../static/js/select.js"></script>
+</body>
+</html>

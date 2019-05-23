@@ -32,17 +32,12 @@
       <bpmn:incoming>SequenceFlow_1jgr5pi</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_1mbd1he</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:sequenceFlow id="SequenceFlow_1mbd1he" sourceRef="Task_0fmuzmr" targetRef="Task_132csg9" />
-    <bpmn:serviceTask id="Task_132csg9" name="Generate a XML">
-      <bpmn:incoming>SequenceFlow_1mbd1he</bpmn:incoming>
-      <bpmn:outgoing>SequenceFlow_00ep5yf</bpmn:outgoing>
-    </bpmn:serviceTask>
-    <bpmn:sequenceFlow id="SequenceFlow_00ep5yf" sourceRef="Task_132csg9" targetRef="Task_04ufotp" />
+    <bpmn:sequenceFlow id="SequenceFlow_1mbd1he" sourceRef="Task_0fmuzmr" targetRef="Task_04ufotp" />
+    <bpmn:sequenceFlow id="SequenceFlow_0o92cu7" sourceRef="Task_04ufotp" targetRef="EndEvent_1p0xl1u" />
     <bpmn:serviceTask id="Task_04ufotp" name="Publish document on the office&#39;s main site">
-      <bpmn:incoming>SequenceFlow_00ep5yf</bpmn:incoming>
+      <bpmn:incoming>SequenceFlow_1mbd1he</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_0o92cu7</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:sequenceFlow id="SequenceFlow_0o92cu7" sourceRef="Task_04ufotp" targetRef="EndEvent_1p0xl1u" />
     <bpmn:endEvent id="EndEvent_1p0xl1u">
       <bpmn:incoming>SequenceFlow_0o92cu7</bpmn:incoming>
     </bpmn:endEvent>
@@ -50,7 +45,7 @@
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_0ov3hu6">
       <bpmndi:BPMNShape id="Participant_1fy1mw8_di" bpmnElement="Participant_1fy1mw8">
-        <dc:Bounds x="120" y="854" width="688" height="282" />
+        <dc:Bounds x="120" y="854" width="609" height="282" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="IntermediateThrowEvent_1q97u97_di" bpmnElement="IntermediateThrowEvent_1q97u97" bioc:stroke="#43A047" bioc:fill="#C8E6C9">
         <dc:Bounds x="206" y="1059" width="36" height="36" />
@@ -68,13 +63,10 @@
         <dc:Bounds x="460" y="877" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="ServiceTask_136jue9_di" bpmnElement="Task_04ufotp" bioc:stroke="#1E88E5" bioc:fill="#BBDEFB">
-        <dc:Bounds x="606" y="1024" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="ServiceTask_06s6r46_di" bpmnElement="Task_132csg9" bioc:stroke="#1E88E5" bioc:fill="#BBDEFB">
         <dc:Bounds x="606" y="877" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="EndEvent_1p0xl1u_di" bpmnElement="EndEvent_1p0xl1u" bioc:stroke="#E53935" bioc:fill="#FFCDD2">
-        <dc:Bounds x="752" y="1046" width="36" height="36" />
+        <dc:Bounds x="638" y="1046" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_0egml30_di" bpmnElement="SequenceFlow_0egml30">
         <di:waypoint x="224" y="1059" />
@@ -106,13 +98,9 @@
         <di:waypoint x="560" y="917" />
         <di:waypoint x="606" y="917" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="SequenceFlow_00ep5yf_di" bpmnElement="SequenceFlow_00ep5yf">
-        <di:waypoint x="656" y="957" />
-        <di:waypoint x="656" y="1024" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="SequenceFlow_0o92cu7_di" bpmnElement="SequenceFlow_0o92cu7">
-        <di:waypoint x="706" y="1064" />
-        <di:waypoint x="752" y="1064" />
+        <di:waypoint x="656" y="957" />
+        <di:waypoint x="656" y="1046" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
