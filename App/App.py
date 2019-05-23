@@ -517,13 +517,13 @@ def publicMemo():
     obtainUserName()
     getIdMemo = request.args.get('idM',None)
     mensaje = ""
-    if request.meethod == 'POST':
+    if request.method == 'GET':
         memos = Memo.query.all()
         for m in memos:
             if m.idMemo == int(getIdMemo):
                 mensaje = m.content
 
-    return render_template('Employee/publicMemo.html',content=mensaje)
+    return render_template('Employee/publicMemo.html',contenido=mensaje)
 
 @app.route('/addKey', methods = ['GET','POST'])
 def addKey():
