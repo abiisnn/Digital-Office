@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" id="Definitions_1nq0t9u" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="2.0.3">
+  <bpmn:collaboration id="Collaboration_02z8gtp">
+    <bpmn:participant id="Participant_0y5m4sn" name="CEO" processRef="Process_1" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_1" isExecutable="true">
+    <bpmn:sequenceFlow id="SequenceFlow_1o87285" sourceRef="ServiceTask_1bylrsz" targetRef="EndEvent_0wj11i7" />
+    <bpmn:sequenceFlow id="SequenceFlow_1c99tib" sourceRef="UserTask_0szqzhz" targetRef="UserTask_0nr8psv" />
+    <bpmn:sequenceFlow id="SequenceFlow_1ul9q6d" sourceRef="UserTask_0nr8psv" targetRef="ServiceTask_08mxmwx" />
+    <bpmn:sequenceFlow id="SequenceFlow_04sm9m4" sourceRef="IntermediateThrowEvent_1dtt3bq" targetRef="UserTask_16jraac" />
+    <bpmn:userTask id="UserTask_16jraac" name="Create new document">
+      <bpmn:incoming>SequenceFlow_04sm9m4</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0nssbp2</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:intermediateThrowEvent id="IntermediateThrowEvent_1dtt3bq" name="Write confidential note">
+      <bpmn:outgoing>SequenceFlow_04sm9m4</bpmn:outgoing>
+    </bpmn:intermediateThrowEvent>
+    <bpmn:userTask id="Task_0cb6xbx" name="Add receiver">
+      <bpmn:incoming>SequenceFlow_0nssbp2</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_07qy8us</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="SequenceFlow_0nssbp2" sourceRef="UserTask_16jraac" targetRef="Task_0cb6xbx" />
+    <bpmn:sequenceFlow id="SequenceFlow_07qy8us" sourceRef="Task_0cb6xbx" targetRef="UserTask_0szqzhz" />
+    <bpmn:userTask id="UserTask_0szqzhz" name="Write observations">
+      <bpmn:incoming>SequenceFlow_07qy8us</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1c99tib</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="UserTask_0nr8psv" name="Add digital signature">
+      <bpmn:incoming>SequenceFlow_1c99tib</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1ul9q6d</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="ServiceTask_08mxmwx" name="Cipher document">
+      <bpmn:incoming>SequenceFlow_1ul9q6d</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1kxneyz</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="SequenceFlow_1kxneyz" sourceRef="ServiceTask_08mxmwx" targetRef="Task_14xulsn" />
+    <bpmn:userTask id="Task_14xulsn" name="Save to the server">
+      <bpmn:incoming>SequenceFlow_1kxneyz</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_140qse9</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="SequenceFlow_140qse9" sourceRef="Task_14xulsn" targetRef="ServiceTask_1bylrsz" />
+    <bpmn:serviceTask id="ServiceTask_1bylrsz" name="Publish document on the office&#39;s main site">
+      <bpmn:incoming>SequenceFlow_140qse9</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1o87285</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="EndEvent_0wj11i7">
+      <bpmn:incoming>SequenceFlow_1o87285</bpmn:incoming>
+    </bpmn:endEvent>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_02z8gtp">
+      <bpmndi:BPMNShape id="Participant_0y5m4sn_di" bpmnElement="Participant_0y5m4sn">
+        <dc:Bounds x="47" y="189" width="650" height="248" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_1bylrsz_di" bpmnElement="ServiceTask_1bylrsz" bioc:stroke="#1E88E5" bioc:fill="#BBDEFB">
+        <dc:Bounds x="511" y="324" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_0wj11i7_di" bpmnElement="EndEvent_0wj11i7" bioc:stroke="#E53935" bioc:fill="#FFCDD2">
+        <dc:Bounds x="641" y="346" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_08mxmwx_di" bpmnElement="ServiceTask_08mxmwx" bioc:stroke="#1E88E5" bioc:fill="#BBDEFB">
+        <dc:Bounds x="383" y="209" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="UserTask_0nr8psv_di" bpmnElement="UserTask_0nr8psv" bioc:stroke="#8E24AA" bioc:fill="#E1BEE7">
+        <dc:Bounds x="383" y="324" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1ul9q6d_di" bpmnElement="SequenceFlow_1ul9q6d">
+        <di:waypoint x="433" y="324" />
+        <di:waypoint x="433" y="289" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="UserTask_0szqzhz_di" bpmnElement="UserTask_0szqzhz" bioc:stroke="#8E24AA" bioc:fill="#E1BEE7">
+        <dc:Bounds x="244" y="324" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="IntermediateThrowEvent_1dtt3bq_di" bpmnElement="IntermediateThrowEvent_1dtt3bq" bioc:stroke="#43A047" bioc:fill="#C8E6C9">
+        <dc:Bounds x="138" y="346" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="115" y="389" width="84" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_04sm9m4_di" bpmnElement="SequenceFlow_04sm9m4">
+        <di:waypoint x="156" y="346" />
+        <di:waypoint x="156" y="289" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="UserTask_16jraac_di" bpmnElement="UserTask_16jraac" bioc:stroke="#8E24AA" bioc:fill="#E1BEE7">
+        <dc:Bounds x="106" y="209" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1c99tib_di" bpmnElement="SequenceFlow_1c99tib">
+        <di:waypoint x="344" y="364" />
+        <di:waypoint x="383" y="364" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1o87285_di" bpmnElement="SequenceFlow_1o87285">
+        <di:waypoint x="611" y="364" />
+        <di:waypoint x="641" y="364" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="UserTask_0fbclnx_di" bpmnElement="Task_0cb6xbx" bioc:stroke="#8E24AA" bioc:fill="#E1BEE7">
+        <dc:Bounds x="244" y="209" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0nssbp2_di" bpmnElement="SequenceFlow_0nssbp2">
+        <di:waypoint x="206" y="249" />
+        <di:waypoint x="244" y="249" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_07qy8us_di" bpmnElement="SequenceFlow_07qy8us">
+        <di:waypoint x="294" y="289" />
+        <di:waypoint x="294" y="324" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1kxneyz_di" bpmnElement="SequenceFlow_1kxneyz">
+        <di:waypoint x="483" y="249" />
+        <di:waypoint x="511" y="249" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="UserTask_1e4o3ml_di" bpmnElement="Task_14xulsn" bioc:stroke="#1E88E5" bioc:fill="#BBDEFB">
+        <dc:Bounds x="511" y="209" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_140qse9_di" bpmnElement="SequenceFlow_140qse9">
+        <di:waypoint x="561" y="289" />
+        <di:waypoint x="561" y="324" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
